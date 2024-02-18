@@ -1,0 +1,175 @@
+<div>
+  <div class="main-container">
+    <div class="side-nav">
+      <div class="nav-items">
+        <div
+          class="nav-item"
+          [class.selected]="selectedNavItem === 'dashboard'"
+          (click)="onNavItemClicked('dashboard')"
+          routerLink="/dashboard"
+        >
+          <img
+            src="../../assets/dashboard-icon.png"
+            alt="event details"
+            style="margin-right: 16px"
+          />
+          <span>Dashboard</span>
+        </div>
+        <div
+          class="nav-item"
+          [class.selected]="selectedNavItem === 'Event Log'"
+          (click)="onNavItemClicked('Event Log')"
+          routerLink="/dashboard/eventLog"
+        >
+          <img
+            src="../../assets/event-icon.png"
+            alt="event details"
+            style="margin-right: 16px"
+          />
+          <span>Event Log</span>
+        </div>
+        <div
+          class="nav-item"
+          [class.selected]="selectedNavItem === 'aggressive'"
+          (click)="onNavItemClicked('aggressive')"
+          routerLink="/dashboard/aggressive"
+        >
+          <img
+            src="../../assets/road-icon.png"
+            alt="event details"
+            style="margin-right: 16px"
+          />
+          <span>Aggressive Driving analysis</span>
+        </div>
+        <div
+          class="nav-item"
+          [class.selected]="selectedNavItem === 'Map'"
+          (click)="onNavItemClicked('Map')"
+          routerLink="/dashboard/map"
+        >
+          <img
+            src="../../assets/map-icon.png"
+            alt="event details"
+            style="margin-right: 16px"
+          />
+          <span>Map</span>
+        </div>
+        <div
+          class="nav-item"
+          [class.selected]="selectedNavItem === 'Profile Settings'"
+          (click)="onNavItemClicked('Profile Settings')"
+          routerLink="/dashboard/profileSetting"
+        >
+          <img
+            src="../../assets/person-icon.png"
+            alt="event details"
+            style="margin-right: 16px"
+          />
+          <span>Profile Settings</span>
+        </div>
+        <div
+          class="nav-item"
+          [class.selected]="selectedNavItem === 'logOut'"
+          (click)="logoutHandler()"
+          routerLink="/"
+        >
+          <img
+            src="../../assets/logout-icon.png"
+            alt="event details"
+            style="margin-right: 16px; transform: rotate(180deg)"
+          />
+          <span>Log out</span>
+        </div>
+      </div>
+    </div>
+    <div class="main">
+      <div *ngIf="openDashboard; else changeContent">
+        <div class="first-dashboard-part">
+          <div
+            class="event-log"
+            [class.selected]="selectedNavItem === 'Event Log'"
+            (click)="onNavItemClicked('Event Log')"
+            routerLink="/dashboard/eventLog"
+          >
+            <div class="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Trip Time</th>
+                    <th>Date</th>
+                    <th>Distance</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let trip of tripDetails">
+                    <td>{{ trip.start_timestamp | date : "HH:mm:ss" }}</td>
+                    <td>{{ trip.start_timestamp | date : "dd-MM-yyyy" }}</td>
+                    <td>{{ trip.distance }}</td>
+                    <td>
+                      <div
+                        id="event_status"
+                        [ngStyle]="{
+                          'background-color':
+                            trip.status === 'NORMAL'
+                              ? 'rgba(26, 147, 46, 0.18)'
+                              : trip.status === 'AGGRESSIVE'
+                              ? 'rgba(226, 177, 51, 0.18)'
+                              : trip.status === 'VERY_AGGRESSIVE'
+                              ? 'rgba(238, 32, 28, 0.18)'
+                              : '',
+                          color:
+                            trip.status === 'NORMAL'
+                              ? '#1A932E'
+                              : trip.status === 'AGGRESSIVE'
+                              ? '#DFA510'
+                              : trip.status === 'VERY_AGGRESSIVE'
+                              ? '#EE201C'
+                              : ''
+                        }"
+                      >
+                        {{ trip.status }}
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div
+            class="chart-outside"
+            [class.selected]="selectedNavItem === 'aggressive'"
+            (click)="onNavItemClicked('aggressive')"
+            routerLink="/dashboard/aggressive"
+          >
+            <div id="chart">
+              <apx-chart
+                [series]="chartOptions.series"
+                [chart]="chartOptions.chart"
+                [dataLabels]="chartOptions.dataLabels"
+                [plotOptions]="chartOptions.plotOptions"
+                [yaxis]="chartOptions.yaxis"
+                [legend]="chartOptions.legend"
+                [fill]="chartOptions.fill"
+                [stroke]="chartOptions.stroke"
+                [tooltip]="chartOptions.tooltip"
+                [xaxis]="chartOptions.xaxis"
+              ></apx-chart>
+            </div>
+          </div>
+        </div>
+        <div class="cards-outside">
+          <p class="total-event">Your Total Events</p>
+          <div class="cards">
+            <ng-container *ngFor="let cardData of cardsData">
+              <app-event-card [CardDataProps]="cardData"></app-event-card>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+      <ng-template #changeContent>
+        <router-outlet></router-outlet>
+      </ng-template>
+    </div>
+  </div>
+</div>

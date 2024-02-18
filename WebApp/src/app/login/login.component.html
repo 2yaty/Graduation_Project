@@ -1,0 +1,52 @@
+<div class="logo text-center">
+  <h1>Login</h1>
+</div>
+<div class="wrapper">
+  <div class="inner-warpper text-center">
+    <h2 class="title">Login to your account</h2>
+    <form id="formvalidate">
+      <div class="input-group">
+        <input
+          class="form-control"
+          name="userEmail"
+          id="userEmail"
+          type="email"
+          [(ngModel)]="user.email"
+          placeholder="Email"
+          required
+        />
+      </div>
+      <div class="input-group">
+        <input
+          class="form-control"
+          name="userPassword"
+          id="userPassword"
+          type="password"
+          [(ngModel)]="user.password"
+          placeholder="Password"
+          required
+        />
+      </div>
+      <div *ngIf="isLoginFailed" class="is-invalid">
+        <p>Please enter a correct email or password</p>
+      </div>
+      <div *ngIf="isLoading" class="text-center">
+        <p>Loading ...</p>
+      </div>
+      <button (click)="onLogin()" class="form-control" type="submit" id="login">
+        Login
+      </button>
+      <div class="clearfix supporter">
+        <div class="pull-left remember-me">
+          <input id="rememberMe" type="checkbox" />
+          <label for="rememberMe">Remember Me</label>
+        </div>
+        <a class="forgot pull-right" href="#">Forgot Password?</a>
+      </div>
+    </form>
+  </div>
+  <div class="signup-wrapper text-center">
+    <p>Don't have an account?</p>
+    <a (click)="showSignUpHandler()" class="primary-text">Sign Up</a>
+  </div>
+</div>

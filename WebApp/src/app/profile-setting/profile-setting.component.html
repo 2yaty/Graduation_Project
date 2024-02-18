@@ -1,0 +1,163 @@
+<div class="inner-warpper text-center">
+  <h2 class="title">About you</h2>
+  <form action="" id="formvalidate">
+    <div class="person-details">
+      <div class="label-input">
+        <label for="firstName">First Name:</label>
+        <input
+          [(ngModel)]="driverDetails.firstName"
+          type="text"
+          id="firstName"
+          name="firstName"
+          class="form-control"
+        />
+      </div>
+      <div class="label-input">
+        <label for="lastName">Last Name:</label>
+        <input
+          class="form-control"
+          name="lastName"
+          id="lastName"
+          type="text"
+          [(ngModel)]="driverDetails.lastName"
+        />
+      </div>
+    </div>
+    <div class="person-details">
+      <div class="input-group">
+        <label for="email">Email:</label>
+        <input
+          class="form-control"
+          name="email"
+          id="email"
+          type="email"
+          [(ngModel)]="driverDetails.email"
+        />
+      </div>
+      <div class="input-group">
+        <label for="job">Job:</label>
+        <input
+          class="form-control"
+          name="job"
+          id="job"
+          type="text"
+          [(ngModel)]="driverDetails.jobTitle"
+        />
+      </div>
+    </div>
+    <div class="person-details last-part">
+      <div class="input-group">
+        <label for="phone">Phone:</label>
+        <input
+          class="form-control"
+          name="phone"
+          id="phone"
+          type="phone"
+          [(ngModel)]="driverDetails.phone"
+        />
+      </div>
+      <div class="input-group">
+        <label for="gender">Select Gender:</label>
+        <select id="gender" name="gender" class="form-control">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+      </div>
+    </div>
+    <div *ngIf="updatedDeriver" class="text-center primary-text">
+      <p>Updated driver details successfully</p>
+    </div>
+    <button
+      class="btn"
+      type="submit"
+      id="Signup"
+      (click)="onUpdateDriverData()"
+    >
+      Save
+    </button>
+  </form>
+
+  <hr />
+  <br />
+
+  <h2 class="title">About your vehicle</h2>
+  <form action="" id="formvalidate">
+    <div class="person-details">
+      <div class="label-input">
+        <label for="vehicle">Vehicle name:</label>
+        <input
+          class="form-control"
+          name="vehicle"
+          id="vehicle"
+          type="text"
+          [(ngModel)]="vehicleDetails.name"
+        />
+      </div>
+      <div class="label-input">
+        <label for="license">License:</label>
+        <input
+          class="form-control"
+          name="license"
+          id="license"
+          type="text"
+          [(ngModel)]="vehicleDetails.licensePlate"
+        />
+      </div>
+    </div>
+    <div class="person-details">
+      <div class="label-input">
+        <label for="model">Model:</label>
+        <input
+          class="form-control"
+          name="model"
+          id="model"
+          type="text"
+          [(ngModel)]="vehicleDetails.model"
+        />
+      </div>
+      <div class="label-input">
+        <label for="OEM" class="text-label">OEM:</label>
+        <input
+          class="form-control"
+          name="OEM"
+          id="OEM"
+          type="text"
+          [(ngModel)]="vehicleDetails.oem"
+        />
+      </div>
+    </div>
+    <div class="person-details">
+      <div class="label-input">
+        <label for="creation">Creation:</label>
+        <input
+          class="form-control"
+          name="creation"
+          id="creation"
+          type="text"
+          [(ngModel)]="vehicleDetails.creationYear"
+        />
+      </div>
+      <div class="label-input">
+        <label for="serial" class="text-label">Serial:</label>
+        <input
+          class="form-control"
+          name="serial"
+          id="serial"
+          type="text"
+          [(ngModel)]="vehicleDetails.serialNumber"
+        />
+      </div>
+    </div>
+    <div *ngIf="updatedVehicle" class="text-center primary-text">
+      <p>Updated vehicle details successfully</p>
+    </div>
+    <button
+      class="btn vehicle-btn"
+      type="submit"
+      id="Signup"
+      (click)="onUpdateVehicleData()"
+    >
+      Save
+    </button>
+  </form>
+</div>
