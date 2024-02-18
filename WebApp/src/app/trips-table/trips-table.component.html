@@ -1,0 +1,60 @@
+<div>
+  <div class="event_log_div">
+    <div class="inner_Container">
+      <div class="filter_container"></div>
+      <div class="table_container">
+        <table>
+          <thead>
+            <tr>
+              <th>Trip Time</th>
+              <th>Date</th>
+              <th>Distance</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Use *ngFor to iterate over the trip data and display each row -->
+            <tr
+              *ngFor="let trip of tripDetails"
+              (click)="onGetTripEvents(trip.id)"
+            >
+              <td>{{ trip.start_timestamp | date : "HH:mm:ss" }}</td>
+              <td>{{ trip.start_timestamp | date : "dd-MM-yyyy" }}</td>
+              <td>{{ trip.distance }}</td>
+              <td>
+                <div
+                  id="event_status"
+                  [ngStyle]="{
+                    'background-color':
+                      trip.status === 'NORMAL'
+                        ? 'rgba(26, 147, 46, 0.18)'
+                        : trip.status === 'AGGRESSIVE'
+                        ? 'rgba(226, 177, 51, 0.18)'
+                        : trip.status === 'VERY_AGGRESSIVE'
+                        ? 'rgba(238, 32, 28, 0.18)'
+                        : '',
+                    color:
+                      trip.status === 'NORMAL'
+                        ? '#1A932E'
+                        : trip.status === 'AGGRESSIVE'
+                        ? '#DFA510'
+                        : trip.status === 'VERY_AGGRESSIVE'
+                        ? '#EE201C'
+                        : ''
+                  }"
+                >
+                  {{ trip.status }}
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="cards" *ngIf="showTripCards">
+    <ng-container *ngFor="let cardData of cardsData">
+      <app-event-card [CardDataProps]="cardData"></app-event-card>
+    </ng-container>
+  </div>
+</div>
