@@ -31,4 +31,4 @@ from ultralytics.models.yolo.detect import DetectionPredictor
 import cv2
 model = YOLO("best.pt")
 model.predict(
-    source="Free_Printable_Number_Bubble_Letters_Bubble_Number_80.jpg", show=True, conf=0.5)
+    source="test_1.jpg", show=True, conf=0.5)
