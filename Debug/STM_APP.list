@@ -10425,7 +10425,7 @@ static void UART_SetConfig(UART_HandleTypeDef *huart)
 08003df4 <MOTOR_voidInitMotor>:
  *
  * @Return:
- * 			void: return nothing.
+ * 			void: Returns nothing.
  **/
 void MOTOR_voidInitMotor(void)
 {

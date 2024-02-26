@@ -57,15 +57,13 @@ typedef struct
 /**
  * @Function Name: MOTOR_voidInitMotor
  *
- * @Description: This function initializes the timer PWM depending on configuration you provided in
- * 					@ref MOTOR_MDD10A_Lcfg.c file.
+ * @Description: Initializes the motor configuration based on what was provided in the "MOTOR_MDD10A_Lcfg.c" file.
  *
  * @Arguments:
- * 			void:
- * 					take nothing.
+ * 			void: Takes no arguments.
  *
  * @Return:
- * 			void: return nothing.
+ * 			void: Returns nothing.
  **/
 void MOTOR_voidInitMotor(void);
 
@@ -73,19 +71,19 @@ void MOTOR_voidInitMotor(void);
 /**
  * @Function Name: MOTOR_voidMoveForward
  *
- * @Description: Move motor forward with specific speed.
+ * @Description: Moves the vehicle forward with a specific speed.
  *
  * @Arguments:
- * 			1.uint8_t Copy_u8MotorSpeed[in]:
- * 					Specify the motor speed.
- * 				 	You can specify the motor speed in range 0 (as min speed) to 100 (as max speed)
- * 				 	Note: in case u Insert number more than 100, the function returns error state.
- * 			2.MOTOR_HandleTypeDef *MOTOR_cfg[in]:
- * 					This is a pointer to stuct that contains the motor configurations
- * 					((Port and Pin Number) to control motor direction -> Dir pin in "MDD10A" board,
- * 					and Timer Channel index -> PWM pin in "MDD10A" board).
+ * 			1. uint8_t Copy_u8MotorSpeed [in]:
+ * 					Specifies the motor speed.
+ * 				 	The motor speed can be specified in the range from 0 (minimum speed) to 100 (maximum speed).
+ * 				 	Note: If a number greater than 100 is provided, the function returns an error state.
+ * 			2. MOTOR_HandleTypeDef *MOTOR_cfg [in]:
+ * 					A pointer to a struct containing the motor configurations
+ * 					(Port and Pin Number) to control motor direction and Timer handler.
+ *
  * @Return:
- * 			tenuErrorStatus: Returns an error status that indicates if this function executed correctly or not.
+ * 			tenuErrorStatus: Returns an error status indicating whether the function executed correctly or not.
  **/
 tenuErrorStatus MOTOR_voidMoveForward(uint8_t Copy_u8MotorSpeed, MOTOR_HandleTypeDef *MOTOR_cfg);
 
@@ -93,75 +91,91 @@ tenuErrorStatus MOTOR_voidMoveForward(uint8_t Copy_u8MotorSpeed, MOTOR_HandleTyp
 /**
  * @Function Name: MOTOR_voidMoveBackward
  *
- * @Description: Move motor backward with specific speed.
+ * @Description: Moves the vehicle backward with a specific speed.
  *
  * @Arguments:
- * 			1.uint8_t Copy_u8MotorSpeed[in]:
- * 					Specify the motor speed.
- * 				 	You can specify the motor speed in range 0 (as min speed) to 100 (as max speed)
- * 				 	Note: in case u Insert number more than 100, the function returns error state.
- * 			2.MOTOR_HandleTypeDef *MOTOR_cfg[in]:
- * 					This is a pointer to stuct that contains the motor configurations
- * 					((Port and Pin Number) to control motor direction -> Dir pin in "MDD10A" board,
- * 					and Timer Channel index -> PWM pin in "MDD10A" board).
+ * 			1. uint8_t Copy_u8MotorSpeed [in]:
+ * 					Specifies the motor speed.
+ * 				 	The motor speed can be specified in the range from 0 (minimum speed) to 100 (maximum speed).
+ * 				 	Note: If a number greater than 100 is provided, the function returns an error state.
+ * 			2. MOTOR_HandleTypeDef *MOTOR_cfg [in]:
+ * 					A pointer to a struct containing the motor configurations
+ * 					(Port and Pin Number) to control motor direction and Timer handler.
+ *
  * @Return:
- * 			tenuErrorStatus: Returns an error status that indicates if this function executed correctly or not.
+ * 			tenuErrorStatus: Returns an error status indicating whether the function executed correctly or not.
  **/
 tenuErrorStatus MOTOR_voidMoveBackward(uint8_t Copy_u8MotorSpeed, MOTOR_HandleTypeDef *MOTOR_cfg);
 
 
+
 /**
- * @Function Name: MOTOR_voidMoveBackward
+ * @Function Name: MOTOR_voidTurnLeft
  *
- * @Description: Move motor backward with specific speed.
+ * @Description: Turn the vehicle left with a specific speed and angle.
  *
  * @Arguments:
- * 			1.uint8_t Copy_u8MotorSpeed[in]:
- * 					Specify the motor speed.
- * 				 	You can specify the motor speed in range 0 (as min speed) to 100 (as max speed)
- * 				 	Note: in case u Insert number more than 100, the function returns error state.
- * 			2.MOTOR_HandleTypeDef *MOTOR_cfg[in]:
- * 					This is a pointer to stuct that contains the motor configurations
- * 					((Port and Pin Number) to control motor direction -> Dir pin in "MDD10A" board,
- * 					and Timer Channel index -> PWM pin in "MDD10A" board).
+ * 			1. uint8_t Copy_u8MotorSpeed [in]:
+ * 					Specify the motor speed for turning left.
+ * 				 	The motor speed can be set in the range from 0 (minimum speed) to 100 (maximum speed).
+ * 				 	Note: If a number greater than 100 is provided, the function returns an error state.
+ * 			2. uint8_t Copy_u8TurnAngle [in]:
+ * 					Specify the angle for turning left.
+ * 					The angle should be in degrees (0 to 360).
+ * 			3. MOTOR_HandleTypeDef *MOTOR_1_cfg [in]:
+ * 					A pointer to the struct containing motor configurations (Port and Pin Number)
+ * 					to control the motor direction and Timer handler for motor 1.
+ * 			4. MOTOR_HandleTypeDef *MOTOR_2_cfg [in]:
+ * 					A pointer to the struct containing motor configurations (Port and Pin Number)
+ * 					to control the motor direction and Timer handler for motor 2.
+ *
  * @Return:
- * 			tenuErrorStatus: Returns an error status that indicates if this function executed correctly or not.
+ * 			tenuErrorStatus: Returns an error status indicating whether the function executed correctly or not.
  **/
+
 tenuErrorStatus MOTOR_voidTurnLeft(uint8_t Copy_u8MotorSpeed, uint8_t Copy_u8TurnAngle, MOTOR_HandleTypeDef *MOTOR_1_cfg, MOTOR_HandleTypeDef *MOTOR_2_cfg);
 
 
+
 /**
- * @Function Name: MOTOR_voidMoveBackward
+ * @Function Name: MOTOR_voidTurnRight
  *
- * @Description: Move motor backward with specific speed.
+ * @Description: Turn the vehicle right with a specific speed and angle.
  *
  * @Arguments:
- * 			1.uint8_t Copy_u8MotorSpeed[in]:
- * 					Specify the motor speed.
- * 				 	You can specify the motor speed in range 0 (as min speed) to 100 (as max speed)
- * 				 	Note: in case u Insert number more than 100, the function returns error state.
- * 			2.MOTOR_HandleTypeDef *MOTOR_cfg[in]:
- * 					This is a pointer to stuct that contains the motor configurations
- * 					((Port and Pin Number) to control motor direction -> Dir pin in "MDD10A" board,
- * 					and Timer Channel index -> PWM pin in "MDD10A" board).
+ * 			1. uint8_t Copy_u8MotorSpeed [in]:
+ * 					Specify the motor speed for turning left.
+ * 				 	The motor speed can be set in the range from 0 (minimum speed) to 100 (maximum speed).
+ * 				 	Note: If a number greater than 100 is provided, the function returns an error state.
+ * 			2. uint8_t Copy_u8TurnAngle [in]:
+ * 					Specify the angle for turning right.
+ * 					The angle should be in degrees (0 to 360).
+ * 			3. MOTOR_HandleTypeDef *MOTOR_1_cfg [in]:
+ * 					A pointer to the struct containing motor configurations (Port and Pin Number)
+ * 					to control the motor direction and Timer handler for motor 1.
+ * 			4. MOTOR_HandleTypeDef *MOTOR_2_cfg [in]:
+ * 					A pointer to the struct containing motor configurations (Port and Pin Number)
+ * 					to control the motor direction and Timer handler for motor 2.
+ *
  * @Return:
- * 			tenuErrorStatus: Returns an error status that indicates if this function executed correctly or not.
+ * 			tenuErrorStatus: Returns an error status indicating whether the function executed correctly or not.
  **/
 tenuErrorStatus MOTOR_voidTurnRight(uint8_t Copy_u8MotorSpeed, uint8_t Copy_u8TurnAngle, MOTOR_HandleTypeDef *MOTOR_1_cfg, MOTOR_HandleTypeDef *MOTOR_2_cfg);
+
 
 
 /**
  * @Function Name: MOTOR_voidStopMoving
  *
- * @Description: Stop the motor.
+ * @Description: Stops the vehicle.
  *
  * @Arguments:
- * 			1.MOTOR_HandleTypeDef *MOTOR_cfg[in]:
- * 					This is a pointer to stuct that indicates to the motor u wanna stop.
- * 					((Port and Pin Number) to control motor direction -> Dir pin in "MDD10A" board,
- * 					and Timer Channel index -> PWM pin in "MDD10A" board).
+ * 			1. MOTOR_HandleTypeDef *MOTOR_cfg [in]:
+ * 					A pointer to a struct containing the motor configurations
+ * 					(Port and Pin Number) to control motor direction and Timer handler.
+ *
  * @Return:
- * 			void: return nothing.
+ * 			void: Returns nothing.
  **/
 void MOTOR_voidStopMoving(MOTOR_HandleTypeDef *MOTOR_cfg);
 
@@ -169,20 +183,22 @@ void MOTOR_voidStopMoving(MOTOR_HandleTypeDef *MOTOR_cfg);
 /**
  * @Function Name: HAL_TIM_PMM_DutyCycle
  *
- * @Description: Generate PWM with desired duty cycle for (General Purpose).
- * 				 Note: this function isn't necessary to drive the motor driver "MDD10A".
+ * @Description: Generates PWM with a desired duty cycle for general purpose.
+ *               Note: This function is not necessary to drive the motor driver "MDD10A".
  *
  * @Arguments:
- * 			1.uint8_t Copy_u8DutyPercentage[in]:
- * 					Specify the PWM duty cycle.
- * 				 	You can specify the PWM duty cycle in range 0 (as min duty cycle) to 100 (as max duty cycle)
- * 				 	Note: in case u Insert number more than 100, the function returns error state.
- * 			2.uint8_t Copy_u8OutChannel[in]:
- * 					Specify the channel u wanna generate PWM from.
+ * 			1. MOTOR_HandleTypeDef *MOTOR_cfg [in]:
+ * 					A pointer to a struct containing the motor configurations
+ * 					(Port and Pin Number) to control motor direction and Timer handler.
+ * 			2. uint8_t Copy_u8DutyPercentage [in]:
+ * 					Specifies the PWM duty cycle.
+ * 				 	The PWM duty cycle can be specified in the range from 0 (minimum duty cycle) to 100 (maximum duty cycle).
+ * 				 	Note: If a number greater than 100 is provided, the function returns an error state.
+ *
  * @Return:
- * 			tenuErrorStatus: Returns an error status that indicates if this function executed correctly or not.
+ * 			tenuErrorStatus: Returns an error status indicating whether the function executed correctly or not.
  **/
-tenuErrorStatus HAL_TIM_PMM_DutyCycle( MOTOR_HandleTypeDef *MOTOR_cfg, uint8_t Copy_u8DutyPercentage);
+tenuErrorStatus HAL_TIM_PMM_DutyCycle(MOTOR_HandleTypeDef *MOTOR_cfg, uint8_t Copy_u8DutyPercentage);
 
 /*------------------------- Software Interfaces Declarations End ----------------------------*/
 
