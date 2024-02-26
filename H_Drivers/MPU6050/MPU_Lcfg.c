@@ -1,23 +1,9 @@
 /****************************************************************************************
  * @file           : MPU_Lcfg.c												*
- * @author         : Salem&Omar 														*
+ * @author         : Salem&Omar  15/12/2023													*
  * @brief          : Contains the needed data to initialize the MPU sensor.				*
  ***************************************************************************************/
-/*
- * Notes:
- * 		(##) The objects that created in this file used in other files with the same name,
- * 				So you have't to change any of them.
- * 		(##) The prescaler and period (overflow value) were selected with specific initial values
- * 				according to the clock source that feeds the timer (APB bus) was (16 MHZ) divided by 1.
- *
- * 				(&&) Initial values with (16 MHZ) divided by 1 (&&)
- * 				(++) htimX.Init.Prescaler = 15;  Note: the register value -> ( 1 + prescaler value),
- * 					   then the clock here divided by 16 not 15.
- * 				(++) htimX.Init.Period = 49;  -> with 50 micro seconds period u get (20 KHZ), that is
- * 						the needed frequency to drive the motor driver "MDD10A".
- * 		(##) You can select any pin and port to control the motor direction, But don't forget
- * 				to initialize this pin in GPIO initialization. Also the channel pin .
- */
+
 
 
 #include "MPU.h"
