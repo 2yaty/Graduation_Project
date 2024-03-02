@@ -21,7 +21,7 @@
 /*------------------------------ Data type Declarations Start ------------------------------*/
 // A linked list (LL) node to store a queue entry
 struct QNode {
-	char key;
+	unsigned char key;
 	struct QNode* next;
 };
 
@@ -37,8 +37,8 @@ typedef struct Queue {
 /*------------------------- Software Interfaces Declarations Start --------------------------*/
 
 struct Queue* createQueue();
-void enQueue(struct Queue* q, char k);
-void deQueue(struct Queue* q, char *K);
+void enQueue(struct Queue* q, unsigned char k);
+signed char deQueue(struct Queue* q, unsigned char *K);
 
 
 #endif /* MOVEMENT_QUEUE_H_ */

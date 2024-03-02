@@ -12,6 +12,7 @@
 #include "Common/STD_Types.h"
 #include "MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h"
 #include "Queue.h"
+#include <stdlib.h>
 /*------------------------------------ Includes End ----------------------------------------*/
 
 /*------------------------------- Macro Declarations Start ---------------------------------*/
@@ -23,17 +24,31 @@
 #define MOV_LEFT_CHAR						'L'
 #define MOV_RIGHT_CHAR						'R'
 
+#define MOV_END_CHAR						'E'
+
 /*-------------------------- Macro• Functions Declarations Start ---------------------------*/
 
 /*-------------------------- Macro• Functions Declarations End -----------------------------*/
 
 /*------------------------------ Data type Declarations Start ------------------------------*/
+
+typedef enum
+{
+	MOV_FRAME_IN_RECEIVE,
+	MOV_FRAME_COMPLETED
+}MOV_State_t;
+
+
+
 typedef struct
 {
+	MOTOR_HandleTypeDef *hmotor_1;
+	MOTOR_HandleTypeDef *hmotor_2;
 	Queue_t *SendingQueue;
 	Queue_t *ReceivingQueue;
 	uint8_t SendingData;
-	uint8_t ReceivingingData;
+	uint8_t ReceivingingData[10];
+	MOV_State_t state;
 }Bluetooth_Handler;
 /*------------------------------ Data type Declarations End --------------------------------*/
 
@@ -116,9 +131,8 @@ tenuErrorStatus MOV_enuReceiveData(Bluetooth_Handler *Copy_HBluQueue, UART_Handl
 tenuErrorStatus MOV_enuMovementHandler(Bluetooth_Handler *Copy_HBluQueue);
 
 
-
-
-
+void MOV_voidRxDataCallback(void);
+void MOV_voidRxFrameCallback(void);
 
 /*------------------------- Software Interfaces Declarations End ----------------------------*/
 

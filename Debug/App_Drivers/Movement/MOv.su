@@ -1,6 +1,9 @@
-../App_Drivers/Movement/MOv.c:10:6:MOV_voidSetComm	16	static
-../App_Drivers/Movement/MOv.c:25:17:MOV_enuSendData	32	static
-../App_Drivers/Movement/MOv.c:40:17:MOV_enuReceiveData	24	static
-../App_Drivers/Movement/MOv.c:54:17:MOV_enuMovementHandler	24	static
-../App_Drivers/Movement/MOv.c:89:6:HAL_UART_RxCpltCallback	16	static
-../App_Drivers/Movement/MOv.c:96:6:HAL_UART_TxCpltCallback	16	static
+../App_Drivers/Movement/MOv.c:14:6:MOV_voidSetComm	24	static
+../App_Drivers/Movement/MOv.c:30:17:MOV_enuSendData	32	static
+../App_Drivers/Movement/MOv.c:44:17:MOV_enuReceiveData	24	static
+../App_Drivers/Movement/MOv.c:64:17:MOV_enuMovementHandler	24	static
+../App_Drivers/Movement/MOv.c:93:6:HAL_UART_RxCpltCallback	32	static
+../App_Drivers/Movement/MOv.c:136:6:HAL_UART_TxCpltCallback	16	static
+../App_Drivers/Movement/MOv.c:143:13:MOV_voidRxDataCallback	4	static
+../App_Drivers/Movement/MOv.c:148:13:MOV_voidRxFrameCallback	4	static
+../App_Drivers/Movement/MOv.c:155:6:ControlMotion	16	static

@@ -26,12 +26,21 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+typedef enum
+{
+	SYS_BLUETOOTH_RX,
+	SYS_MOVEMENT_ACTION,
+	SYS_FRAME_COMPLETE,
+	STS_DO_NOTHING
 
+}SYS_State_t;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+SYS_State_t state = SYS_BLUETOOTH_RX;
+Bluetooth_Handler hbluetooth;
+int n =0;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -86,16 +95,25 @@ int main(void)
   /* Initialize all configured peripherals */
 
   /* USER CODE BEGIN 2 */
-  MOTOR_voidInitMotor();
+  MOV_voidSetComm(&hbluetooth);
+  HAL_TIM_Base_Start_IT(&htim2);
   /* USER CODE END 2 */
-
+  uint8_t data;
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-
+	  //HAL_UART_Transmit(&huart6, &data, 1, 1);
+//	  HAL_Delay(1000);
+//	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+//	  HAL_Delay(1000);
     /* USER CODE BEGIN 3 */
+//	  HAL_UART_Receive(&huart6, &data, 1, 1);
+//	  if(data == 'r'){
+//		  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+//	  }
+
   }
   /* USER CODE END 3 */
 }
@@ -144,7 +162,42 @@ void SystemClock_Config(void)
 
 
 /* USER CODE BEGIN 4 */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	static uint8_t Loc_su8Count =0;
+	Loc_su8Count++;
+	switch (state) {
+		case SYS_BLUETOOTH_RX:
+			MOV_enuReceiveData(&hbluetooth, &huart6);
+			state = SYS_MOVEMENT_ACTION;
+			break;
+		case SYS_MOVEMENT_ACTION:
+			if(Loc_su8Count == 60)
+			{
+				if(MOV_enuMovementHandler(&hbluetooth) == E_PROCESS_COMPLETE)
+				{state = SYS_BLUETOOTH_RX;}
+				Loc_su8Count =0;
+			}
+			break;
+		default:
+			break;
+	}
 
+}
+
+
+void MOV_voidRxDataCallback(void)
+{
+	state = SYS_BLUETOOTH_RX;
+	n++;
+
+}
+
+void MOV_voidRxFrameCallback(void)
+{
+	//state = SYS_FRAME_COMPLETE;
+
+}
 /* USER CODE END 4 */
 
 /**

@@ -32,6 +32,7 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h"
+#include "Movement/MOV.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

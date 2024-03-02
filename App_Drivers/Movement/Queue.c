@@ -8,7 +8,7 @@
 
 
 // A utility function to create a new linked list node.
-struct QNode* newNode(int k)
+struct QNode* newNode(unsigned char k)
 {
 	struct QNode* temp = (struct QNode*)malloc(sizeof(struct QNode));
 	temp->key = k;
@@ -25,7 +25,7 @@ struct Queue* createQueue()
 }
 
 // The function to add a key k to q
-void enQueue(struct Queue* q, char k)
+void enQueue(struct Queue* q, unsigned char k)
 {
 	// Create a new LL node
 	struct QNode* temp = newNode(k);
@@ -43,11 +43,11 @@ void enQueue(struct Queue* q, char k)
 }
 
 // Function to remove a key from given queue q
-void deQueue(struct Queue* q, char *K)
+signed char deQueue(struct Queue* q, unsigned char *K)
 {
 	// If queue is empty, return NULL.
 	if (q->front == NULL)
-		return;
+		return -1;
 
 	// Store previous front and move front one node ahead
 	struct QNode* temp = q->front;
@@ -61,5 +61,6 @@ void deQueue(struct Queue* q, char *K)
 		q->rear = NULL;
 
 	free(temp);
+	return 1;
 }
 

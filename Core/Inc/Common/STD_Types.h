@@ -24,7 +24,8 @@ typedef enum {
 	E_NOK,
 	E_NOK_PARAM_OUT_OF_RANGE ,
 	E_NOK_PARAM_NULL_POINTER  ,
-	E_NOK_CONFIG_ERROR  
+	E_NOK_CONFIG_ERROR,
+	E_PROCESS_COMPLETE
 }tenuErrorStatus;
 
 #define  NULL	    ((void *)0)

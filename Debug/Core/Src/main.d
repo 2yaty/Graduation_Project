@@ -29,7 +29,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A.h \
- ../Core/Inc/Common/STD_Types.h
+ ../Core/Inc/Common/STD_Types.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Movement/MOV.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Movement/Queue.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -62,3 +64,5 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A.h:
 ../Core/Inc/Common/STD_Types.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Movement/MOV.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Movement/Queue.h:
