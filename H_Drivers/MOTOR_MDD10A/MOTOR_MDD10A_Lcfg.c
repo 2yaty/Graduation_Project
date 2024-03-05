@@ -60,9 +60,9 @@ void MOTOR_cfg_Init(void)
 	MOTOR_2_cfg.sConfigOC->OCPolarity = TIM_OCPOLARITY_HIGH;
 	MOTOR_1_cfg.Motor_Dir_Port = GPIO_PORT_B;
 	MOTOR_1_cfg.Motor_Dir_Pin  = GPIO_PIN_1;
-	MOTOR_1_cfg.Motor_Channel  = TIM_CHANNEL_1;
+	MOTOR_1_cfg.Motor_Channel  = TIM_CHANNEL_1; //PB4     ------> TIM3_CH1
 	MOTOR_2_cfg.Motor_Dir_Port = GPIO_PORT_B;
-	MOTOR_2_cfg.Motor_Dir_Pin  = GPIO_PIN_2;
+	MOTOR_2_cfg.Motor_Dir_Pin  = GPIO_PIN_2; //PB5     ------> TIM3_CH2
 	MOTOR_2_cfg.Motor_Channel  = TIM_CHANNEL_2;
 
 }

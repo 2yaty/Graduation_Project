@@ -38,8 +38,9 @@ typedef enum
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-SYS_State_t state = SYS_BLUETOOTH_RX;
+SYS_State_t state = STS_DO_NOTHING;
 Bluetooth_Handler hbluetooth;
+MOV_Handler hmove ;
 int n =0;
 /* USER CODE END PD */
 
@@ -96,22 +97,27 @@ int main(void)
 
   /* USER CODE BEGIN 2 */
   MOV_voidSetComm(&hbluetooth);
+  MOV_voidInitMovement();
   HAL_TIM_Base_Start_IT(&htim2);
+//  unsigned char data;
+//  HAL_UART_Receive_IT(&huart6, &data, sizeof(uint8_t));
+  hbluetooth.huartX = &huart6;
+  hmove.SourceBuffer = hbluetooth.ReceivingQueue;
+  hmove.hmotor_1 = &MOTOR_1_cfg;
+  hmove.hmotor_2 = &MOTOR_2_cfg;
   /* USER CODE END 2 */
-  uint8_t data;
+  MOV_enuReceiveData(&hbluetooth);
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-	  //HAL_UART_Transmit(&huart6, &data, 1, 1);
-//	  HAL_Delay(1000);
-//	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-//	  HAL_Delay(1000);
-    /* USER CODE BEGIN 3 */
-//	  HAL_UART_Receive(&huart6, &data, 1, 1);
-//	  if(data == 'r'){
+//	  if(data == 'y')
+//	  {
 //		  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+//		  data = 0;
+//		  HAL_UART_Receive_IT(&huart6, &data, sizeof(uint8_t));
+//
 //	  }
 
   }
@@ -167,15 +173,16 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	static uint8_t Loc_su8Count =0;
 	Loc_su8Count++;
 	switch (state) {
-		case SYS_BLUETOOTH_RX:
-			MOV_enuReceiveData(&hbluetooth, &huart6);
+		case SYS_FRAME_COMPLETE:
+			MOV_enuFrameBuffering(&hbluetooth);
 			state = SYS_MOVEMENT_ACTION;
+			n++;
 			break;
 		case SYS_MOVEMENT_ACTION:
 			if(Loc_su8Count == 60)
 			{
-				if(MOV_enuMovementHandler(&hbluetooth) == E_PROCESS_COMPLETE)
-				{state = SYS_BLUETOOTH_RX;}
+				if(MOV_enuMovementHandler(&hmove) == E_PROCESS_COMPLETE)
+				{/* Do nothing */}
 				Loc_su8Count =0;
 			}
 			break;
@@ -186,16 +193,9 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 }
 
 
-void MOV_voidRxDataCallback(void)
-{
-	state = SYS_BLUETOOTH_RX;
-	n++;
-
-}
-
 void MOV_voidRxFrameCallback(void)
 {
-	//state = SYS_FRAME_COMPLETE;
+	state = SYS_FRAME_COMPLETE;
 
 }
 /* USER CODE END 4 */

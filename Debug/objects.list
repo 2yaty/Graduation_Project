@@ -1,5 +1,6 @@
+"./App_Drivers/Bluetooth/Bluetooth.o"
 "./App_Drivers/Movement/MOv.o"
-"./App_Drivers/Movement/Queue.o"
+"./App_Drivers/Queue/queue.o"
 "./Core/Src/main.o"
 "./Core/Src/stm32f4xx_hal_msp.o"
 "./Core/Src/stm32f4xx_it.o"

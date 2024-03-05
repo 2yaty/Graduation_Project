@@ -14,7 +14,9 @@ RM := rm -rf
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
+-include App_Drivers/Queue/subdir.mk
 -include App_Drivers/Movement/subdir.mk
+-include App_Drivers/Bluetooth/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)

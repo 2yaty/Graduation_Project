@@ -11,8 +11,8 @@
 /*------------------------------------ Includes Start --------------------------------------*/
 #include "Common/STD_Types.h"
 #include "stm32f4xx.h"
-#include "stm32f4xx_hal_tim.h"
-#include "stm32f4xx_hal_gpio.h"
+//#include "stm32f4xx_hal_tim.h"
+//#include "stm32f4xx_hal_gpio.h"
 /*------------------------------------ Includes End ----------------------------------------*/
 
 /*------------------------------- Macro Declarations Start ---------------------------------*/

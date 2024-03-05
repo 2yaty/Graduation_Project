@@ -31,7 +31,8 @@ Core/Src/stm32f4xx_it.o: ../Core/Src/stm32f4xx_it.c ../Core/Inc/main.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A.h \
  ../Core/Inc/Common/STD_Types.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Movement/MOV.h \
- D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Movement/Queue.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Queue/queue.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Bluetooth/Bluetooth.h \
  ../Core/Inc/stm32f4xx_it.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
@@ -66,5 +67,6 @@ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A_L
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A.h:
 ../Core/Inc/Common/STD_Types.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Movement/MOV.h:
-D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Movement/Queue.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Queue/queue.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Bluetooth/Bluetooth.h:
 ../Core/Inc/stm32f4xx_it.h:

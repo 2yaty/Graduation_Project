@@ -33,6 +33,7 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 #include "MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h"
 #include "Movement/MOV.h"
+#include "Bluetooth/Bluetooth.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

@@ -1,0 +1,5 @@
+../App_Drivers/Bluetooth/Bluetooth.c:12:6:MOV_voidSetComm	16	static
+../App_Drivers/Bluetooth/Bluetooth.c:23:17:MOV_enuReceiveData	24	static
+../App_Drivers/Bluetooth/Bluetooth.c:38:6:MOV_enuFrameBuffering	32	static
+../App_Drivers/Bluetooth/Bluetooth.c:69:6:HAL_UART_RxCpltCallback	16	static
+../App_Drivers/Bluetooth/Bluetooth.c:86:13:MOV_voidRxFrameCallback	4	static

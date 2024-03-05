@@ -1,9 +1,3 @@
-../App_Drivers/Movement/MOv.c:14:6:MOV_voidSetComm	1
-../App_Drivers/Movement/MOv.c:30:17:MOV_enuSendData	2
-../App_Drivers/Movement/MOv.c:44:17:MOV_enuReceiveData	3
-../App_Drivers/Movement/MOv.c:64:17:MOV_enuMovementHandler	6
-../App_Drivers/Movement/MOv.c:93:6:HAL_UART_RxCpltCallback	8
-../App_Drivers/Movement/MOv.c:136:6:HAL_UART_TxCpltCallback	1
-../App_Drivers/Movement/MOv.c:143:13:MOV_voidRxDataCallback	1
-../App_Drivers/Movement/MOv.c:148:13:MOV_voidRxFrameCallback	1
-../App_Drivers/Movement/MOv.c:155:6:ControlMotion	5
+../App_Drivers/Movement/MOv.c:12:6:MOV_voidInitMovement	1
+../App_Drivers/Movement/MOv.c:19:17:MOV_enuMovementHandler	6
+../App_Drivers/Movement/MOv.c:48:6:ControlMotion	5
