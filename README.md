@@ -9,7 +9,7 @@
     4. Forward Collision Warning System
 
 ### Project Diagram and Hardware:
-![Project Diagram](media/pic1.svg)
+![Project Diagram](media/Pic1.svg)
 
 
 
