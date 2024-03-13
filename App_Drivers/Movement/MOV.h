@@ -12,6 +12,7 @@
 #include "Common/STD_Types.h"
 #include "MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h"
 #include "Queue/queue.h"
+//#include "stm32f4xx_hal.h"
 /*------------------------------------ Includes End ----------------------------------------*/
 
 /*------------------------------- Macro Declarations Start ---------------------------------*/

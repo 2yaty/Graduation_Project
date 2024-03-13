@@ -1,7 +1,7 @@
 
 #include "MOV.h"
 
-
+extern UART_HandleTypeDef huart6;
 #define TURN_LEFT			'l'
 #define TURN_RIGHT			'r'
 
@@ -47,15 +47,23 @@ tenuErrorStatus MOV_enuMovementHandler(MOV_Handler *Copy_HBluQueue)
 
 void ControlMotion(MOV_Handler *Copy_HBluQueue, uint8_t Speed, uint8_t Angle, uint8_t Direction)
 {
-	if((Angle < 10))
+//	uint8_t x = 'S';
+//	//HAL_UART_Transmit_IT(&huart6, &x, sizeof(uint8_t));
+//	//HAL_UART_Transmit_IT(&huart6, &Speed, sizeof(uint8_t));
+//	x = 'A';
+//	//HAL_UART_Transmit(&huart6, &x, sizeof(uint8_t), 2);
+//	HAL_UART_Transmit(&huart6, &Angle, sizeof(uint8_t), 2);
+//	//HAL_UART_Transmit_IT(&huart6, &Direction, sizeof(uint8_t));
+	if(Angle < 10)
 	{
 		MOTOR_voidMoveForward(Speed, Copy_HBluQueue->hmotor_1);
 		MOTOR_voidMoveForward(Speed, Copy_HBluQueue->hmotor_2);
 	}
-	else if((Angle > 170))
+	else if(Angle > 170)
 	{
 		MOTOR_voidMoveBackward(Speed, Copy_HBluQueue->hmotor_1);
 		MOTOR_voidMoveBackward(Speed, Copy_HBluQueue->hmotor_2);
+		//HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 	}
 	else
 	{
