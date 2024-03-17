@@ -11,15 +11,17 @@
 /*------------------------------------ Includes Start --------------------------------------*/
 #include "Common/STD_Types.h"
 #include "MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h"
-#include "Queue/queue.h"
+#include "Bluetooth/Bluetooth.h"
 //#include "stm32f4xx_hal.h"
 /*------------------------------------ Includes End ----------------------------------------*/
 
 /*------------------------------- Macro Declarations Start ---------------------------------*/
 
-#define MOV_END_CHAR						'E'
+#define MOV_END_CHAR					'E'
 #define MOV_SPEED_CHAR					'R'
 #define MOV_ANGLE_CHAR					'A'
+
+#define MOV_STRAIGHT_ANGLE_RANGE		10
 
 /*-------------------------- Macro• Functions Declarations Start ---------------------------*/
 
@@ -32,7 +34,7 @@ typedef struct
 {
 	MOTOR_HandleTypeDef *hmotor_1;
 	MOTOR_HandleTypeDef *hmotor_2;
-	Queue_t *SourceBuffer;
+	Queue *SourceBuffer;
 
 }MOV_Handler;
 /*------------------------------ Data type Declarations End --------------------------------*/

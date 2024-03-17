@@ -30,6 +30,7 @@ App_Drivers/Movement/MOv.o: ../App_Drivers/Movement/MOv.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Bluetooth/Bluetooth.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Queue/queue.h
 ../App_Drivers/Movement/MOV.h:
 ../Core/Inc/Common/STD_Types.h:
@@ -63,4 +64,5 @@ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A.h
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Bluetooth/Bluetooth.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/App_Drivers/Queue/queue.h:

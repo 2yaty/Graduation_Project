@@ -30,8 +30,9 @@
 typedef struct
 {
 	UART_HandleTypeDef *huartX;
-	Queue_t *ReceivingQueue;
+	Queue *ReceivingQueue;
 	uint8_t ReceivingingData[10];
+	uint8_t Buffer[10];
 }Bluetooth_Handler;
 /*------------------------------ Data type Declarations End --------------------------------*/
 
@@ -105,6 +106,16 @@ void MOV_voidRxFrameCallback(void);
  * Private.........***********************************************************************************************
  * Private................****************************************************************************************
  */
+
+typedef struct
+{
+	uint8_t SpeedChar;
+	uint8_t SpeedVal;
+	uint8_t AngleChar;
+	uint16_t AngleVal;
+
+}Stored_Data_t;
+
 
 /*---------------------------------------------------------------------------------------------------------------*/
 

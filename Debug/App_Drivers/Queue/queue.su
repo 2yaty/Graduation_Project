@@ -1,4 +1,10 @@
-../App_Drivers/Queue/queue.c:11:15:newNode	24	static
-../App_Drivers/Queue/queue.c:20:15:createQueue	16	static
-../App_Drivers/Queue/queue.c:28:6:enQueue	24	static
-../App_Drivers/Queue/queue.c:46:13:deQueue	24	static
+../App_Drivers/Queue/queue.c:47:8:queue_new	16	static
+../App_Drivers/Queue/queue.c:63:6:queue_free	16	static
+../App_Drivers/Queue/queue.c:76:5:queue_push_head	24	static
+../App_Drivers/Queue/queue.c:117:12:queue_pop_head	24	static
+../App_Drivers/Queue/queue.c:154:12:queue_peek_head	16	static
+../App_Drivers/Queue/queue.c:163:5:queue_push_tail	24	static
+../App_Drivers/Queue/queue.c:205:5:queue_push_tail_nonVolatile	32	static
+../App_Drivers/Queue/queue.c:218:12:queue_pop_tail	24	static
+../App_Drivers/Queue/queue.c:256:12:queue_peek_tail	16	static
+../App_Drivers/Queue/queue.c:265:5:queue_is_empty	16	static
