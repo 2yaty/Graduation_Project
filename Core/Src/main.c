@@ -38,10 +38,7 @@ typedef enum
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-SYS_State_t state = STS_DO_NOTHING;
-Bluetooth_Handler hbluetooth;
-MOV_Handler hmove ;
-int n =0;
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -52,14 +49,17 @@ int n =0;
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+SYS_State_t state = STS_DO_NOTHING;
+Bluetooth_Handler hbluetooth;
+MOV_Handler hmove ;
+int n =0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
-
+void Objects_init(void);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -96,17 +96,17 @@ int main(void)
   /* Initialize all configured peripherals */
 
   /* USER CODE BEGIN 2 */
+
   MOV_voidSetComm(&hbluetooth);
   MOV_voidInitMovement();
   HAL_TIM_Base_Start_IT(&htim2);
+  Objects_init();
 //  unsigned char data;
 //  HAL_UART_Receive_IT(&huart6, &data, sizeof(uint8_t));
-  hbluetooth.huartX = &huart6;
-  hmove.SourceBuffer = hbluetooth.ReceivingQueue;
-  hmove.hmotor_1 = &MOTOR_1_cfg;
-  hmove.hmotor_2 = &MOTOR_2_cfg;
-  /* USER CODE END 2 */
+
   MOV_enuReceiveData(&hbluetooth);
+  /* USER CODE END 2 */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -197,6 +197,15 @@ void MOV_voidRxFrameCallback(void)
 {
 	state = SYS_FRAME_COMPLETE;
 
+}
+
+
+void Objects_init(void)
+{
+	  hbluetooth.huartX = &huart6;
+	  hmove.SourceBuffer = hbluetooth.ReceivingQueue;
+	  hmove.hmotor_1 = &MOTOR_1_cfg;
+	  hmove.hmotor_2 = &MOTOR_2_cfg;
 }
 /* USER CODE END 4 */
 

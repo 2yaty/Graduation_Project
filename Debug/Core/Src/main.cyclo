@@ -2,4 +2,5 @@
 ../Core/Src/main.c:131:6:SystemClock_Config	3
 ../Core/Src/main.c:171:6:HAL_TIM_PeriodElapsedCallback	4
 ../Core/Src/main.c:196:6:MOV_voidRxFrameCallback	1
-../Core/Src/main.c:207:6:Error_Handler	1
+../Core/Src/main.c:203:6:Objects_init	1
+../Core/Src/main.c:216:6:Error_Handler	1

@@ -2,4 +2,5 @@
 ../Core/Src/main.c:131:6:SystemClock_Config	88	static
 ../Core/Src/main.c:171:6:HAL_TIM_PeriodElapsedCallback	16	static
 ../Core/Src/main.c:196:6:MOV_voidRxFrameCallback	4	static
-../Core/Src/main.c:207:6:Error_Handler	4	static,ignoring_inline_asm
+../Core/Src/main.c:203:6:Objects_init	4	static
+../Core/Src/main.c:216:6:Error_Handler	4	static,ignoring_inline_asm

@@ -53,7 +53,7 @@ DMA_HandleTypeDef hdma_usart6_rx;
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-
+void HAL_HW_GeneralMspInit(void);
 /* USER CODE END PFP */
 
 /* External functions --------------------------------------------------------*/
@@ -62,7 +62,7 @@ DMA_HandleTypeDef hdma_usart6_rx;
 /* USER CODE END ExternalFunctions */
 
 /* USER CODE BEGIN 0 */
-void HAL_HW_GeneralMspInit(void);
+
 /* USER CODE END 0 */
 
 void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
@@ -440,4 +440,35 @@ void HAL_HW_GeneralMspInit(void)
    */
 
 }
+
+
+
+/**
+ ***Share callback********************************************************
+ ***********Share callback********************************************************
+ ********************Share callback********************************************************
+ **/
+
+/* ----------------------------- USART -------------------------------- */
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == USART1)
+	{
+		/* RSPB_RxCpltProcess(huart); */
+	}
+	else if(huart->Instance == USART2)
+	{
+		/* LUNA_RxCpltProcess(huart); */
+	}
+	else if(huart->Instance == USART6)
+	{
+		BLUTH_RxCpltProcess(huart);
+	}
+}
+
+
+
+
+
 /* USER CODE END 1 */

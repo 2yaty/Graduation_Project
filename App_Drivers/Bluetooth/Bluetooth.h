@@ -95,6 +95,7 @@ tenuErrorStatus MOV_enuReceiveData(Bluetooth_Handler *Copy_HBluQueue);
 void MOV_enuFrameBuffering(Bluetooth_Handler *Copy_HBluQueue);
 
 
+void BLUTH_RxCpltProcess(UART_HandleTypeDef *huart);
 void MOV_voidRxFrameCallback(void);
 
 /*------------------------- Software Interfaces Declarations End ----------------------------*/

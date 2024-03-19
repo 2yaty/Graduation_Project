@@ -10,7 +10,6 @@ Bluetooth_Handler *Helper_HBluQueue;
 
 
 
-
 void MOV_voidSetComm(Bluetooth_Handler *Copy_HBluQueue)
 {
 	Helper_HBluQueue = Copy_HBluQueue;
@@ -67,15 +66,14 @@ void MOV_enuFrameBuffering(Bluetooth_Handler *Copy_HBluQueue)
 }
 
 
-
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+void BLUTH_RxCpltProcess(UART_HandleTypeDef *huart)
 {
 	static uint8_t  Loc_u8CallingNum =0;
 	Loc_u8CallingNum++;
 
 	if(Helper_HBluQueue->ReceivingingData[Loc_u8CallingNum - 1] == BLUETOOTH_END_CHAR)
 	{
-		strcpy(Helper_HBluQueue->Buffer, Helper_HBluQueue->ReceivingingData);
+		strcpy((uint8_t *)Helper_HBluQueue->Buffer, (uint8_t *)Helper_HBluQueue->ReceivingingData);
 		Loc_u8CallingNum =0;
 		MOV_voidRxFrameCallback();
 	}
@@ -86,15 +84,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 
 
+
 __weak void MOV_voidRxFrameCallback(void)
 {
 
 
 }
-
-
-
-
 
 
 
