@@ -23,12 +23,15 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
-App_Drivers/Bluetooth \
-App_Drivers/Movement \
-App_Drivers/Queue \
 Core/Src \
 Core/Startup \
 Drivers/STM32F4xx_HAL_Driver/Src \
+H_Drivers/Bluetooth \
 H_Drivers/Led \
 H_Drivers/MOTOR_MDD10A \
+H_Drivers/MPU6050 \
+INITs_Uitilities/INITs \
+INITs_Uitilities/Queue \
+Modules/MPU_Module \
+Modules/Movement \
 

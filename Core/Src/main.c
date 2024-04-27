@@ -29,6 +29,8 @@
 typedef enum
 {
 	SYS_BLUETOOTH_RX,
+	SYS_MPU_ACTION,
+	SYS_MPU_DATA_BUFFER,
 	SYS_MOVEMENT_ACTION,
 	SYS_FRAME_COMPLETE,
 	STS_DO_NOTHING
@@ -49,14 +51,21 @@ typedef enum
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+Task_MPU_Data data =
+{
+	.h_MPU = &hMPU,
+	.MPUTaskState = TASK_MPU_REQUESTE_DATA
+};
+
 SYS_State_t state = STS_DO_NOTHING;
-Bluetooth_Handler hbluetooth;
+
+
+Bluetooth_Handler hbluetooth1;
 MOV_Handler hmove ;
-int n =0;
+//int n =0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
 
 /* USER CODE BEGIN PFP */
 void Objects_init(void);
@@ -87,7 +96,6 @@ int main(void)
   /* USER CODE END Init */
 
   /* Configure the system clock */
-  SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
 
@@ -96,73 +104,41 @@ int main(void)
   /* Initialize all configured peripherals */
 
   /* USER CODE BEGIN 2 */
+  SystemClock_Cfg();
+  Peripherals_Init();
 
-  MOV_voidSetComm(&hbluetooth);
-  MOV_voidInitMovement();
-  HAL_TIM_Base_Start_IT(&htim2);
-  Objects_init();
+  MPU_enuInit(&hMPU);
+//  MOV_voidSetComm(&hbluetooth1);
+//  MOV_voidInitMovement();
+//  HAL_TIM_Base_Start_IT(&htim2);
+//  Objects_init();
+
 //  unsigned char data;
 //  HAL_UART_Receive_IT(&huart6, &data, sizeof(uint8_t));
 
-  MOV_enuReceiveData(&hbluetooth);
+  //MOV_enuReceiveData(&hbluetooth1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(state == SYS_MPU_ACTION)
+	  {
+		  TASK_MPU(&data);
+		  state = STS_DO_NOTHING;
+	  }
+	  else if(state == SYS_MPU_DATA_BUFFER)
+	  {
+		  // buffering process.
+          state = STS_DO_NOTHING;
+	  }
     /* USER CODE END WHILE */
-//	  if(data == 'y')
-//	  {
-//		  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-//		  data = 0;
-//		  HAL_UART_Receive_IT(&huart6, &data, sizeof(uint8_t));
-//
-//	  }
 
+    /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
-}
-
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
-void SystemClock_Config(void)
-{
-  RCC_OscInitTypeDef RCC_OscInitStruct = {0};
-  RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
-  /** Configure the main internal regulator output voltage
-  */
-  __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
-
-  /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
-  RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
-  if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
-  {
-    Error_Handler();
-  }
-
-  /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
-  {
-    Error_Handler();
-  }
 }
 
 
@@ -170,25 +146,50 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	static uint8_t Loc_su8Count =0;
-	Loc_su8Count++;
-	switch (state) {
-		case SYS_FRAME_COMPLETE:
-			MOV_enuFrameBuffering(&hbluetooth);
-			state = SYS_MOVEMENT_ACTION;
-			n++;
-			break;
-		case SYS_MOVEMENT_ACTION:
-			if(Loc_su8Count == 60)
+	if(htim->Instance == TIM2)
+	{
+		static uint8_t Loc_su8Count =0;
+		Loc_su8Count++;
+
+		if((Loc_su8Count % 5 == 0) && (Loc_su8Count <= 100)) //every 10 ms
+		{
+			if(data.MPUTaskState == TASK_MPU_REQUESTE_DATA)
 			{
-				if(MOV_enuMovementHandler(&hmove) == E_PROCESS_COMPLETE)
-				{/* Do nothing */}
-				Loc_su8Count =0;
+				state = SYS_MPU_ACTION;
 			}
-			break;
-		default:
-			break;
+			else if(data.MPUTaskState == TASK_MPU_DATA_READY)
+			{
+				data.MPUTaskState = TASK_MPU_DONE;
+				state = SYS_MPU_DATA_BUFFER;
+			}
+		}
+
+		if(Loc_su8Count == 100)
+		{
+			data.MPUTaskState = TASK_MPU_REQUESTE_DATA;
+			Loc_su8Count =0;
+		}
+
+
+//		switch (state) {
+//			case SYS_FRAME_COMPLETE:
+//				MOV_enuFrameBuffering(&hbluetooth1);
+//				state = SYS_MOVEMENT_ACTION;
+//				break;
+//			case SYS_MOVEMENT_ACTION:
+//				if(Loc_su8Count == 60)
+//				{
+//					if(MOV_enuMovementHandler(&hmove) == E_PROCESS_COMPLETE)
+//					{/* Do nothing */}
+//					Loc_su8Count =0;
+//				}
+//				break;
+//			default:
+//				break;
+//		}
+
 	}
+
 
 }
 
@@ -200,13 +201,60 @@ void MOV_voidRxFrameCallback(void)
 }
 
 
+
+/**
+ *** Callback Functions ********************************************************
+ **/
+
+/* ----------------------------- USART -------------------------------- */
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if(huart->Instance == USART1)
+	{
+		/* RSPB_RxCpltProcess(huart); */
+	}
+	else if(huart->Instance == USART2)
+	{
+		/* LUNA_RxCpltProcess(huart); */
+	}
+	else if(huart->Instance == USART6)
+	{
+		BLUTH_RxCpltProcess(&hbluetooth1);
+	}
+}
+
+/* ----------------------------- I2C -------------------------------- */
+
+void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
+{
+	if(hi2c->Instance == I2C1)
+	{
+		/* RSPB_RxCpltProcess(huart); */
+	}
+	else if(hi2c->Instance == I2C2)
+	{
+
+	}
+	else if(hi2c->Instance == I2C3)
+	{
+
+	}
+
+}
+
+
 void Objects_init(void)
 {
-	  hbluetooth.huartX = &huart6;
-	  hmove.SourceBuffer = hbluetooth.ReceivingQueue;
+	  hbluetooth1.huartX = &huart6;
+	  hmove.SourceBuffer = hbluetooth1.ReceivingQueue;
 	  hmove.hmotor_1 = &MOTOR_1_cfg;
 	  hmove.hmotor_2 = &MOTOR_2_cfg;
 }
+
+
+
+
 /* USER CODE END 4 */
 
 /**

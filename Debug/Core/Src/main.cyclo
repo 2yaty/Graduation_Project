@@ -1,6 +1,7 @@
-../Core/Src/main.c:74:5:main	1
-../Core/Src/main.c:131:6:SystemClock_Config	3
-../Core/Src/main.c:171:6:HAL_TIM_PeriodElapsedCallback	4
-../Core/Src/main.c:196:6:MOV_voidRxFrameCallback	1
-../Core/Src/main.c:203:6:Objects_init	1
-../Core/Src/main.c:216:6:Error_Handler	1
+../Core/Src/main.c:83:5:main	3
+../Core/Src/main.c:147:6:HAL_TIM_PeriodElapsedCallback	7
+../Core/Src/main.c:197:6:MOV_voidRxFrameCallback	1
+../Core/Src/main.c:211:6:HAL_UART_RxCpltCallback	4
+../Core/Src/main.c:229:6:HAL_I2C_MemRxCpltCallback	2
+../Core/Src/main.c:247:6:Objects_init	1
+../Core/Src/main.c:264:6:Error_Handler	1

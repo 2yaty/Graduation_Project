@@ -1,0 +1,10 @@
+../INITs_Uitilities/Queue/queue.c:48:8:queue_new	2
+../INITs_Uitilities/Queue/queue.c:64:6:queue_free	2
+../INITs_Uitilities/Queue/queue.c:77:5:queue_push_head	3
+../INITs_Uitilities/Queue/queue.c:118:12:queue_pop_head	3
+../INITs_Uitilities/Queue/queue.c:155:12:queue_peek_head	2
+../INITs_Uitilities/Queue/queue.c:164:5:queue_push_tail	3
+../INITs_Uitilities/Queue/queue.c:206:5:queue_push_tail_global	1
+../INITs_Uitilities/Queue/queue.c:219:12:queue_pop_tail	3
+../INITs_Uitilities/Queue/queue.c:257:12:queue_peek_tail	2
+../INITs_Uitilities/Queue/queue.c:266:5:queue_is_empty	1

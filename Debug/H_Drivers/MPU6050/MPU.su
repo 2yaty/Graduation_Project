@@ -1,0 +1,11 @@
+../H_Drivers/MPU6050/MPU.c:68:18:MPU_enuInit	40	static
+../H_Drivers/MPU6050/MPU.c:138:18:MPU_enuStartFreeRunning_DMA	40	static
+../H_Drivers/MPU6050/MPU.c:229:18:MPU_enuGetGyroAccelReadings_DMA	16	static
+../H_Drivers/MPU6050/MPU.c:268:18:MPU_enuStopFreeRunning	40	static
+../H_Drivers/MPU6050/MPU.c:307:25:MPU_enuGetAccelGyro	24	static
+../H_Drivers/MPU6050/MPU.c:344:6:MPU_RxCpltProcess	16	static
+../H_Drivers/MPU6050/MPU.c:372:6:MPU_GetReadings	16	static
+../H_Drivers/MPU6050/MPU.c:393:13:MPU_RxFrameCallback	4	static
+../H_Drivers/MPU6050/MPU.c:407:13:Gyro_Calculations	24	static
+../H_Drivers/MPU6050/MPU.c:431:13:Accel_Calculations	24	static
+../H_Drivers/MPU6050/MPU.c:463:21:MPU_DataReadyInterruptHandler	16	static

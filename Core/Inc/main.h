@@ -31,18 +31,17 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "INITs/INITs.h"
 #include "MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h"
 #include "Movement/MOV.h"
 #include "Bluetooth/Bluetooth.h"
+#include "MPU_Module/MPU_Mod.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-extern TIM_HandleTypeDef htim2;
-extern TIM_HandleTypeDef htim3;
-extern UART_HandleTypeDef huart6;
-extern DMA_HandleTypeDef hdma_usart6_tx;
-extern DMA_HandleTypeDef hdma_usart6_rx;
+
+
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
