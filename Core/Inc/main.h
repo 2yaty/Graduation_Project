@@ -31,7 +31,6 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "INITs/INITs.h"
 #include "MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h"
 #include "Movement/MOV.h"
 #include "Bluetooth/Bluetooth.h"
