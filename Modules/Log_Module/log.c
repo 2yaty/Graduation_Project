@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include "log.h"
 
-ptrFunction logs_send;
+Logs_ptrFunction logs_send;
 
 void logs_init(Logs_ptrFunction send_func){
 
@@ -18,10 +18,10 @@ void logs_init(Logs_ptrFunction send_func){
 
 
 
-void log(const int8_t *from, const int8_t *format, ...) {
+void log(const sint8_t *from, const sint8_t *format, ...) {
     va_list args;
     va_start(args, format);
-    char buffer[LOG_BUFF_SIZE]; // Adjust size as needed
+    sint8_t buffer[LOG_BUFF_SIZE]; // Adjust size as needed
     vsnprintf(buffer, buffer, format, args);
     va_end(args);
     // Enclose the message and 'from' field in JSON-like format
@@ -36,12 +36,12 @@ void log(const int8_t *from, const int8_t *format, ...) {
 }
 
 
-void log_debg(const int8_t *from, const int8_t *format, ...){
+void log_debg(const sint8_t *from, const sint8_t *format, ...){
 
 #if LOG_ENV_DEBUG
     va_list args;
     va_start(args, format);
-    char buffer[LOG_BUFF_SIZE]; // Adjust size as needed
+    sint8_t buffer[LOG_BUFF_SIZE]; // Adjust size as needed
     vsnprintf(buffer, buffer, format, args);
     va_end(args);
     // Enclose the message and 'from' field in JSON-like format

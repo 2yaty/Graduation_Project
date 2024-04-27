@@ -9,7 +9,7 @@
 #define LOG_MODULE_LOG_H_
 #include <Common/STD_Types.h>
 
-typedef  void (* Logs_ptrFunction)(int8_t* str)	 ;
+typedef  void (* Logs_ptrFunction)(sint8_t* str)	 ;
 
 #define LOG_BUFF_SIZE		256
 #define LOG_FORMAT_JSON		1
@@ -52,7 +52,7 @@ void logs_init(Logs_ptrFunction send_func);
  *								  }"
  *	(JSON format is easy to handle in Python )
  **/
-void log(const int8_t *from, const int8_t *format, ...);
+void log(const sint8_t *from, const sint8_t *format, ...);
 
 
 /**
@@ -77,6 +77,6 @@ void log(const int8_t *from, const int8_t *format, ...);
  *								  }"
  *	(JSON format is easy to handle in Python )
  **/
-void log_debg(const int8_t *from, const int8_t *format, ...);
+void log_debg(const sint8_t *from, const sint8_t *format, ...);
 
 #endif /* LOG_MODULE_LOG_H_ */
