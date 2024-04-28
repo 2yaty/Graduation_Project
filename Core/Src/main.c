@@ -75,7 +75,6 @@ const osThreadAttr_t defaultTask_attributes = {
 Task_MPU_Data data =
 {
 	.h_MPU = &hMPU,
-	.MPUTaskState = TASK_MPU_REQUESTE_DATA
 };
 
 SYS_State_t state = STS_DO_NOTHING;
@@ -196,16 +195,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if(state == SYS_MPU_ACTION)
-	  {
-		  TASK_MPU(&data);
-		  state = STS_DO_NOTHING;
-	  }
-	  else if(state == SYS_MPU_DATA_BUFFER)
-	  {
-		  // buffering process.
-          state = STS_DO_NOTHING;
-	  }
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -502,62 +492,6 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-	if(htim->Instance == TIM2)
-	{
-		static uint8_t Loc_su8Count =0;
-		Loc_su8Count++;
-
-		if((Loc_su8Count % 5 == 0) && (Loc_su8Count <= 100)) //every 10 ms
-		{
-			if(data.MPUTaskState == TASK_MPU_REQUESTE_DATA)
-			{
-				state = SYS_MPU_ACTION;
-			}
-			else if(data.MPUTaskState == TASK_MPU_DATA_READY)
-			{
-				data.MPUTaskState = TASK_MPU_DONE;
-				state = SYS_MPU_DATA_BUFFER;
-			}
-		}
-
-		if(Loc_su8Count == 100)
-		{
-			data.MPUTaskState = TASK_MPU_REQUESTE_DATA;
-			Loc_su8Count =0;
-		}
-
-
-//		switch (state) {
-//			case SYS_FRAME_COMPLETE:
-//				MOV_enuFrameBuffering(&hbluetooth1);
-//				state = SYS_MOVEMENT_ACTION;
-//				break;
-//			case SYS_MOVEMENT_ACTION:
-//				if(Loc_su8Count == 60)
-//				{
-//					if(MOV_enuMovementHandler(&hmove) == E_PROCESS_COMPLETE)
-//					{/* Do nothing */}
-//					Loc_su8Count =0;
-//				}
-//				break;
-//			default:
-//				break;
-//		}
-
-	}
-
-
-}
-
-
-void MOV_voidRxFrameCallback(void)
-{
-	state = SYS_FRAME_COMPLETE;
-
-}
-
 
 
 /**
@@ -588,7 +522,7 @@ void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
 {
 	if(hi2c->Instance == I2C1)
 	{
-		/* RSPB_RxCpltProcess(huart); */
+		MPU_RxCpltProcess(&hMPU);
 	}
 	else if(hi2c->Instance == I2C2)
 	{

@@ -11,11 +11,16 @@ RM := rm -rf
 -include sources.mk
 -include Modules/Movement/subdir.mk
 -include Modules/MPU_Module/subdir.mk
+-include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
+-include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
+-include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/subdir.mk
+-include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
 -include INITs_Uitilities/Queue/subdir.mk
--include INITs_Uitilities/INITs/subdir.mk
+-include H_Drivers/TF_Lidar/subdir.mk
 -include H_Drivers/MPU6050/subdir.mk
 -include H_Drivers/MOTOR_MDD10A/subdir.mk
 -include H_Drivers/Led/subdir.mk
+-include H_Drivers/FCW_Application/subdir.mk
 -include H_Drivers/Bluetooth/subdir.mk
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk

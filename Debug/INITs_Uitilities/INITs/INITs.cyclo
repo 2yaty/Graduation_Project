@@ -1,3 +1,0 @@
-../INITs_Uitilities/INITs/INITs.c:34:6:SystemClock_Cfg	3
-../INITs_Uitilities/INITs/INITs.c:75:6:Peripherals_Init	14
-../INITs_Uitilities/INITs/INITs.c:251:13:HAL_HW_GeneralMspInit	1

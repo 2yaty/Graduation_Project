@@ -376,10 +376,10 @@ void MPU_GetReadings(MPU_HandleTypeDef *hMPU)
 	Gyro_Calculations(hMPU);
 
 	/* Change the data state to ready*/
-	//hMPU->dataState = MPU_DATA_STATE_READY;
+	hMPU->dataState = MPU_DATA_STATE_READY;
 
 	/* Change the data state to data not requested to start request the data again. */
-	hMPU->dataState = MPU_DATA_STATE_NOT_REQUESTED;
+	//hMPU->dataState = MPU_DATA_STATE_NOT_REQUESTED;
 }
 
 

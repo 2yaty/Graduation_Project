@@ -36,6 +36,8 @@ extern DMA_HandleTypeDef hdma_usart6_tx;
 
 extern DMA_HandleTypeDef hdma_usart6_rx;
 
+extern TIM_HandleTypeDef htim3;
+
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
 

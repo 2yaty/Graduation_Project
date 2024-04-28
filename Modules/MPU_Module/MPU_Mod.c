@@ -8,36 +8,122 @@
 #include "MPU_Mod.h"
 
 
+osSemaphoreId_t MPU_Semaphore;
 
-void TASK_MPU(void *PvMPUInitData)
+
+
+void MPU_Int_Task(void)
 {
-	Task_MPU_Data *pMPU = (Task_MPU_Data *)PvMPUInitData;
-
-	if(pMPU->MPUTaskState == TASK_MPU_REQUESTE_DATA)
+	MPU_Semaphore = osSemaphoreNew(1U, 1U, NULL);
+	if (MPU_Semaphore == NULL)
 	{
-		if(pMPU->h_MPU->dataState == MPU_DATA_STATE_NOT_REQUESTED)
-		{
-			MPU_enuGetGyroAccelReadings_DMA(pMPU->h_MPU, pMPU->AccelGyroDataBuffer);
-			//pMPU->MPUTaskState = TASK_MPU_DATA_REQUESTED;
-		}
-
-		if(pMPU->h_MPU->dataState == MPU_DATA_STATE_RECEIVED)
-		{
-			MPU_GetReadings(pMPU->h_MPU);
-			pMPU->MPUTaskState = TASK_MPU_DATA_READY;
-		}
-	}
-	else
-	{
-		/* For RTOS : */
-		//pMPU->MPUTaskState = TASK_MPU_REQUESTE_DATA;
-		//Sleep.
-
-		/* For Timer_Sys : */
-		// Do Nothing.
-		// Change the task state to "TASK_MPU_REQUESTE_DATA" in the Sys_Timer, when u need to request data again.
+	    /* Semaphore object not created, handle failure */
+		//osError("Failed to create semaphore");
+		return;
 	}
 
 }
 
-//TODO: in Timer_Sys, After buffering the MPU data in the buffer module, make pMPU->MPUTaskState = TASK_MPU_DONE;, Then The MPU task won't run again unless u changed to pMPU->MPUTaskState = TASK_MPU_REQUESTE_DATA; in teh Sys_Timer.
+
+void MPU_Task(void *argument)
+{
+	Task_MPU_Data *pMPU = (Task_MPU_Data *)argument;
+
+	/* Get system tick frequency */
+	uint32_t tickFrequency = osKernelGetTickFreq();
+
+	/* Convert delay to ticks */
+	uint32_t delayTicks = (MPU_TASK_1_PERIODICITY_ms * tickFrequency) / 1000;
+
+	/* Get the current Kernel tick and set next run time */
+	uint32_t PeriodicityTick = osKernelGetTickCount() + delayTicks;
+
+
+	for(;;)
+	{
+		/* Acquire semaphore to synchronize data request */
+		osSemaphoreAcquire(MPU_Semaphore, osWaitForever);
+
+		/* Request accelerometer and gyroscope data */
+		MPU_enuGetGyroAccelReadings_DMA(pMPU->h_MPU, pMPU->AccelGyroDataBuffer);
+
+		/* Wait for data to be ready, assuming ISR will release semaphore */
+		osSemaphoreAcquire(MPU_Semaphore, osWaitForever);
+
+		/* Get the data ready (calculations)*/
+		MPU_GetReadings(pMPU->h_MPU);
+
+		/* Give the semaphore */
+		osSemaphoreRelease(MPU_Semaphore);
+
+		/* Wait (Block the task) until the next period ( Task periodicity ) */
+		osDelayUntil(PeriodicityTick);
+
+		/* Increment the tick count for the next period */
+		PeriodicityTick += delayTicks;
+	}
+
+
+}
+
+
+void MPU_RxFrameCallback(void)
+{
+	osSemaphoreRelease(MPU_Semaphore);
+}
+
+
+
+//void MPU_Task_1(void *argument)
+//{
+//	Task_MPU_Data *pMPU = (Task_MPU_Data *)argument;
+//
+//	/* Get system tick frequency */
+//	uint32_t tickFrequency = osKernelGetTickFreq();
+//
+//	/* Convert delay to ticks */
+//	uint32_t delayTicks = (MPU_TASK_1_PERIODICITY_ms * tickFrequency) / 1000;
+//
+//	/* Get the current Kernel tick */
+//	uint32_t currentTick = osKernelGetTickCount();
+//
+//	/* Capture the semaphore from to MPU_Task_2 */
+//	osSemaphoreAcquire(MPU_Semaphore, 0);
+//
+//	for(;;)
+//	{
+//		/* Set next run time */
+//		delayTicks += currentTick;
+//
+//		/* Request the data */
+//		MPU_enuGetGyroAccelReadings_DMA(pMPU->h_MPU, pMPU->AccelGyroDataBuffer);
+//
+//		/* Wait (Block the task) until the next period ( Task periodicity ) */
+//		osDelayUntil(delayTicks);
+//	}
+//
+//}
+//
+//
+//void MPU_Task_2(void *argument)
+//{
+//	Task_MPU_Data *pMPU = (Task_MPU_Data *)argument;
+//
+//	for(;;)
+//	{
+//		/* Avoid case that task 2 takes the semaphore before task 1 */
+//
+//		/* Take the semaphore to wait the task until data be ready */
+//		osSemaphoreAcquire(MPU_Semaphore, osWaitForever);
+//
+//		/* Get the data ready (calculations)*/
+//		MPU_GetReadings(pMPU->h_MPU);
+//
+//		/* Give the semaphore for MPU_Task_2 */
+//		osSemaphoreRelease(MPU_Semaphore);
+//
+//		/* Wait (Block the task) for a specific time */
+//		osDelay(MPU_TASK_1_PERIODICITY_ms);
+//	}
+//
+//}

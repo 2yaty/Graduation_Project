@@ -10,10 +10,13 @@
 
 /*------------------------------------ Includes Start --------------------------------------*/
 #include "MPU6050/MPU_Lcfg.h"
-
+#include "cmsis_os.h"
 /*------------------------------------ Includes End ----------------------------------------*/
 
 /*------------------------------- Macro Declarations Start ---------------------------------*/
+
+#define MPU_TASK_1_PERIODICITY_ms			100
+//#define MPU_TASK_2_PERIODICITY_ms			10
 
 /*-------------------------- Macro• Functions Declarations Start ---------------------------*/
 
@@ -21,20 +24,9 @@
 
 /*------------------------------ Data type Declarations Start ------------------------------*/
 
-typedef enum
-{
-	//TASK_MPU_DATA_NOT_REQUESTED,
-	//TASK_MPU_DATA_REQUESTED,
-	TASK_MPU_REQUESTE_DATA,
-	TASK_MPU_DATA_READY,
-	TASK_MPU_DONE
-
-}Task_MPU_State;
-
 
 typedef struct
 {
-	Task_MPU_State MPUTaskState;
 	MPU_HandleTypeDef *h_MPU;
 	float32_t AccelGyroDataBuffer[6];
 
@@ -45,8 +37,11 @@ typedef struct
 
 /*------------------------- Software Interfaces Declarations Start --------------------------*/
 
-//void TASK_MPUInit(void *PvMPUInitData);
 
-void TASK_MPU(void *PvMPUInitData);
+void MPU_Int_Task(void);
+void MPU_Task(void *argument);
+
+//void MPU_Task_1(void *argument);
+//void MPU_Task_2(void *argument);
 
 #endif /* MPU_MODULE_MPU_MOD_H_ */

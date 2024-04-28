@@ -1,5 +1,5 @@
-INITs_Uitilities/INITs/INITs.o: ../INITs_Uitilities/INITs/INITs.c \
- ../INITs_Uitilities/INITs/INITs.h \
+Core/Src/stm32f4xx_hal_timebase_tim.o: \
+ ../Core/Src/stm32f4xx_hal_timebase_tim.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  ../Core/Inc/stm32f4xx_hal_conf.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h \
@@ -30,7 +30,6 @@ INITs_Uitilities/INITs/INITs.o: ../INITs_Uitilities/INITs/INITs.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
-../INITs_Uitilities/INITs/INITs.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h:

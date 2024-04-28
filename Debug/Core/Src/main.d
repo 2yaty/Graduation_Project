@@ -29,7 +29,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/INITs/INITs.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/Common/STD_Types.h \
@@ -38,7 +37,18 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/Bluetooth/../../INITs_Uitilities/Queue/queue.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/MPU_Module/MPU_Mod.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU_Lcfg.h \
- D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU.h
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
+ ../Core/Inc/FreeRTOSConfig.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -70,7 +80,6 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
-D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/INITs/INITs.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/Common/STD_Types.h:
@@ -80,3 +89,14 @@ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/Bluetooth/../../INITs_Uitil
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/MPU_Module/MPU_Mod.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU_Lcfg.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU.h:
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
+../Core/Inc/FreeRTOSConfig.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/portable.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/deprecated_definitions.h:
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/portmacro.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
