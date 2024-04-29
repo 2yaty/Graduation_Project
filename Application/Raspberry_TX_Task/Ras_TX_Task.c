@@ -13,28 +13,29 @@ UART_HandleTypeDef* ras_huart;
 osSemaphoreId_t* ras_Semaphore;
 
 void Ras_TX_task_init(osMessageQueueId_t* ras_tx_MsgQueue ,osSemaphoreId_t* uart_Semaphore, UART_HandleTypeDef *huart){
-	tx_MsgQueue = ras_tx_MsgQueue;
+	ras_tx_MsgQueue = ras_tx_MsgQueue;
 	ras_huart = huart;
+	ras_Semaphore = uart_Semaphore;
 }
 
 
 void Ras_UART_Callback(){
-	osSemaphoreRelease(*uart_Semaphore);
+	osSemaphoreRelease(*ras_Semaphore);
 }
 
 
 void Ras_TX_Task(void *argument){
 
-	int8_t* msg;
-	int size;
+	cJSON* msg;
+
 	osStatus_t status;
 	for(;;)
 	  {
 
 		while(osOK==osMessageQueueGet(*ras_tx_MsgQueue, &msg, NULL, osWaitForever )){
 
-			osSemaphoreAcquire(*uart_Semaphore,osWaitForever);
-			HAL_UART_Receive_IT(huart,msg,size);
+			osSemaphoreAcquire(*ras_Semaphore,osWaitForever);
+			HAL_UART_Transmit_IT(ras_huart , cJSON_Print(msg),strlen(cJSON_Print(msg)));
 
 		}
 
