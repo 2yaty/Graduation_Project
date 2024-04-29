@@ -19,27 +19,28 @@ void Ras_TX_task_init(osMessageQueueId_t* ras_tx_MsgQueue ,osSemaphoreId_t* uart
 }
 
 
-void Ras_UART_Callback(){
-	osSemaphoreRelease(*ras_Semaphore);
-}
-
 
 void Ras_TX_Task(void *argument){
 
 	cJSON* msg;
 
-	osStatus_t status;
+	//osStatus_t status;
 	for(;;)
 	  {
 
-		while(osOK==osMessageQueueGet(*ras_tx_MsgQueue, &msg, NULL, osWaitForever )){
+		while(osOK==osMessageQueueGet(*ras_tx_MsgQueue, msg, NULL, osWaitForever )){
 
 			osSemaphoreAcquire(*ras_Semaphore,osWaitForever);
-			HAL_UART_Transmit_IT(ras_huart , cJSON_Print(msg),strlen(cJSON_Print(msg)));
+			HAL_UART_Transmit_DMA(ras_huart , cJSON_Print(msg),strlen(cJSON_Print(msg)));
 
 		}
 
 
 		vTaskDelay(RAS_TX_TASK_PERIODICITY);
 	  }
+}
+
+
+void Ras_UART_Callback(){
+	osSemaphoreRelease(*ras_Semaphore);
 }
