@@ -1,0 +1,4 @@
+../Application/MPU_Task/MPU_Mod.c:18:6:MPU_Init_Task	16	static
+../Application/MPU_Task/MPU_Mod.c:33:6:MPU_Task	32	static
+../Application/MPU_Task/MPU_Mod.c:78:6:MPU_RxFrameCallback	8	static
+../Application/MPU_Task/MPU_Mod.c:84:6:dataBuffering	32	static

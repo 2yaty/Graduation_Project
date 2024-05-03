@@ -10,13 +10,13 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include Modules/Movement/subdir.mk
--include Modules/MPU_Module/subdir.mk
+-include Modules/Log_Module/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
+-include INITs_Uitilities/cJSON/subdir.mk
 -include INITs_Uitilities/Queue/subdir.mk
--include H_Drivers/TF_Lidar/subdir.mk
 -include H_Drivers/MPU6050/subdir.mk
 -include H_Drivers/MOTOR_MDD10A/subdir.mk
 -include H_Drivers/Led/subdir.mk
@@ -25,6 +25,9 @@ RM := rm -rf
 -include Drivers/STM32F4xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
+-include Application/testing/subdir.mk
+-include Application/Raspberry_TX_Task/subdir.mk
+-include Application/MPU_Task/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)

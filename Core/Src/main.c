@@ -23,6 +23,77 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+/*************** Fully working Example of Queue ****************/
+/*
+#define MSGQUEUE_OBJECTS 16                     // number of Message Queue Objects
+
+typedef struct {                                // object data type
+  char *Buf;
+  uint8_t Idx;
+} MSGQUEUE_OBJ_t;
+
+osMessageQueueId_t mid_MsgQueue;
+
+
+osThreadId_t tid_Thread_MsgQueue1;              // thread id 1
+osThreadId_t tid_Thread_MsgQueue2;              // thread id 2
+
+
+void Thread_MsgQueue1 (void *argument);         // thread function 1
+void Thread_MsgQueue2 (void *argument);         // thread function 2
+
+int Init_MsgQueue (void) {
+
+  mid_MsgQueue = osMessageQueueNew(MSGQUEUE_OBJECTS, sizeof(MSGQUEUE_OBJ_t), NULL);
+  if (mid_MsgQueue == NULL) {
+    ; // Message Queue object not created, handle failure
+  }
+
+  tid_Thread_MsgQueue1 = osThreadNew(Thread_MsgQueue1, NULL, NULL);
+  if (tid_Thread_MsgQueue1 == NULL) {
+    return(-1);
+  }
+  tid_Thread_MsgQueue2 = osThreadNew(Thread_MsgQueue2, NULL, NULL);
+  if (tid_Thread_MsgQueue2 == NULL) {
+    return(-1);
+  }
+
+  return(0);
+}
+
+void Thread_MsgQueue1 (void *argument) {
+
+	char msgs[][10] = {"3eed" , "ayoub" , "balio", "khairy" ,"abo ali"};
+	uint8_t i  = 0;
+//  MSGQUEUE_OBJ_t msg;
+	char* msg;
+  while (1) {
+    ; // Insert thread code here...
+    msg = msgs[i++];
+//    msg.Buf = msgs[i];                                        // do some work...
+//    msg.Idx    = i++;
+    if(i > 4) i = 0;
+    osMessageQueuePut(mid_MsgQueue, &msg, 0U, 0U);
+    osThreadYield();                                            // suspend thread
+  }
+}
+
+void Thread_MsgQueue2 (void *argument) {
+//  MSGQUEUE_OBJ_t msg;
+	char* msg;
+  osStatus_t status;
+
+  while (1) {
+    ; // Insert thread code here...
+    status = osMessageQueueGet(mid_MsgQueue, &msg, NULL, osWaitForever);   // wait for message
+    status = osOK;
+    if (status == osOK) {
+      ; // process data
+    }
+  }
+}
+*/
+#include "testing/test.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,7 +112,7 @@ typedef enum
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+char n=0, i =0, j =0;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -71,6 +142,35 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for myTask02 */
+osThreadId_t myTask02Handle;
+const osThreadAttr_t myTask02_attributes = {
+  .name = "myTask02",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityLow1,
+};
+/* Definitions for myTask03 */
+osThreadId_t myTask03Handle;
+const osThreadAttr_t myTask03_attributes = {
+  .name = "myTask03",
+  .stack_size = 200 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for Ras_Tx_Queue01 */
+osMessageQueueId_t Ras_Tx_Queue01Handle;
+const osMessageQueueAttr_t Ras_Tx_Queue01_attributes = {
+  .name = "Ras_Tx_Queue01"
+};
+/* Definitions for MPU_Semaphore */
+osSemaphoreId_t MPU_SemaphoreHandle;
+const osSemaphoreAttr_t MPU_Semaphore_attributes = {
+  .name = "MPU_Semaphore"
+};
+/* Definitions for Ras_Tx_Semaphore */
+osSemaphoreId_t Ras_Tx_SemaphoreHandle;
+const osSemaphoreAttr_t Ras_Tx_Semaphore_attributes = {
+  .name = "Ras_Tx_Semaphore"
+};
 /* USER CODE BEGIN PV */
 Task_MPU_Data data =
 {
@@ -95,6 +195,10 @@ static void MX_I2C1_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 void StartDefaultTask(void *argument);
+void StartTask02(void *argument);
+void StartTask03(void *argument);
+void Task1(void *argument);
+void Task2(void *argument);
 
 /* USER CODE BEGIN PFP */
 void Objects_init(void);
@@ -121,7 +225,7 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+//  Init_MsgQueue();
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -143,7 +247,8 @@ int main(void)
 //  SystemClock_Cfg();
 //  Peripherals_Init();
 
-  MPU_enuInit(&hMPU);
+
+//  MPU_enuInit(&hMPU);
 //  MOV_voidSetComm(&hbluetooth1);
 //  MOV_voidInitMovement();
 //  HAL_TIM_Base_Start_IT(&htim2);
@@ -163,6 +268,13 @@ int main(void)
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
+  /* Create the semaphores(s) */
+  /* creation of MPU_Semaphore */
+  MPU_SemaphoreHandle = osSemaphoreNew(1U, 1U, &MPU_Semaphore_attributes);
+
+  /* creation of Ras_Tx_Semaphore */
+  Ras_Tx_SemaphoreHandle = osSemaphoreNew(1U, 1U, &Ras_Tx_Semaphore_attributes);
+
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -171,7 +283,13 @@ int main(void)
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
+  /* Create the queue(s) */
+  /* creation of Ras_Tx_Queue01 */
+  Ras_Tx_Queue01Handle = osMessageQueueNew (50, 100, &Ras_Tx_Queue01_attributes);
+
   /* USER CODE BEGIN RTOS_QUEUES */
+//  testing_logs_init(&Ras_Tx_Queue01Handle);
+  testing_UART_init(&Ras_Tx_Queue01Handle,&Ras_Tx_SemaphoreHandle,&huart2);
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
@@ -179,12 +297,19 @@ int main(void)
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
+  /* creation of myTask02 */
+  myTask02Handle = osThreadNew(testing_UART_task3, NULL, &myTask02_attributes);
+
+  /* creation of myTask03 */
+  myTask03Handle = osThreadNew(testing_UART_task4, NULL, &myTask03_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
+  Ras_TX_task_init(&Ras_Tx_Queue01Handle , &Ras_Tx_SemaphoreHandle, &huart2);
   /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */
@@ -508,7 +633,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	}
 	else if(huart->Instance == USART2)
 	{
-		/* LUNA_RxCpltProcess(huart); */
+//		Ras_UART_Callback();
+		//osSemaphoreRelease(Ras_Tx_SemaphoreHandle);
+		testing_UART_task4_CallBack();
 	}
 	else if(huart->Instance == USART6)
 	{
@@ -547,6 +674,39 @@ void Objects_init(void)
 
 
 
+void Task1(void *argument)
+{
+
+	char *msg = "Mostafa Ali Known as 3eed";
+	uint8_t i = 0;
+	for(;;)
+	{
+		 char c = msg[i++];
+		 if (i >= 25){
+			 i = 0;
+		 }
+		 c = 'h';
+		 vTaskDelay(5);
+	}
+}
+
+
+void Task2(void *argument)
+{
+	char *msg = "Mostafa Ali Known as 3eed";
+		uint8_t i = 0;
+		for(;;)
+		{
+			 char c = msg[i++];
+			 if (i >= 25){
+				 i = 0;
+			 }
+			 c = 'h';
+			 vTaskDelay(5);
+		}
+}
+
+
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -566,6 +726,87 @@ void StartDefaultTask(void *argument)
   }
   /* USER CODE END 5 */
 }
+
+/* USER CODE BEGIN Header_StartTask02 */
+/**
+* @brief Function implementing the myTask02 thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartTask02 */
+void StartTask02(void *argument)
+{
+  /* USER CODE BEGIN StartTask02 */
+  float32_t data[6] = {1, -1, 1.5, 2, 3, 4};
+
+  /* Infinite loop */
+  for(;;)
+  {
+	  cJSON *root = cJSON_CreateObject();
+	  if(!root){return;} // Handle memory failure
+	  n++;
+	  cJSON *AccelBranch = NULL;
+	  cJSON *GyroBranch = NULL;
+	  cJSON_AddStringToObject(root, "S", "MPU");
+	  cJSON_AddItemToObject(root, "G", AccelBranch = cJSON_CreateObject());
+	  cJSON_AddNumberToObject(AccelBranch, "X", data[0] +1);
+	  cJSON_AddNumberToObject(AccelBranch, "Y", data[1] +1);
+	  cJSON_AddNumberToObject(AccelBranch, "Z", data[2] +1);
+	  cJSON_AddItemToObject(root, "A", GyroBranch = cJSON_CreateObject());
+	  cJSON_AddNumberToObject(GyroBranch, "X", data[3] +1);
+	  cJSON_AddNumberToObject(GyroBranch, "Y", data[4] +1);
+	  cJSON_AddNumberToObject(GyroBranch, "Z", data[5] +1);
+
+	  uint8_t* msg = cJSON_PrintUnformatted(root);
+	  cJSON_Delete(root);
+	  uint8_t size = strlen(msg);
+
+	  if (msg)
+	  {
+		  osMessageQueuePut(Ras_Tx_Queue01Handle, msg, NULL, osWaitForever);
+		  free(msg);
+	  }
+
+    osDelay(5);
+  }
+  /* USER CODE END StartTask02 */
+}
+
+/* USER CODE BEGIN Header_StartTask03 */
+/**
+* @brief Function implementing the myTask03 thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartTask03 */
+void StartTask03(void *argument)
+{
+  /* USER CODE BEGIN StartTask03 */
+	char msg[100];
+  /* Infinite loop */
+  for(;;)
+  {
+
+	uint32_t num = osMessageQueueGetCount (Ras_Tx_Queue01Handle);
+	i++;
+	if(osOK == osMessageQueueGet(Ras_Tx_Queue01Handle, &msg, NULL, osWaitForever )){
+
+//		osSemaphoreAcquire(Ras_Tx_SemaphoreHandle,osWaitForever);
+//		HAL_UART_Transmit_IT(&huart2, (uint8_t*)"Salem", strlen("Salem"));
+		j++;
+	}
+	else if(osErrorResource == osMessageQueueGet(Ras_Tx_Queue01Handle, msg, NULL, osWaitForever )){;}
+	else if(osErrorParameter == osMessageQueueGet(Ras_Tx_Queue01Handle, msg, NULL, osWaitForever )){;}
+	else if(osErrorTimeout == osMessageQueueGet(Ras_Tx_Queue01Handle, msg, NULL, osWaitForever )){;}
+
+
+	osDelay(7);
+    //osDelay(7);
+  }
+  /* USER CODE END StartTask03 */
+}
+
+
 
 /**
   * @brief  Period elapsed callback in non blocking mode

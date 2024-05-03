@@ -44,11 +44,13 @@ Core/Src/freertos.o: ../Core/Src/freertos.c \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/Movement/MOV.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/Bluetooth/Bluetooth.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/Bluetooth/../../INITs_Uitilities/Queue/queue.h \
- D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/MPU_Module/MPU_Mod.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/MPU_Task/MPU_Mod.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU_Lcfg.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/cJSON/cJSON.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Raspberry_TX_Task/Ras_TX_task.h
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 ../Core/Inc/FreeRTOSConfig.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h:
@@ -95,8 +97,10 @@ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/Common/STD_Types.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/Movement/MOV.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/Bluetooth/Bluetooth.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/Bluetooth/../../INITs_Uitilities/Queue/queue.h:
-D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/MPU_Module/MPU_Mod.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/MPU_Task/MPU_Mod.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU_Lcfg.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/cJSON/cJSON.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Raspberry_TX_Task/Ras_TX_task.h:

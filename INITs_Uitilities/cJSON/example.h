@@ -33,4 +33,31 @@ int main() {
                 "frame rate":   24
         }
 }
+
+    cJSON *root;
+    cJSON *fmt = NULL;
+    root = cJSON_CreateObject();
+
+    cJSON_AddStringToObject(root, "src", "MPU");
+    cJSON_AddItemToObject(root, "ACCEL", fmt = cJSON_CreateObject());
+    cJSON_AddNumberToObject(fmt, "X", 1920);
+    cJSON_AddNumberToObject(fmt, "Y", 1080);
+
+{
+		"src":"MPU" ,
+
+		"Accel": {
+					"X": 10,
+					"Y": 10,
+					"Z": 10,
+					},
+
+		"GYRO": {
+					"X": 10,
+					"Y": 10,
+					"Z": 10,
+					}
+}
 */
+
+

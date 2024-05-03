@@ -5,18 +5,18 @@
  *******************************************************************************/
 
 
-#ifndef MPU_MODULE_MPU_MOD_H_
-#define MPU_MODULE_MPU_MOD_H_
+#ifndef MPU_TASK_MPU_MOD_H_
+#define MPU_TASK_MPU_MOD_H_
 
 /*------------------------------------ Includes Start --------------------------------------*/
 #include "MPU6050/MPU_Lcfg.h"
 #include "cmsis_os.h"
+#include "cJSON/cJSON.h"
 /*------------------------------------ Includes End ----------------------------------------*/
 
 /*------------------------------- Macro Declarations Start ---------------------------------*/
 
-#define MPU_TASK_1_PERIODICITY_ms			100
-//#define MPU_TASK_2_PERIODICITY_ms			10
+#define MPU_TASK_PERIODICITY_ms			100
 
 /*-------------------------- Macro• Functions Declarations Start ---------------------------*/
 
@@ -38,10 +38,8 @@ typedef struct
 /*------------------------- Software Interfaces Declarations Start --------------------------*/
 
 
-void MPU_Int_Task(void);
+void MPU_Init_Task(osMessageQueueId_t* MPU_Tx_MsgQueue ,osSemaphoreId_t* MPU_Semaphore);
 void MPU_Task(void *argument);
 
-//void MPU_Task_1(void *argument);
-//void MPU_Task_2(void *argument);
 
-#endif /* MPU_MODULE_MPU_MOD_H_ */
+#endif /* MPU_TASK_MPU_MOD_H_ */

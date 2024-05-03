@@ -1,3 +1,0 @@
-../Modules/MPU_Module/MPU_Mod.c:15:6:MPU_Int_Task	8	static
-../Modules/MPU_Module/MPU_Mod.c:28:6:MPU_Task	32	static
-../Modules/MPU_Module/MPU_Mod.c:70:6:MPU_RxFrameCallback	8	static
