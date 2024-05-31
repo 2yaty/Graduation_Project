@@ -66,10 +66,10 @@ float FCW_u8TimeToCollision(uint8_t Copy_u8Speed, float Copy_u8Distance, float C
 	 * The second motion equation :
 	 * 0.5at^2 + vt - s = 0 --> AccX(a) , calculated time (t) , speed(v), distance(s)
 	 * */
-    if (Copy_u8AccX == 0.0f)
+    if(Copy_u8AccX == 0.0f)
     {
         // If acceleration is zero, use the simple time formula: distance / speed
-        if (Copy_u8Speed == 0)
+        if(Copy_u8Speed == 0)
         {
             return MAX_TIME_IN_SEC ; // No movement; time to collision is infinite
         }
@@ -80,9 +80,9 @@ float FCW_u8TimeToCollision(uint8_t Copy_u8Speed, float Copy_u8Distance, float C
     }
 
     // Use the quadratic formula to get the time to collision
-    float discriminant = (Copy_u8Speed * Copy_u8Speed) - (4 * Copy_u8AccX * Copy_u8Distance);
+    float discriminant = (Copy_u8Speed * Copy_u8Speed) + (2 * Copy_u8AccX * Copy_u8Distance);
 
-    if (discriminant < 0.0f)
+    if(discriminant < 0.0f)
     {
         // Negative discriminant indicates no real solutions; no collision likely
         return MAX_TIME_IN_SEC;
@@ -93,7 +93,7 @@ float FCW_u8TimeToCollision(uint8_t Copy_u8Speed, float Copy_u8Distance, float C
     float t2 = (-Copy_u8Speed - sqrt(discriminant)) / Copy_u8AccX;
 
     // Return the positive solution, if exists
-    if (t1 > 0.0f)
+    if(t1 > 0.0f)
     {
         return t1;
     }
@@ -110,56 +110,21 @@ float FCW_u8TimeToCollision(uint8_t Copy_u8Speed, float Copy_u8Distance, float C
 
 
 
-
-
-
-
 tenuErrorStatus FCW_tenuIsWarning(float Copy_u8CalculatedTime)
 {
     // Threshold time for warning in seconds
 	tenuErrorStatus Loc_tenuReturned ;
     const float thresholdTime = 3.0f;
 
-    if (Copy_u8CalculatedTime <= thresholdTime)
+    if(Copy_u8CalculatedTime <= thresholdTime)
     {
-        // If the calculated time is less than or equal to the threshold, collision is likely
+        // If the calculated time is less than or equal to the threshold, COLLISION is likely
     	Loc_tenuReturned = E_NOK ;
     }
     else
     {
-        // If the calculated time is greater than the threshold, no imminent collision
+        // If the calculated time is greater than the threshold, NO imminent COLLISION
     	Loc_tenuReturned = E_OK ;
     }
     return Loc_tenuReturned;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

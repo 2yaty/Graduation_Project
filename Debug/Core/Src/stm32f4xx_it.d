@@ -35,7 +35,7 @@ Core/Src/stm32f4xx_it.o: ../Core/Src/stm32f4xx_it.c ../Core/Inc/main.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/Movement/MOV.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/Bluetooth/Bluetooth.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/Bluetooth/../../INITs_Uitilities/Queue/queue.h \
- D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/MPU_Module/MPU_Mod.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/MPU_Task/MPU_Mod.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU_Lcfg.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
@@ -49,6 +49,8 @@ Core/Src/stm32f4xx_it.o: ../Core/Src/stm32f4xx_it.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/cJSON/cJSON.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Raspberry_TX_Task/Ras_TX_task.h \
  ../Core/Inc/stm32f4xx_it.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
@@ -87,7 +89,7 @@ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/Common/STD_Types.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/Movement/MOV.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/Bluetooth/Bluetooth.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/Bluetooth/../../INITs_Uitilities/Queue/queue.h:
-D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/MPU_Module/MPU_Mod.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/MPU_Task/MPU_Mod.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU_Lcfg.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
@@ -101,4 +103,6 @@ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/cJSON/cJSON.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Raspberry_TX_Task/Ras_TX_task.h:
 ../Core/Inc/stm32f4xx_it.h:

@@ -23,6 +23,9 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Application/MPU_Task \
+Application/Raspberry_TX_Task \
+Application/testing \
 Core/Src \
 Core/Startup \
 Drivers/STM32F4xx_HAL_Driver/Src \
@@ -31,12 +34,12 @@ H_Drivers/FCW_Application \
 H_Drivers/Led \
 H_Drivers/MOTOR_MDD10A \
 H_Drivers/MPU6050 \
-H_Drivers/TF_Lidar \
 INITs_Uitilities/Queue \
+INITs_Uitilities/cJSON \
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \
 Middlewares/Third_Party/FreeRTOS/Source \
 Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang \
-Modules/MPU_Module \
+Modules/Log_Module \
 Modules/Movement \
 

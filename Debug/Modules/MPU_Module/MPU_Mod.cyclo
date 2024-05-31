@@ -1,3 +1,0 @@
-../Modules/MPU_Module/MPU_Mod.c:15:6:MPU_Int_Task	1
-../Modules/MPU_Module/MPU_Mod.c:28:6:MPU_Task	1
-../Modules/MPU_Module/MPU_Mod.c:70:6:MPU_RxFrameCallback	1
