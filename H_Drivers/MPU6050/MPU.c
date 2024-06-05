@@ -70,7 +70,7 @@ MPU_Error_Status MPU_enuInit(MPU_HandleTypeDef *hMPU)
 	uint8_t Local_u8Check;
 	hMPU->state = MPU_STATE_RESET;
 	hMPU->dataState = MPU_DATA_STATE_NOT_REQUESTED;
-	hMPU->RegistersBuffer = (uint8_t*)malloc(14 * sizeof(uint8_t));
+	//hMPU->RegistersBuffer = (uint8_t*)malloc(14 * sizeof(uint8_t));
 
 	/* Set the handler with the MPU Init configurations. */
 	MPU_SetCfg();
@@ -143,7 +143,7 @@ MPU_Error_Status MPU_enuStartFreeRunning_DMA(MPU_HandleTypeDef *hMPU, float32_t 
 	hMPU->dataState = MPU_DATA_STATE_NOT_REQUESTED;
 	hMPU->mode = FREE_RUNNING;
 	hMPU->DataBuffer = Copy_pArrAccelGyroData;
-	hMPU->RegistersBuffer = (uint8_t*)malloc(14 * sizeof(uint8_t));
+	//hMPU->RegistersBuffer = (uint8_t*)malloc(14 * sizeof(uint8_t));
 
 	/* Set the handler with the MPU Init configurations. */
 	MPU_SetCfg();
@@ -283,7 +283,7 @@ MPU_Error_Status MPU_enuStopFreeRunning(MPU_HandleTypeDef *hMPU)
 	EXTI->IMR &= ~(hMPU->GPIO_INT_PinNum);
 
 	/* free the memory*/
-	free(hMPU->RegistersBuffer);
+	//free(hMPU->RegistersBuffer);
 	return MPU_OK;
 
 }
@@ -408,13 +408,13 @@ static void Gyro_Calculations (MPU_HandleTypeDef *hMPU)
 {
 	sint16_t Local_u16Temp =0;
 
-	MPU_COMBINE(Local_u16Temp, *(hMPU->RegistersBuffer + 9), *(hMPU->RegistersBuffer + 8));
+	MPU_COMBINE(Local_u16Temp, hMPU->RegistersBuffer[9], hMPU->RegistersBuffer[8]);
 	MPU_GYRO_CALCULATIONS(*(hMPU->DataBuffer    ), hMPU->GyroFullScale , Local_u16Temp);
 
-	MPU_COMBINE(Local_u16Temp, *(hMPU->RegistersBuffer + 11), *(hMPU->RegistersBuffer + 10));
+	MPU_COMBINE(Local_u16Temp, hMPU->RegistersBuffer[11], hMPU->RegistersBuffer[10]);
 	MPU_GYRO_CALCULATIONS(*(hMPU->DataBuffer + 1), hMPU->GyroFullScale , Local_u16Temp);
 
-	MPU_COMBINE(Local_u16Temp, *(hMPU->RegistersBuffer + 13), *(hMPU->RegistersBuffer + 12));
+	MPU_COMBINE(Local_u16Temp, hMPU->RegistersBuffer[13], hMPU->RegistersBuffer[12]);
 	MPU_GYRO_CALCULATIONS(*(hMPU->DataBuffer + 2), hMPU->GyroFullScale , Local_u16Temp);
 
 }
@@ -432,13 +432,13 @@ static void Accel_Calculations(MPU_HandleTypeDef *hMPU)
 {
 	sint16_t Local_u16Temp =0;
 
-	MPU_COMBINE(Local_u16Temp, *(hMPU->RegistersBuffer + 1), *(hMPU->RegistersBuffer    ));
+	MPU_COMBINE(Local_u16Temp, hMPU->RegistersBuffer[1], hMPU->RegistersBuffer[0]);
 	MPU_ACCEL_CALCULATIONS(*(hMPU->DataBuffer + 3), hMPU->AccelFullScale , Local_u16Temp);
 
-	MPU_COMBINE(Local_u16Temp, *(hMPU->RegistersBuffer + 3), *(hMPU->RegistersBuffer + 2));
+	MPU_COMBINE(Local_u16Temp, hMPU->RegistersBuffer[3], hMPU->RegistersBuffer[2]);
 	MPU_ACCEL_CALCULATIONS(*(hMPU->DataBuffer + 4), hMPU->AccelFullScale , Local_u16Temp);
 
-	MPU_COMBINE(Local_u16Temp, *(hMPU->RegistersBuffer + 5), *(hMPU->RegistersBuffer + 4));
+	MPU_COMBINE(Local_u16Temp, hMPU->RegistersBuffer[5], hMPU->RegistersBuffer[4]);
 	MPU_ACCEL_CALCULATIONS(*(hMPU->DataBuffer + 5), hMPU->AccelFullScale , Local_u16Temp);
 
 }
