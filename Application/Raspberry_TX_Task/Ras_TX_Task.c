@@ -24,7 +24,6 @@ UART_HandleTypeDef* ras_huart;
 osSemaphoreId_t* ras_Semaphore;
 
 uint8_t calculate_checksum(uint8_t *data, uint8_t length) ;
-void send_data_packet(const char *str);
 
 
 
