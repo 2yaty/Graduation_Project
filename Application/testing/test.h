@@ -12,18 +12,30 @@
 #include "stm32f4xx_hal.h"
 #include <stdint.h>
 
+#define TEST1	1
+#define TEST2	0
+#define TEST3	0
+#define TEST4	0
+
+
 
 //Failed: due to Hard Fault Error because the log module is using Heap memory in the arg lib.
-void testing_logs_init(osMessageQueueId_t* mid_MsgQueue);
-void testing_logs_task1(void* args);
-void testing_logs_task2(void* args);
+typedef struct{
+	char data[80];
+}Test1_Data;
 
-void testing_UART_init(osMessageQueueId_t* mid_MsgQueue , osSemaphoreId_t* uart_sem , UART_HandleTypeDef* uart_handle);
-void testing_UART_task3(void* args);
-void testing_UART_task4(void* args);
-void testing_UART_task4_CallBack(void);
+void Test1_init(osMessageQueueId_t* mid_MsgQueue);
+void Test1_task1(void* args);
+void Test1_task2(void* args);
+
+void Test2_init(osMessageQueueId_t* mid_MsgQueue , osSemaphoreId_t* uart_sem , UART_HandleTypeDef* uart_handle);
+void Test2_task1(void* args);
+void Test2_task2(void* args);
+void Test2_UART_CallBack(void);
 
 
-
+void Test3_init (osMessageQueueId_t* ptr_MsgQueue);
+void Test3_task1 (void *argument);
+void Test3_task2 (void *argument);
 
 #endif /* TESTING_TEST_H_ */
