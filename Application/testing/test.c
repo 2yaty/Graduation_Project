@@ -5,6 +5,7 @@
  *      Author: Salem Elfaidy
  */
 #include "test.h"
+#include "../Raspberry_TX_Task/Ras_TX_task.h"
 
 
 #if TEST1
@@ -29,10 +30,11 @@ osMessageQueueId_t* task1_msgQ;
 
 
 void log_send_func(int8_t* str){
-	uint8_t length = strlen(str);
-	Test1_Data d ;
-	strcpy(d.data,str);
-	osMessageQueuePut(*task1_msgQ, &d,  0U, 0U);
+//	uint8_t length = strlen(str);
+//	Test1_Data d ;
+//	strcpy(d.data,str);
+//	osMessageQueuePut(*task1_msgQ, &d,  0U, 0U);
+	Ras_TX_add_to_q(str);
 
 }
 void Test1_init(osMessageQueueId_t* mid_MsgQueue){
