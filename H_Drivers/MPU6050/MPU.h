@@ -162,7 +162,7 @@ typedef struct
 
     float32_t *DataBuffer;                 /*!< Pointer to data buffer for storing MPU6050 readings */
 
-    uint8_t *RegistersBuffer;              /*!< Pointer to register buffer for MPU6050 register readings */
+    uint8_t RegistersBuffer[12];           /*!< Array to register buffer for MPU6050 register readings */
 
     uint16_t GPIO_INT_PinNum;              /*!< GPIO pin number for interrupt handling */
 
