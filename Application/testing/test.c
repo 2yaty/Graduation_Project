@@ -6,7 +6,7 @@
  */
 #include "test.h"
 #include "../Raspberry_TX_Task/Ras_TX_task.h"
-
+#include "../MPU_Task/MPU_Mod.h"
 
 #if TEST1
 /**
@@ -229,6 +229,19 @@ void Test3_task2 (void *argument) {
 #endif
 
 
+#if TEST4
 
+void Test4_task(void *arg){
+	logs_init(Ras_TX_add_to_q);
+	float data[] = {200.13 , 300.12, 20.3 , 30.2 ,10.1 , 10.2};
+	for(;;){
+
+		dataBuffering(data);
+
+		osDelay(100);
+	}
+
+}
+#endif
 
 

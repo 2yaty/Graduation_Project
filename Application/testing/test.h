@@ -12,10 +12,10 @@
 #include "stm32f4xx_hal.h"
 #include <stdint.h>
 
-#define TEST1	1
+#define TEST1	0
 #define TEST2	0
 #define TEST3	0
-#define TEST4	0
+#define TEST4	1
 
 
 
@@ -37,5 +37,8 @@ void Test2_UART_CallBack(void);
 void Test3_init (osMessageQueueId_t* ptr_MsgQueue);
 void Test3_task1 (void *argument);
 void Test3_task2 (void *argument);
+
+
+void Test4_task(void *arg);
 
 #endif /* TESTING_TEST_H_ */

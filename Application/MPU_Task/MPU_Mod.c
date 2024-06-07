@@ -6,13 +6,13 @@
  */
 
 #include <MPU_Task/MPU_Mod.h>
-
-
+#include "../Raspberry_TX_Task/Ras_TX_task.h"
+#include "../../Modules/Log_Module/log.h"
 
 osMessageQueueId_t* mpu_Tx_MsgQueue;
 osSemaphoreId_t* mpu_Semaphore;
 
-void dataBuffering(float *data);
+//void dataBuffering(float *data);
 
 
 void MPU_Init_Task(osMessageQueueId_t* MPU_Tx_MsgQueue ,osSemaphoreId_t* MPU_Semaphore)
@@ -47,13 +47,13 @@ void MPU_Task(void *argument)
 	for(;;)
 	{
 		/* Acquire semaphore to synchronize data request */
-		osSemaphoreAcquire(mpu_Semaphore, osWaitForever);
+		osSemaphoreAcquire(*mpu_Semaphore, osWaitForever);
 
 		/* Request accelerometer and gyroscope data */
 		MPU_enuGetGyroAccelReadings_DMA(pMPU->h_MPU, pMPU->AccelGyroDataBuffer);
 
 		/* Wait for data to be ready, assuming ISR will release semaphore */
-		osSemaphoreAcquire(mpu_Semaphore, osWaitForever);
+		osSemaphoreAcquire(*mpu_Semaphore, osWaitForever);
 
 		/* Get the data ready (calculations)*/
 		MPU_GetReadings(pMPU->h_MPU);
@@ -62,7 +62,7 @@ void MPU_Task(void *argument)
 		dataBuffering(pMPU->AccelGyroDataBuffer);
 
 		/* Give the semaphore */
-		osSemaphoreRelease(mpu_Semaphore);
+		osSemaphoreRelease(*mpu_Semaphore);
 
 		/* Wait (Block the task) until the next period ( Task periodicity ) */
 		osDelayUntil(PeriodicityTick);
@@ -77,35 +77,41 @@ void MPU_Task(void *argument)
 
 void MPU_RxFrameCallback(void)
 {
-	osSemaphoreRelease(mpu_Semaphore);
+	osSemaphoreRelease(*mpu_Semaphore);
 }
 
 
-void dataBuffering(float *data)
+void dataBuffering(float* data)
 {
-    cJSON *root = cJSON_CreateObject();
-    if(!root){return;} // Handle memory failure
 
-    cJSON *AccelBranch = NULL;
-    cJSON *GyroBranch = NULL;
-
-    cJSON_AddStringToObject(root, "S", "MPU");
-    cJSON_AddItemToObject(root, "G", AccelBranch = cJSON_CreateObject());
-    cJSON_AddNumberToObject(AccelBranch, "X", data[0]);
-    cJSON_AddNumberToObject(AccelBranch, "Y", data[1]);
-    cJSON_AddNumberToObject(AccelBranch, "Z", data[2]);
-    cJSON_AddItemToObject(root, "A", GyroBranch = cJSON_CreateObject());
-    cJSON_AddNumberToObject(GyroBranch, "X", data[3]);
-    cJSON_AddNumberToObject(GyroBranch, "Y", data[4]);
-    cJSON_AddNumberToObject(GyroBranch, "Z", data[5]);
-
-    uint8_t* msg = cJSON_PrintUnformatted(root);
-    if (msg)
-    {
-        osMessageQueuePut(*mpu_Tx_MsgQueue, &msg, NULL, osWaitForever);
-        free(msg);
-    }
-
-    cJSON_Delete(root);
+	logs("MPU" ,
+			"{'AX':'%f','AY':'%f','AZ':'%f','GX':'%f','GY':'%f','GZ':'%f'}",
+			data[0],data[1],data[2],data[3],data[4],data[5]);
+//    cJSON *root = cJSON_CreateObject();
+//    if(!root){return;} // Handle memory failure
+//
+//    cJSON *AccelBranch = NULL;
+//    cJSON *GyroBranch = NULL;
+//
+//    cJSON_AddStringToObject(root, "S", "MPU");
+//    cJSON_AddItemToObject(root, "G", AccelBranch = cJSON_CreateObject());
+//    cJSON_AddNumberToObject(AccelBranch, "X", data[0]);
+//    cJSON_AddNumberToObject(AccelBranch, "Y", data[1]);
+//    cJSON_AddNumberToObject(AccelBranch, "Z", data[2]);
+//    cJSON_AddItemToObject(root, "A", GyroBranch = cJSON_CreateObject());
+//    cJSON_AddNumberToObject(GyroBranch, "X", data[3]);
+//    cJSON_AddNumberToObject(GyroBranch, "Y", data[4]);
+//    cJSON_AddNumberToObject(GyroBranch, "Z", data[5]);
+//
+//    uint8_t* msg = cJSON_PrintUnformatted(root);
+//    if (msg)
+//    {
+////        osMessageQueuePut(*mpu_Tx_MsgQueue, &msg, NULL, osWaitForever);
+//    	Ras_TX_add_to_q(msg);
+//        free(msg);
+//    }
+//
+//
+//    cJSON_Delete(root);
 }
 

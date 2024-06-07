@@ -10,7 +10,7 @@
 
 #define HEADER_BYTE_1 0xAA
 #define HEADER_BYTE_2 0x55
-#define MAX_PACKET_LENGTH 	80
+#define MAX_PACKET_LENGTH 	250
 
 
 typedef struct{

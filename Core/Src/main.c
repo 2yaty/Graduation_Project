@@ -146,14 +146,14 @@ const osThreadAttr_t defaultTask_attributes = {
 osThreadId_t myTask02Handle;
 const osThreadAttr_t myTask02_attributes = {
   .name = "myTask02",
-  .stack_size = 400 * 4,
+  .stack_size = 1000 * 4,
   .priority = (osPriority_t) osPriorityLow1,
 };
 /* Definitions for myTask03 */
 osThreadId_t myTask03Handle;
 const osThreadAttr_t myTask03_attributes = {
   .name = "myTask03",
-  .stack_size = 400 * 4,
+  .stack_size = 1000 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for Ras_Tx_Queue01 */
@@ -285,12 +285,13 @@ int main(void)
 
   /* Create the queue(s) */
   /* creation of Ras_Tx_Queue01 */
-  Ras_Tx_Queue01Handle = osMessageQueueNew (10, 100, &Ras_Tx_Queue01_attributes);
+  Ras_Tx_Queue01Handle = osMessageQueueNew (10, 270, &Ras_Tx_Queue01_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
 //  testing_logs_init(&Ras_Tx_Queue01Handle);
   Ras_TX_task_init(&Ras_Tx_Queue01Handle,&Ras_Tx_SemaphoreHandle,&huart2);
-  Test1_init(&Ras_Tx_Queue01Handle);
+//  MPU_Init_Task(&Ras_Tx_Queue01Handle,&MPU_SemaphoreHandle);
+//  Test1_init(&Ras_Tx_Queue01Handle);
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
@@ -299,7 +300,7 @@ int main(void)
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* creation of myTask02 */
-  myTask02Handle = osThreadNew(Test1_task1, NULL, &myTask02_attributes);
+  myTask02Handle = osThreadNew(Test4_task, NULL, &myTask02_attributes);
 
   /* creation of myTask03 */
   myTask03Handle = osThreadNew(Ras_TX_Task, NULL, &myTask03_attributes);
@@ -310,7 +311,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_EVENTS */
   /* add events, ... */
-  Ras_TX_task_init(&Ras_Tx_Queue01Handle , &Ras_Tx_SemaphoreHandle, &huart2);
+//  Ras_TX_task_init(&Ras_Tx_Queue01Handle , &Ras_Tx_SemaphoreHandle, &huart2);
   /* USER CODE END RTOS_EVENTS */
 
   /* Start scheduler */

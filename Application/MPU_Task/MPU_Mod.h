@@ -40,6 +40,6 @@ typedef struct
 
 void MPU_Init_Task(osMessageQueueId_t* MPU_Tx_MsgQueue ,osSemaphoreId_t* MPU_Semaphore);
 void MPU_Task(void *argument);
-
+void dataBuffering(float *data);
 
 #endif /* MPU_TASK_MPU_MOD_H_ */
