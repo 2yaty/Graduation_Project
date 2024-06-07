@@ -1,3 +1,0 @@
-../Modules/Movement/MOv.c:11:6:MOV_voidInitMovement	1
-../Modules/Movement/MOv.c:18:17:MOV_enuMovementHandler	2
-../Modules/Movement/MOv.c:41:6:ControlMotion	8

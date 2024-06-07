@@ -1,3 +1,0 @@
-../Modules/Movement/MOv.c:11:6:MOV_voidInitMovement	8	static
-../Modules/Movement/MOv.c:18:17:MOV_enuMovementHandler	24	static
-../Modules/Movement/MOv.c:41:6:ControlMotion	24	static

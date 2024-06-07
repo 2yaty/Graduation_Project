@@ -9,7 +9,7 @@
 
 
 
-void MOV_voidSetComm(Bluetooth_Handler *hbluetooth)
+void BLUTH_voidSetComm(Bluetooth_Handler *hbluetooth)
 {
 
 	/* Create a queue to store data that u wanna receive */
@@ -19,7 +19,7 @@ void MOV_voidSetComm(Bluetooth_Handler *hbluetooth)
 
 
 
-tenuErrorStatus MOV_enuReceiveData(Bluetooth_Handler *hbluetooth)
+tenuErrorStatus BLUTH_enuReceiveData(Bluetooth_Handler *hbluetooth)
 {
 	tenuErrorStatus RetStatus = E_OK;
 	if(hbluetooth != NULL)
@@ -33,7 +33,7 @@ tenuErrorStatus MOV_enuReceiveData(Bluetooth_Handler *hbluetooth)
 
 
 
-void MOV_enuFrameBuffering(Bluetooth_Handler *hbluetooth)
+Stored_Data_t BLUTH_enuFrameBuffering(Bluetooth_Handler *hbluetooth)
 {
 	uint8_t Loc_arrSpeedChars[4] ={0}, Loc_arrAngleChars[4] ={0}, loc_u8Count_1 =1, loc_u8Count_2 =0;
 	Stored_Data_t Loc_strStoredData;
@@ -42,12 +42,14 @@ void MOV_enuFrameBuffering(Bluetooth_Handler *hbluetooth)
 	Loc_strStoredData.SpeedChar = hbluetooth->Buffer[0];
 
 	/* Copy Speed Chars for converting to integer value */
+	//TODO: Remember to replace "ReceivingingData" by "Buffer" after testing.
 	while(hbluetooth->ReceivingingData[loc_u8Count_1] != BLUETOOTH_ANGLE_CHAR)
 	{
 		Loc_arrSpeedChars[loc_u8Count_1 - 1] = hbluetooth->Buffer[loc_u8Count_1];
 		++loc_u8Count_1;
 	}
 
+	//todo:Loc_strStoredData.SpeedVal = atoi((char *)Loc_arrSpeedChars);
 	/* Allocate the speed value */
 	Loc_strStoredData.SpeedVal = atoi(Loc_arrSpeedChars);
 
@@ -65,7 +67,7 @@ void MOV_enuFrameBuffering(Bluetooth_Handler *hbluetooth)
 	Loc_strStoredData.AngleVal = atoi(Loc_arrAngleChars);
 
 	/* Data buffering */
-	queue_push_tail_global(hbluetooth->ReceivingQueue , &Loc_strStoredData, sizeof(Loc_strStoredData));
+	return Loc_strStoredData;
 
 }
 
@@ -77,6 +79,7 @@ void BLUTH_RxCpltProcess(Bluetooth_Handler *hbluetooth)
 
 	if(hbluetooth->ReceivingingData[Loc_u8CallingNum - 1] == BLUETOOTH_END_CHAR)
 	{
+		/* To avoid overwriting in case the receiving occurred before buffering */
 		strcpy((uint8_t *)hbluetooth->Buffer, (uint8_t *)hbluetooth->ReceivingingData);
 		Loc_u8CallingNum =0;
 		BLUTH_voidRxFrameCallback();

@@ -9,7 +9,6 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
--include Modules/Movement/subdir.mk
 -include Modules/Log_Module/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/subdir.mk
 -include Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/subdir.mk
@@ -28,6 +27,7 @@ RM := rm -rf
 -include Application/testing/subdir.mk
 -include Application/Raspberry_TX_Task/subdir.mk
 -include Application/MPU_Task/subdir.mk
+-include Application/MOV_Task/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)
@@ -80,7 +80,7 @@ main-build: STM_APP.elf secondary-outputs
 
 # Tool invocations
 STM_APP.elf STM_APP.map: $(OBJS) $(USER_OBJS) D:\Abd\ Elghafar\STM_v14_WORKSPACE\STM_APP\STM32F401RCTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "STM_APP.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Abd Elghafar\STM_v14_WORKSPACE\STM_APP\STM32F401RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM_APP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+	arm-none-eabi-gcc -o "STM_APP.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\Abd Elghafar\STM_v14_WORKSPACE\STM_APP\STM32F401RCTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="STM_APP.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -u _printf_float -u _scanf_float -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

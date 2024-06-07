@@ -9,7 +9,6 @@
 ../Core/Src/main.c:606:13:MX_GPIO_Init	1
 ../Core/Src/main.c:628:6:HAL_UART_RxCpltCallback	4
 ../Core/Src/main.c:648:6:HAL_I2C_MemRxCpltCallback	2
-../Core/Src/main.c:666:6:Objects_init	1
 ../Core/Src/main.c:677:6:Task1	2
 ../Core/Src/main.c:694:6:Task2	2
 ../Core/Src/main.c:719:6:StartDefaultTask	1

@@ -23,6 +23,7 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Application/MOV_Task \
 Application/MPU_Task \
 Application/Raspberry_TX_Task \
 Application/testing \
@@ -41,5 +42,4 @@ Middlewares/Third_Party/FreeRTOS/Source \
 Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F \
 Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang \
 Modules/Log_Module \
-Modules/Movement \
 

@@ -1,3 +1,4 @@
+"./Application/MOV_Task/MOv.o"
 "./Application/MPU_Task/MPU_Mod.o"
 "./Application/Raspberry_TX_Task/Ras_TX_Task.o"
 "./Application/testing/test.o"
@@ -49,4 +50,3 @@
 "./Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.o"
 "./Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.o"
 "./Modules/Log_Module/log.o"
-"./Modules/Movement/MOv.o"

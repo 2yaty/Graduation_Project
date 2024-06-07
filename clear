@@ -1,0 +1,71 @@
+[33mcommit 400c3134b733b490c87120dba2c539d55518d3d7[m[33m ([m[1;36mHEAD -> [m[1;32mSTM32[m[33m)[m
+Author: Salem <salemalielfaidey@gmail.com>
+Date:   Sun Mar 17 02:16:08 2024 +0200
+
+    Buffering && Movement (Working State V_3)
+
+[33mcommit bd83be6ea2364ab696a01e8b3b3a832b56df3fe1[m
+Author: Salem <salemalielfaidey@gmail.com>
+Date:   Wed Mar 13 14:47:53 2024 +0200
+
+    BlueTooth Buffering && Movement Driver (Testing Version_3)
+
+[33mcommit 3e2c920ca5401c850f269770a776a1e5e7ea329e[m
+Author: Mohamed Ali Qiaty <84425563+2yaty@users.noreply.github.com>
+Date:   Tue Mar 12 00:01:32 2024 +0200
+
+    Update README.md
+
+[33mcommit c270b3a4f07835060a2a4a1a1363c791c4cd7118[m
+Author: Mohamed Ali Qiaty <eng.ayaty@gmail.com>
+Date:   Mon Mar 11 23:59:25 2024 +0200
+
+    adding readme
+
+[33mcommit 9f67c54a7f33c8bd659798ecaaa24081dde08987[m
+Author: Mohamed Ali Qiaty <eng.ayaty@gmail.com>
+Date:   Sun Feb 18 17:47:42 2024 +0200
+
+    first commit: Working state
+
+[33mcommit 30f9d9bca3be042e253bde950847c10cc1277a50[m[33m ([m[1;31morigin/STM32[m[33m)[m
+Author: Mohamed Ali Qiaty <eng.ayaty@gmail.com>
+Date:   Mon Mar 11 15:35:48 2024 +0200
+
+    deleting an empty folder
+
+[33mcommit 249dcbabf3f045bd624ab49a3654e80c4e92c21d[m
+Author: Salem <salemalielfaidey@gmail.com>
+Date:   Wed Mar 6 01:45:18 2024 +0200
+
+    BlueTooth (Testing Version_2)
+
+[33mcommit 4c9353f5bb0952c1d6d7f50b4b4d89235ca02973[m
+Author: Salem <salemalielfaidey@gmail.com>
+Date:   Sat Mar 2 17:09:07 2024 +0200
+
+    BlueTooth (Testing Version)
+
+[33mcommit 3daf55607b50b7f3b7ae88eb237ba85bae214e77[m
+Author: Salem <salemalielfaidey@gmail.com>
+Date:   Mon Feb 26 23:25:17 2024 +0200
+
+    Adding some comments
+
+[33mcommit 71e1a989c1e13bc36a82fc18e161f0fee6676fe7[m
+Author: Salem <salemalielfaidey@gmail.com>
+Date:   Mon Feb 26 23:16:17 2024 +0200
+
+    Adding MPU driver
+
+[33mcommit 3a1f3e53c048980d1561eba14837c764229f9248[m
+Author: Salem <salemalielfaidey@gmail.com>
+Date:   Mon Feb 26 21:30:33 2024 +0200
+
+     adding a documentation to MOTOR driver
+
+[33mcommit ed2e1e3062793676be3819f53627d2fc1b68f682[m
+Author: Salem <salemalielfaidey@gmail.com>
+Date:   Sun Feb 25 22:09:37 2024 +0200
+
+    Working State

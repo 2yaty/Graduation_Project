@@ -34,6 +34,17 @@ typedef struct
 	uint8_t ReceivingingData[10];
 	uint8_t Buffer[10];
 }Bluetooth_Handler;
+
+
+typedef struct
+{
+	uint8_t SpeedChar;
+	uint8_t SpeedVal;
+	uint8_t AngleChar;
+	uint16_t AngleVal;
+
+}Stored_Data_t;
+
 /*------------------------------ Data type Declarations End --------------------------------*/
 
 
@@ -52,13 +63,13 @@ typedef struct
  * @Return:
  * 			void: return nothing.
  **/
-void MOV_voidSetComm(Bluetooth_Handler *hbluetooth);
+void BLUTH_voidSetComm(Bluetooth_Handler *hbluetooth);
 
 
 /**
- * @Function Name: MOTOR_voidMoveForward
+ * @Function Name: MOTOR_voidBLUTHeForward
  *
- * @Description: Move motor forward with specific speed.
+ * @Description: BLUTHe motor forward with specific speed.
  *
  * @Arguments:
  * 			1.uint8_t Copy_u8MotorSpeed[in]:
@@ -72,13 +83,13 @@ void MOV_voidSetComm(Bluetooth_Handler *hbluetooth);
  * @Return:
  * 			tenuErrorStatus: Returns an error status that indicates if this function executed correctly or not.
  **/
-tenuErrorStatus MOV_enuReceiveData(Bluetooth_Handler *hbluetooth);
+tenuErrorStatus BLUTH_enuReceiveData(Bluetooth_Handler *hbluetooth);
 
 
 /**
- * @Function Name: MOTOR_voidMoveForward
+ * @Function Name: MOTOR_voidBLUTHeForward
  *
- * @Description: Move motor forward with specific speed.
+ * @Description: BLUTHe motor forward with specific speed.
  *
  * @Arguments:
  * 			1.uint8_t Copy_u8MotorSpeed[in]:
@@ -92,7 +103,7 @@ tenuErrorStatus MOV_enuReceiveData(Bluetooth_Handler *hbluetooth);
  * @Return:
  * 			tenuErrorStatus: Returns an error status that indicates if this function executed correctly or not.
  **/
-void MOV_enuFrameBuffering(Bluetooth_Handler *hbluetooth);
+Stored_Data_t BLUTH_enuFrameBuffering(Bluetooth_Handler *hbluetooth);
 
 
 void BLUTH_RxCpltProcess(Bluetooth_Handler *hbluetooth);
@@ -108,14 +119,6 @@ void BLUTH_voidRxFrameCallback(void);
  * Private................****************************************************************************************
  */
 
-typedef struct
-{
-	uint8_t SpeedChar;
-	uint8_t SpeedVal;
-	uint8_t AngleChar;
-	uint16_t AngleVal;
-
-}Stored_Data_t;
 
 
 /*---------------------------------------------------------------------------------------------------------------*/
