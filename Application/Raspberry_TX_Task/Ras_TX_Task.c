@@ -14,8 +14,9 @@
 
 
 typedef struct{
-	uint8_t length;
 	char data[MAX_PACKET_LENGTH];
+	uint8_t length;
+
 }Ras_TX_Data_st;
 
 
