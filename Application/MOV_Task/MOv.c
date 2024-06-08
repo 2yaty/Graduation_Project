@@ -45,20 +45,15 @@ void MOV_Task(void *argument)
 
 	for(;;)
 	{
-		/* Acquire semaphore to synchronize data request */
-		osSemaphoreAcquire(mov_Semaphore, osWaitForever);
 
 		/* Wait for data to be ready, assuming ISR will release semaphore */
-		osSemaphoreAcquire(mov_Semaphore, osWaitForever);
+		osSemaphoreAcquire(*mov_Semaphore, osWaitForever);
 
 		/* Buffer the data in the required format after receiving completes */
 		Loc_PstrStoredData = BLUTH_enuFrameBuffering(pMOV->h_bluetooth);
 
 		/* Use the deceived data to control the car movement */
 		ControlMotion(pMOV, &Loc_PstrStoredData);
-
-		/* Give the semaphore */
-		osSemaphoreRelease(mov_Semaphore);
 
 		osDelay(40);
 	}
@@ -70,7 +65,7 @@ void MOV_Task(void *argument)
 
 void BLUTH_voidRxFrameCallback(void)
 {
-	osSemaphoreRelease(mov_Semaphore);
+	osSemaphoreRelease(*mov_Semaphore);
 }
 
 
