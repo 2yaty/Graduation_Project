@@ -94,6 +94,7 @@ void Thread_MsgQueue2 (void *argument) {
 }
 */
 #include "testing/test.h"
+#include "MOV_Task/MOV.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -146,14 +147,21 @@ const osThreadAttr_t defaultTask_attributes = {
 osThreadId_t myTask02Handle;
 const osThreadAttr_t myTask02_attributes = {
   .name = "myTask02",
-  .stack_size = 1000 * 4,
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow1,
 };
 /* Definitions for myTask03 */
 osThreadId_t myTask03Handle;
 const osThreadAttr_t myTask03_attributes = {
   .name = "myTask03",
-  .stack_size = 1000 * 4,
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+/* Definitions for myTask03 */
+osThreadId_t myTask04Handle;
+const osThreadAttr_t myTask04_attributes = {
+  .name = "myTask04",
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for Ras_Tx_Queue01 */
@@ -171,16 +179,31 @@ osSemaphoreId_t Ras_Tx_SemaphoreHandle;
 const osSemaphoreAttr_t Ras_Tx_Semaphore_attributes = {
   .name = "Ras_Tx_Semaphore"
 };
+
+/* Definitions for Ras_Tx_Semaphore */
+osSemaphoreId_t MOV_SemaphoreHandle;
+const osSemaphoreAttr_t MOV_Semaphore_attributes = {
+  .name = "MOV_Semaphore"
+};
 /* USER CODE BEGIN PV */
+Bluetooth_Handler hbluetooth1;
+
 Task_MPU_Data data =
 {
 	.h_MPU = &hMPU,
 };
 
+Task_MOV_Data mov_Data=
+{
+		.hmotor_1 = &MOTOR_1_cfg,
+		.hmotor_2 = &MOTOR_2_cfg,
+		.h_bluetooth = &hbluetooth1
+};
+
 SYS_State_t state = STS_DO_NOTHING;
 
 
-Bluetooth_Handler hbluetooth1;
+
 //MOV_Handler hmove ;
 //int n =0;
 /* USER CODE END PV */
@@ -250,10 +273,9 @@ int main(void)
 
   MPU_enuInit(&hMPU);
   logs_init(Ras_TX_add_to_q);
-//  MOV_voidSetComm(&hbluetooth1);
-//  MOV_voidInitMovement();
+
 //  HAL_TIM_Base_Start_IT(&htim2);
-//  Objects_init();
+  Objects_init();
 
 //  unsigned char data;
 //  HAL_UART_Receive_IT(&huart6, &data, sizeof(uint8_t));
@@ -275,6 +297,7 @@ int main(void)
 
   /* creation of Ras_Tx_Semaphore */
   Ras_Tx_SemaphoreHandle = osSemaphoreNew(1U, 1U, &Ras_Tx_Semaphore_attributes);
+  MOV_SemaphoreHandle = osSemaphoreNew(1U, 0U, &MOV_Semaphore_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
   /* add semaphores, ... */
@@ -292,6 +315,7 @@ int main(void)
 //  testing_logs_init(&Ras_Tx_Queue01Handle);
   Ras_TX_task_init(&Ras_Tx_Queue01Handle,&Ras_Tx_SemaphoreHandle,&huart2);
   MPU_Init_Task(&Ras_Tx_Queue01Handle,&MPU_SemaphoreHandle);
+  MOV_Init_Task(&hbluetooth1,&MOV_SemaphoreHandle);
 //  Test1_init(&Ras_Tx_Queue01Handle);
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -306,6 +330,8 @@ int main(void)
   /* creation of myTask03 */
   myTask03Handle = osThreadNew(Ras_TX_Task, NULL, &myTask03_attributes);
 
+  /* creation of myTask03 */
+  myTask03Handle = osThreadNew(MOV_Task, &mov_Data, &myTask03_attributes);
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* USER CODE END RTOS_THREADS */
@@ -676,13 +702,13 @@ void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
 }
 
 
-//void Objects_init(void)
-//{
-//	  hbluetooth1.huartX = &huart6;
+void Objects_init(void)
+{
+	  hbluetooth1.huartX = &huart6;
 //	  hmove.SourceBuffer = hbluetooth1.ReceivingQueue;
 //	  hmove.hmotor_1 = &MOTOR_1_cfg;
 //	  hmove.hmotor_2 = &MOTOR_2_cfg;
-//}
+}
 
 
 

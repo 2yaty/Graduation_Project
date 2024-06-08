@@ -9,13 +9,13 @@
 
 
 
-void BLUTH_voidSetComm(Bluetooth_Handler *hbluetooth)
-{
-
-	/* Create a queue to store data that u wanna receive */
-	hbluetooth->ReceivingQueue = queue_new();
-
-}
+//void BLUTH_voidSetComm(Bluetooth_Handler *hbluetooth)
+//{
+//
+//	/* Create a queue to store data that u wanna receive */
+//	hbluetooth->ReceivingQueue = queue_new();
+//
+//}
 
 
 

@@ -86,7 +86,7 @@ void dataBuffering(float* data)
 
 	logs("MPU" ,
 			"{'AX':'%f','AY':'%f','AZ':'%f','GX':'%f','GY':'%f','GZ':'%f'}",
-			data[0],data[1],data[2],data[3],data[4],data[5]);
+			data[3],data[4],data[5],data[0],data[1],data[2]);
 //    cJSON *root = cJSON_CreateObject();
 //    if(!root){return;} // Handle memory failure
 //

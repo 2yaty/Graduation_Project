@@ -30,7 +30,6 @@
 typedef struct
 {
 	UART_HandleTypeDef *huartX;
-	Queue *ReceivingQueue;
 	uint8_t ReceivingingData[10];
 	uint8_t Buffer[10];
 }Bluetooth_Handler;

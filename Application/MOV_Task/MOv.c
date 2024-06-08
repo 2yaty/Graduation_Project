@@ -21,7 +21,7 @@ void MOV_Init_Task(Bluetooth_Handler *hbluetooth ,osSemaphoreId_t* MOV_Semaphore
 {
 	/* Init HW */
 	MOTOR_voidInitMotor();
-	BLUTH_voidSetComm(hbluetooth);
+//	BLUTH_voidSetComm(hbluetooth);
 
 	if (MOV_Semaphore == NULL)
 	{
