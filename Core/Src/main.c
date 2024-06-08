@@ -181,7 +181,7 @@ SYS_State_t state = STS_DO_NOTHING;
 
 
 Bluetooth_Handler hbluetooth1;
-MOV_Handler hmove ;
+//MOV_Handler hmove ;
 //int n =0;
 /* USER CODE END PV */
 
@@ -248,7 +248,8 @@ int main(void)
 //  Peripherals_Init();
 
 
-//  MPU_enuInit(&hMPU);
+  MPU_enuInit(&hMPU);
+  logs_init(Ras_TX_add_to_q);
 //  MOV_voidSetComm(&hbluetooth1);
 //  MOV_voidInitMovement();
 //  HAL_TIM_Base_Start_IT(&htim2);
@@ -290,7 +291,7 @@ int main(void)
   /* USER CODE BEGIN RTOS_QUEUES */
 //  testing_logs_init(&Ras_Tx_Queue01Handle);
   Ras_TX_task_init(&Ras_Tx_Queue01Handle,&Ras_Tx_SemaphoreHandle,&huart2);
-//  MPU_Init_Task(&Ras_Tx_Queue01Handle,&MPU_SemaphoreHandle);
+  MPU_Init_Task(&Ras_Tx_Queue01Handle,&MPU_SemaphoreHandle);
 //  Test1_init(&Ras_Tx_Queue01Handle);
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -300,7 +301,7 @@ int main(void)
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* creation of myTask02 */
-  myTask02Handle = osThreadNew(Test4_task, NULL, &myTask02_attributes);
+  myTask02Handle = osThreadNew(MPU_Task, &data, &myTask02_attributes);
 
   /* creation of myTask03 */
   myTask03Handle = osThreadNew(Ras_TX_Task, NULL, &myTask03_attributes);
@@ -675,13 +676,13 @@ void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
 }
 
 
-void Objects_init(void)
-{
-	  hbluetooth1.huartX = &huart6;
-	  hmove.SourceBuffer = hbluetooth1.ReceivingQueue;
-	  hmove.hmotor_1 = &MOTOR_1_cfg;
-	  hmove.hmotor_2 = &MOTOR_2_cfg;
-}
+//void Objects_init(void)
+//{
+//	  hbluetooth1.huartX = &huart6;
+//	  hmove.SourceBuffer = hbluetooth1.ReceivingQueue;
+//	  hmove.hmotor_1 = &MOTOR_1_cfg;
+//	  hmove.hmotor_2 = &MOTOR_2_cfg;
+//}
 
 
 
