@@ -146,7 +146,7 @@ void Lidar_voidReceiveData(Lidar_Handle *Copy_hLidar);
  * @Return:
  *         void: Returns nothing.
  **/
-__attribute__((weak)) void Lidar_RxFrameCallBack(Lidar_Handle *Copy_hLidar);
+__attribute__((weak)) void Lidar_RxFrameCallBack(void);
 
 /**
  * @Function Name: Lidar_voidGetDistance
@@ -161,7 +161,7 @@ __attribute__((weak)) void Lidar_RxFrameCallBack(Lidar_Handle *Copy_hLidar);
  * 		   void:
  * 					return nothing.
  **/
-void    Lidar_voidGetDistance(Lidar_Handle *Copy_hLidar);
+void    Lidar_voidGetDistance(Lidar_Handle *Copy_hLidar)
 
 
 /*------------------------- Software Interfaces Declarations End ----------------------------*/

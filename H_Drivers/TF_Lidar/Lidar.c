@@ -14,8 +14,7 @@
 /************************** static functions prototypes start *****************************************/
 static uint8_t u8ConvertDecToHex(uint8_t Copy_u8DecValue)                       ;
 static uint8_t u8CalculateChecksum(uint8_t *Copy_u8frame, uint8_t Copy_u8length);
-static tenuErrorStatus Lidar_tenuSavaSettings(void)                             ;
-
+static tenuErrorStatus Lidar_tenuSavaSettings(Lidar_Handle *Copy_hLidar)        ;
 /************************** static functions prototypes end *******************************************/
 
 
@@ -37,7 +36,6 @@ void Lidar_voidInit(Lidar_Handle *Copy_hLidar,UART_HandleTypeDef *huartX)
 
 	Copy_hLidar->huartX = huartX;
 	Copy_hLidar->LidarFrame = (uint8_t*) malloc(9*sizeof(uint8_t));
-	HAL_UART_Receive_DMA(Copy_hLidar->huartX, Copy_hLidar->LidarFrame, sizeof(Copy_hLidar->LidarFrame));
 }
 
 /**
@@ -143,7 +141,7 @@ void Lidar_voidTriggerDetection(Lidar_Handle *Copy_hLidar)
 {
 		uint8_t Loc_au8TriggerDetectionComannd[] = {0x5A, 0x04 ,0x04, 0x62} ;
 		/* Send the command */
-		HAL_UART_Transmit_DMA_IT(Copy_hLidar->huartX , Loc_au8TriggerDetectionComannd , sizeof(Loc_au8StartMeasurementCommanad));
+		HAL_UART_Transmit_DMA_IT(Copy_hLidar->huartX , Loc_au8TriggerDetectionComannd , sizeof(Loc_au8TriggerDetectionComannd));
 
 		/* Now--> Save the settings to confirm the command by sending the save setting command */
 		Lidar_tenuSavaSettings();
@@ -224,7 +222,7 @@ tenuErrorStatus Lidar_tenuSetFrameRate(Lidar_Handle *Copy_hLidar)
  **/
 void Lidar_voidReceiveData(Lidar_Handle *Copy_hLidar)
 {
-	HAL_UART_Receive_DMA(Copy_hLidar->huartX, Copy_hLidar->LidarFrame, sizeof(Copy_hLidar->LidarFrame));
+	HAL_UART_Receive_DMA_IT(Copy_hLidar->huartX, Copy_hLidar->LidarFrame, sizeof(Copy_hLidar->LidarFrame));
 	/*
 	 * Suppose now that the data is received and the interrupt is fired.
 	 * Now we need a function that service this interrupt.
@@ -235,7 +233,7 @@ void Lidar_voidReceiveData(Lidar_Handle *Copy_hLidar)
 /**
  * @Function Name: Lidar_RxFrameCallBack
  *
- * @Description: This function is a weak function that indicates the frame is received.
+ * @Description: This function is a weak function that indicates that the frame is received.
  *               The function is called in the UART_CallBack in the main file.
  *
  * @Arguments:
@@ -244,7 +242,7 @@ void Lidar_voidReceiveData(Lidar_Handle *Copy_hLidar)
  * @Return:
  *         void: Returns nothing.
  **/
-__attribute__((weak)) void Lidar_RxFrameCallBack(Lidar_Handle *Copy_hLidar)
+__attribute__((weak)) void Lidar_RxFrameCallBack(void)
 {
 
     // HAL_UART_Receive_DMA(Copy_hLidar->huartX, Copy_hLidar->LidarFrame, sizeof(Copy_hLidar->LidarFrame));
@@ -272,7 +270,7 @@ void    Lidar_voidGetDistance(Lidar_Handle *Copy_hLidar)
 	// TODO: move extracting the distance to the dma callback and the distance should be ready right away
 }
 
-static tenuErrorStatus Lidar_tenuSavaSettings(void)
+static tenuErrorStatus Lidar_tenuSavaSettings(Lidar_Handle *Copy_hLidar)
 {
 	uint8_t Loc_au8SaveSettingsFrame[] = {0x5A, 0x04, 0x11, 0x6F};
 	uint8_t Loc_au8SettingsResponseFrame[] = {0x5A, 0x05, 0x11, 0x00, 0x6F}  ;

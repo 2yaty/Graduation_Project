@@ -9,6 +9,11 @@
 /*------------------------------------ Includes End ----------------------------------------*/
 
 /*------------------------------- Macro Declarations Start ---------------------------------*/
+#define MAX_TIME_IN_SEC   100.0f
+
+#define LOW_WARNING_TH_TIME      3.0f
+#define MID_WARNING_TH_TIME      2.0f
+#define HIGH_WARNING_TH_TIME     1.0f
 /*------------------------------- Macro Declarations End------------------------------------*/
 
 
@@ -22,22 +27,51 @@ typedef struct
 
 }FCW_Handle;
 
-FCW_Handle FCW_Data ;
+typedef enum 
+{
+	No_Warning     ,
+	High_Warning   ,
+	Middle_Warning ,
+	Low_Warning     
+}enum_FC_Warnings_t ;
+
+
 /*------------------------------ Data type Declarations End --------------------------------*/
 
 /*------------------------- Software Interfaces Declarations Start --------------------------*/
 /**
- * @Function Name: FCW_Task
+ * @Function Name: FCW_u8TimeToCollision
  *
- * @Description: This task alerts the driver whenever there is an object
- * 				 in the front of the car.
+ * @Description: This function calculates the time that the car model will take to reach an object
+ *               using the 2nd motion equation.
  *
  * @Arguments:
- * 			  void :  takes nothing.
+ * 			  Speed , Distance , Acc :
+ * 			  Takes the car speed, car acceleration, and the distance of the lidar
+ * 			  between the car and the detected object.
+ *
  * @Return:
- * 			void : Returns nothing.
+ * 			float : The calculated time in seconds.
  **/
-void FCW_Task(void);
+float FCW_u8TimeToCollision(uint8_t Copy_u8Speed , float Copy_u8Distance , float Copy_u8AccX);
+
+/**
+ * @Function Name: FCW_enuIsWarning
+ *
+ * @Description: This function decides if there is a warning or not according to
+ * 				 the given time.
+ *
+ * @Arguments:
+ * 			  Calculated time :
+ * 			  takes the calculated time from FCW_u8TimeToCollision to decide a warning or not.
+ *
+ * @Return:
+ * 			enum_FC_Warnings_t : Returns an enum to show if there is an error or not and if there is an error, 
+ * 			it determine its warning level.
+ **/
+enum_FC_Warnings_t FCW_enuIsWarning(float Copy_u8CalculatedTime);
+
+
 
 
 /*------------------------- Software Interfaces Declarations End ----------------------------*/
