@@ -157,13 +157,6 @@ const osThreadAttr_t myTask03_attributes = {
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-/* Definitions for myTask03 */
-osThreadId_t myTask04Handle;
-const osThreadAttr_t myTask04_attributes = {
-  .name = "myTask04",
-  .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
 /* Definitions for Ras_Tx_Queue01 */
 osMessageQueueId_t Ras_Tx_Queue01Handle;
 const osMessageQueueAttr_t Ras_Tx_Queue01_attributes = {
@@ -179,13 +172,19 @@ osSemaphoreId_t Ras_Tx_SemaphoreHandle;
 const osSemaphoreAttr_t Ras_Tx_Semaphore_attributes = {
   .name = "Ras_Tx_Semaphore"
 };
-
+/* USER CODE BEGIN PV */
 /* Definitions for Ras_Tx_Semaphore */
 osSemaphoreId_t MOV_SemaphoreHandle;
 const osSemaphoreAttr_t MOV_Semaphore_attributes = {
   .name = "MOV_Semaphore"
 };
-/* USER CODE BEGIN PV */
+/* Definitions for myTask03 */
+osThreadId_t myTask04Handle;
+const osThreadAttr_t myTask04_attributes = {
+  .name = "myTask04",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
 Bluetooth_Handler hbluetooth1;
 
 Task_MPU_Data data =
@@ -220,10 +219,10 @@ static void MX_USART2_UART_Init(void);
 void StartDefaultTask(void *argument);
 void StartTask02(void *argument);
 void StartTask03(void *argument);
-void Task1(void *argument);
-void Task2(void *argument);
 
 /* USER CODE BEGIN PFP */
+void Task1(void *argument);
+void Task2(void *argument);
 void Objects_init(void);
 /* USER CODE END PFP */
 
@@ -293,13 +292,14 @@ int main(void)
 
   /* Create the semaphores(s) */
   /* creation of MPU_Semaphore */
-  MPU_SemaphoreHandle = osSemaphoreNew(1U, 1U, &MPU_Semaphore_attributes);
+  MPU_SemaphoreHandle = osSemaphoreNew(1, 1, &MPU_Semaphore_attributes);
 
   /* creation of Ras_Tx_Semaphore */
-  Ras_Tx_SemaphoreHandle = osSemaphoreNew(1U, 1U, &Ras_Tx_Semaphore_attributes);
-  MOV_SemaphoreHandle = osSemaphoreNew(1U, 0U, &MOV_Semaphore_attributes);
+  Ras_Tx_SemaphoreHandle = osSemaphoreNew(1, 1, &Ras_Tx_Semaphore_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
+    MOV_SemaphoreHandle = osSemaphoreNew(1U, 0U, &MOV_Semaphore_attributes);
+
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
 
@@ -330,10 +330,11 @@ int main(void)
   /* creation of myTask03 */
   myTask03Handle = osThreadNew(Ras_TX_Task, NULL, &myTask03_attributes);
 
-  /* creation of myTask03 */
-  myTask03Handle = osThreadNew(MOV_Task, &mov_Data, &myTask03_attributes);
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
+  /* creation of myTask03 */
+  myTask03Handle = osThreadNew(MOV_Task, &mov_Data, &myTask03_attributes);
+  
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -634,12 +635,23 @@ static void MX_DMA_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1|GPIO_PIN_2, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : PB1 PB2 */
+  GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
@@ -844,8 +856,6 @@ void StartTask03(void *argument)
   }
   /* USER CODE END StartTask03 */
 }
-
-
 
 /**
   * @brief  Period elapsed callback in non blocking mode
