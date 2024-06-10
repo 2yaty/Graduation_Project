@@ -95,6 +95,7 @@ void Thread_MsgQueue2 (void *argument) {
 */
 #include "testing/test.h"
 #include "MOV_Task/MOV.h"
+#include "Lidar_Task/Lidar_Task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -146,14 +147,14 @@ const osThreadAttr_t defaultTask_attributes = {
 /* Definitions for myTask02 */
 osThreadId_t myTask02Handle;
 const osThreadAttr_t myTask02_attributes = {
-  .name = "myTask02",
-  .stack_size = 512 * 4,
+  .name = "MPU",
+  .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityLow1,
 };
 /* Definitions for myTask03 */
 osThreadId_t myTask03Handle;
 const osThreadAttr_t myTask03_attributes = {
-  .name = "myTask03",
+  .name = "Ras_Tx",
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
@@ -173,15 +174,28 @@ const osSemaphoreAttr_t Ras_Tx_Semaphore_attributes = {
   .name = "Ras_Tx_Semaphore"
 };
 /* USER CODE BEGIN PV */
-/* Definitions for Ras_Tx_Semaphore */
+/* Definitions for Mov_Semaphore */
 osSemaphoreId_t MOV_SemaphoreHandle;
 const osSemaphoreAttr_t MOV_Semaphore_attributes = {
   .name = "MOV_Semaphore"
 };
+
+/* Definitions for Lidar_Semaphore */
+osSemaphoreId_t Lidar_SemaphoreHandle;
+const osSemaphoreAttr_t Lidar_Semaphore_attributes = {
+  .name = "Lidar_Semaphore"
+};
 /* Definitions for myTask03 */
 osThreadId_t myTask04Handle;
 const osThreadAttr_t myTask04_attributes = {
-  .name = "myTask04",
+  .name = "Mov",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityLow,
+};
+
+osThreadId_t myTask05Handle;
+const osThreadAttr_t myTask05_attributes = {
+  .name = "Lidar",
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
@@ -201,6 +215,7 @@ Task_MOV_Data mov_Data=
 
 SYS_State_t state = STS_DO_NOTHING;
 
+Lidar_Handle hluna;
 
 
 //MOV_Handler hmove ;
@@ -298,7 +313,10 @@ int main(void)
   Ras_Tx_SemaphoreHandle = osSemaphoreNew(1, 1, &Ras_Tx_Semaphore_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
-    MOV_SemaphoreHandle = osSemaphoreNew(1U, 0U, &MOV_Semaphore_attributes);
+  MOV_SemaphoreHandle = osSemaphoreNew(1U, 0U, &MOV_Semaphore_attributes);
+
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
+  Lidar_SemaphoreHandle = osSemaphoreNew(1U, 1U, &Lidar_Semaphore_attributes);
 
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -313,9 +331,10 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_QUEUES */
 //  testing_logs_init(&Ras_Tx_Queue01Handle);
-  Ras_TX_task_init(&Ras_Tx_Queue01Handle,&Ras_Tx_SemaphoreHandle,&huart2);
+  Ras_TX_task_init(&Ras_Tx_Queue01Handle,&Ras_Tx_SemaphoreHandle,&huart6);
   MPU_Init_Task(&Ras_Tx_Queue01Handle,&MPU_SemaphoreHandle);
   MOV_Init_Task(&hbluetooth1,&MOV_SemaphoreHandle);
+  Lidar_Init_Task(&Lidar_SemaphoreHandle,&hluna, &huart1);
 //  Test1_init(&Ras_Tx_Queue01Handle);
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -332,9 +351,11 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
-  /* creation of myTask03 */
-  myTask03Handle = osThreadNew(MOV_Task, &mov_Data, &myTask03_attributes);
+  /* creation of myTask04 */
+  myTask04Handle = osThreadNew(MOV_Task, &mov_Data, &myTask04_attributes);
   
+  /* creation of myTask05 */
+  myTask05Handle = osThreadNew(Lidar_Task, NULL, &myTask05_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -668,7 +689,7 @@ static void MX_GPIO_Init(void)
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 
-	if(huart->Instance == USART2)
+	if(huart->Instance == USART6)
 		{
 			Ras_UART_Callback();
 
@@ -681,6 +702,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	if(huart->Instance == USART1)
 	{
 		/* RSPB_RxCpltProcess(huart); */
+		Lidar_RxFrameCallBack();
 	}
 	else if(huart->Instance == USART2)
 	{

@@ -1,26 +1,24 @@
 #include "Lidar_Task.h"
+#include "../../Modules/Log_Module/log.h"
+
+osSemaphoreId_t* Lidar_Semaphore;
+Lidar_Handle *pLidar;
 
 
-osSemaphoreId_t Lidar_Semaphore;
 
-
-
-void Lidar_Init_Task(void)
+void Lidar_Init_Task(osSemaphoreId_t* lidar_sem,Lidar_Handle *Copy_hLidar,UART_HandleTypeDef *huartX)
 {
-	Lidar_Semaphore = osSemaphoreNew(1U, 1U, NULL);
-	if (Lidar_Semaphore == NULL)
-	{
-	    /* Semaphore object not created, handle failure */
-		//osError("Failed to create semaphore");
-		return;
-	}
+	Lidar_Semaphore = lidar_sem;
+	pLidar = Copy_hLidar;
+	Lidar_voidInit(Copy_hLidar,huartX);
+
 }
 
 
 void Lidar_Task(void *argument)
 {
-	Lidar_Handle *pLidar = (Lidar_Handle *)argument;
 
+	uint16_t count = 0;
 	/* Get system tick frequency */
 	uint32_t tickFrequency = osKernelGetTickFreq();
 
@@ -34,22 +32,22 @@ void Lidar_Task(void *argument)
 	for(;;)
 	{
 		/* Acquire semaphore to synchronize data request */
-		osSemaphoreAcquire(Lidar_Semaphore, osWaitForever);
+		osSemaphoreAcquire(*Lidar_Semaphore, osWaitForever);
 
 		/* Request Lidar data */
 		Lidar_voidReceiveData(pLidar);
 
 		/* Wait for data to be ready, assuming ISR will release semaphore */
-		osSemaphoreAcquire(Lidar_Semaphore, osWaitForever);
+		osSemaphoreAcquire(*Lidar_Semaphore, osWaitForever);
 
 		/* Get the data ready (calculations)*/
 		Lidar_voidGetDistance(pLidar);
 
 		//TODO: send the data 
-
+		logs_debg("Lidar","{'distance':'%d','i':'%d'}",pLidar->Distance, count++);
 		
 		/* Give the semaphore */
-		osSemaphoreRelease(Lidar_Semaphore);
+		osSemaphoreRelease(*Lidar_Semaphore);
 
 		/* Wait (Block the task) until the next period ( Task periodicity ) */
 		osDelayUntil(PeriodicityTick);
@@ -64,5 +62,5 @@ void Lidar_Task(void *argument)
 
 void Lidar_RxFrameCallBack(void)
 {
-    osSemaphoreRelease(Lidar_Semaphore);
+    osSemaphoreRelease(*Lidar_Semaphore);
 }

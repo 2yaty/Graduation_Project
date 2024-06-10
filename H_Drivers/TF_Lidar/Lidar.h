@@ -13,6 +13,7 @@
 #include "stm32f4xx.h"
 #include "stm32f4xx_hal_uart.h"
 #include "stm32f4xx_hal_dma.h"
+#include "stm32f4xx_hal.h"
 /*------------------------------------ Includes End ----------------------------------------*/
 
 /*------------------------------- Macro Declarations Start ---------------------------------*/
@@ -30,7 +31,7 @@ typedef struct
 	UART_HandleTypeDef *huartX  ;
 	uint8_t  Command            ;
 	uint8_t  FrameRate          ;
-	uint8_t  *LidarFrame        ;
+	uint8_t  LidarFrame[9]        ;
 	uint16_t Distance           ;
 }Lidar_Handle;
 /*------------------------------ Data type Declarations End --------------------------------*/
@@ -161,7 +162,7 @@ __attribute__((weak)) void Lidar_RxFrameCallBack(void);
  * 		   void:
  * 					return nothing.
  **/
-void    Lidar_voidGetDistance(Lidar_Handle *Copy_hLidar)
+void    Lidar_voidGetDistance(Lidar_Handle *Copy_hLidar);
 
 
 /*------------------------- Software Interfaces Declarations End ----------------------------*/

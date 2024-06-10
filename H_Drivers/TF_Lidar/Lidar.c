@@ -7,6 +7,7 @@
 /************************** Includes start  *****************************************/
 #include <string.h>
 #include "Lidar.h"
+#include <stdlib.h>
 
 
 /************************** Includes end  ********************************************/
@@ -35,7 +36,7 @@ void Lidar_voidInit(Lidar_Handle *Copy_hLidar,UART_HandleTypeDef *huartX)
 {
 
 	Copy_hLidar->huartX = huartX;
-	Copy_hLidar->LidarFrame = (uint8_t*) malloc(9*sizeof(uint8_t));
+//	Copy_hLidar->LidarFrame = (uint8_t*) malloc(9*sizeof(uint8_t));
 }
 
 /**
@@ -58,9 +59,9 @@ tenuErrorStatus Lidar_tenuEnableOutput(Lidar_Handle *Copy_hLidar)
 	//uint8_t Loc_au8Response[5];
 
 	/* Send the command */
-	HAL_UART_Transmit_DMA_IT(Copy_hLidar->huartX, Loc_EnableCommanad , sizeof(Loc_EnableCommanad));
+	HAL_UART_Transmit_DMA(Copy_hLidar->huartX, Loc_EnableCommanad , sizeof(Loc_EnableCommanad));
 	/* Now--> Save the settings to confirm the command by sending the save setting command */
-	Lidar_tenuSavaSettings();
+	Lidar_tenuSavaSettings(Copy_hLidar);
 
 /*
 	// Receive the response from the lidar
@@ -101,10 +102,10 @@ tenuErrorStatus Lidar_tenuDisableOutput(Lidar_Handle *Copy_hLidar)
 	//uint8_t Loc_au8Response[5];
 
 	/* Send the command */
-	HAL_UART_Transmit_DMA_IT(Copy_hLidar->huartX , Loc_au8DisableCommanad , sizeof(Loc_au8DisableCommanad));
+	HAL_UART_Transmit_DMA(Copy_hLidar->huartX , Loc_au8DisableCommanad , sizeof(Loc_au8DisableCommanad));
 
 	/* Now--> Save the settings to confirm the command by sending the save setting command */
-	Lidar_tenuSavaSettings();
+	Lidar_tenuSavaSettings(Copy_hLidar);
 /*
 	// Receive the response from the lidar
 	HAL_UART_Receive_DMA( Copy_hLidar->huartX, Loc_au8Response , sizeof(Loc_au8Response));
@@ -137,14 +138,13 @@ tenuErrorStatus Lidar_tenuDisableOutput(Lidar_Handle *Copy_hLidar)
  * 			void:
  * 					return nothing.
  **/
-void Lidar_voidTriggerDetection(Lidar_Handle *Copy_hLidar)
-{
+void Lidar_voidTriggerDetection(Lidar_Handle *Copy_hLidar){
 		uint8_t Loc_au8TriggerDetectionComannd[] = {0x5A, 0x04 ,0x04, 0x62} ;
 		/* Send the command */
-		HAL_UART_Transmit_DMA_IT(Copy_hLidar->huartX , Loc_au8TriggerDetectionComannd , sizeof(Loc_au8TriggerDetectionComannd));
+		HAL_UART_Transmit_DMA(Copy_hLidar->huartX , Loc_au8TriggerDetectionComannd , sizeof(Loc_au8TriggerDetectionComannd));
 
 		/* Now--> Save the settings to confirm the command by sending the save setting command */
-		Lidar_tenuSavaSettings();
+		Lidar_tenuSavaSettings(Copy_hLidar);
 }
 
 
@@ -183,10 +183,10 @@ tenuErrorStatus Lidar_tenuSetFrameRate(Lidar_Handle *Copy_hLidar)
 	 Loc_au8frame[5] =   Loc_u8HexChecksum ;
 
 	// the frame is ready now and can be sent
-	HAL_UART_Transmit_DMA_IT(Copy_hLidar->huartX , Loc_au8frame , sizeof(Loc_au8frame));
+	 HAL_UART_Transmit_DMA(Copy_hLidar->huartX , Loc_au8frame , sizeof(Loc_au8frame));
 
 	/* Now--> Save the settings to confirm the command by sending the save setting command */
-	Lidar_tenuSavaSettings();
+	Lidar_tenuSavaSettings(Copy_hLidar);
 
 	/*
 	// Receive the response from the lidar
@@ -222,7 +222,7 @@ tenuErrorStatus Lidar_tenuSetFrameRate(Lidar_Handle *Copy_hLidar)
  **/
 void Lidar_voidReceiveData(Lidar_Handle *Copy_hLidar)
 {
-	HAL_UART_Receive_DMA_IT(Copy_hLidar->huartX, Copy_hLidar->LidarFrame, sizeof(Copy_hLidar->LidarFrame));
+	HAL_UART_Receive_DMA(Copy_hLidar->huartX, Copy_hLidar->LidarFrame, 9);
 	/*
 	 * Suppose now that the data is received and the interrupt is fired.
 	 * Now we need a function that service this interrupt.
@@ -277,7 +277,7 @@ static tenuErrorStatus Lidar_tenuSavaSettings(Lidar_Handle *Copy_hLidar)
 	uint8_t Loc_au8SettingsResponse[5]                                       ;
 
 	// Send the LIDAR_SAVE_SETTINGS frame --> Loc_au8SaveSettingsFrame
-	HAL_UART_Transmit_DMA_IT(Copy_hLidar->huartX , Loc_au8SaveSettingsFrame , sizeof(Loc_au8SaveSettingsFrame));
+	HAL_UART_Transmit_DMA(Copy_hLidar->huartX , Loc_au8SaveSettingsFrame , sizeof(Loc_au8SaveSettingsFrame));
 
 	/*
 	// Receive the response frame from the lidar in Loc_au8SettingsResponse

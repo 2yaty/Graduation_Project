@@ -26,8 +26,9 @@
 /*------------------------- Software Interfaces Declarations Start --------------------------*/
 
 
-void Lidar_Init_Task(void);
+void Lidar_Init_Task(osSemaphoreId_t* lidar_sem,Lidar_Handle *Copy_hLidar,UART_HandleTypeDef *huartX);
 void Lidar_Task(void *argument);
+void Lidar_RxFrameCallBack(void);
 
 
 #endif 

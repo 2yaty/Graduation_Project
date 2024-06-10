@@ -1,22 +1,16 @@
 #include "FCW_Task.h"
 
 enum_FC_Warnings_t Warning_Status ;
-osSemaphoreId_t FCW_Semaphore;
+osSemaphoreId_t* FCW_Semaphore;
 
 
 
-/*
-void FCW_Init_Task(void)
+
+void FCW_Task_Init(osSemaphoreId_t* fcw_sem)
 {
-	FCW_Semaphore = osSemaphoreNew(1U, 1U, NULL);
-	if (FCW_Semaphore == NULL)
-	{
-	    // Semaphore object not created, handle failure 
-		//osError("Failed to create semaphore");
-		return;
-	}
+	FCW_Semaphore = fcw_sem;
 }
-*/
+
 
 
 void FCW_Task(void *argument)
@@ -59,7 +53,4 @@ void FCW_Task(void *argument)
 }
 
 
-void Lidar_RxFrameCallBack(void)
-{
-    osSemaphoreRelease(Lidar_Semaphore);
-}
+

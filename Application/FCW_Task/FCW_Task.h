@@ -24,7 +24,7 @@
 /*------------------------- Software Interfaces Declarations Start --------------------------*/
 
 
-void FCW_Init_Task(void);
+void FCW_Task_Init(osSemaphoreId_t* fcw_sem);
 void FCW_Task(void *argument);
 
 
