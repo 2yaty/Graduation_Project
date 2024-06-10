@@ -286,7 +286,7 @@ int main(void)
 
 
   MPU_enuInit(&hMPU);
-  logs_init(Ras_TX_add_to_q);
+
 
 //  HAL_TIM_Base_Start_IT(&htim2);
   Objects_init();

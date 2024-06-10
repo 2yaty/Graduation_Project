@@ -32,6 +32,7 @@ void Ras_TX_task_init(osMessageQueueId_t* ras_Tx_MsgQueue ,osSemaphoreId_t* uart
 	ras_tx_MsgQueue = ras_Tx_MsgQueue;
 	ras_huart = huart;
 	ras_Semaphore = uart_Semaphore;
+	logs_init(Ras_TX_add_to_q);
 }
 
 
