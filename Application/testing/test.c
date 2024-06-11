@@ -244,4 +244,35 @@ void Test4_task(void *arg){
 }
 #endif
 
+void printTaskState(uint8_t* from , osThreadState_t t_state, uint8_t* additionalData){
 
+	switch(t_state){
+
+	case osThreadInactive:
+		logs_debg(from, "the task state is inactive, %s", additionalData);
+		break;
+
+	case osThreadReady :
+			logs_debg(from, "the task state is ready, %s", additionalData);
+			break;
+
+	case osThreadRunning  :
+				logs_debg(from, "the task state is running, %s", additionalData);
+				break;
+
+	case osThreadBlocked  :
+				logs_debg(from, "the task state is blocked, %s", additionalData);
+				break;
+
+	case osThreadTerminated  :
+				logs_debg(from, "the task state is terminated, %s", additionalData);
+				break;
+
+	case osThreadError  :
+				logs_debg(from, "the task state is error, %s", additionalData);
+				break;
+
+	default:
+		logs_debg(from, "the task state is undefined, %s", additionalData);
+	}
+}

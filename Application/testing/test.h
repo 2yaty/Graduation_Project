@@ -18,8 +18,6 @@
 #define TEST4	1
 
 
-
-//Failed: due to Hard Fault Error because the log module is using Heap memory in the arg lib.
 typedef struct{
 	char data[80];
 }Test1_Data;
@@ -40,5 +38,7 @@ void Test3_task2 (void *argument);
 
 
 void Test4_task(void *arg);
+
+void printTaskState(uint8_t* from , osThreadState_t t_state, uint8_t* additionalData);
 
 #endif /* TESTING_TEST_H_ */
