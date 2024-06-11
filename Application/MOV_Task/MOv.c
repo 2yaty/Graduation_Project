@@ -56,7 +56,7 @@ void MOV_Task(void *argument)
 		/* Use the deceived data to control the car movement */
 		ControlMotion(pMOV, &Loc_PstrStoredData);
 
-		osDelay(51);
+		//osDelay(51);
 	}
 
 

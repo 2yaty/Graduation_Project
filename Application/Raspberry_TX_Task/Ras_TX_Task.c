@@ -56,7 +56,7 @@ void Ras_TX_Task(void *argument){
 		}
 
 
-		osThreadYield();
+		//osThreadYield();
 	  }
 }
 

@@ -196,8 +196,8 @@ const osThreadAttr_t myTask04_attributes = {
 osThreadId_t myTask05Handle;
 const osThreadAttr_t myTask05_attributes = {
   .name = "Lidar",
-  .stack_size = 700 * 4,
-  .priority = (osPriority_t) osPriorityLow1,
+  .stack_size = 256 * 4,
+  .priority = (osPriority_t) osPriorityLow,
 };
 Bluetooth_Handler hbluetooth1;
 
@@ -343,23 +343,24 @@ int main(void)
   /* Create the thread(s) */
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
-  printTaskState( "default Task",osThreadGetState(defaultTaskHandle),"[Before Kernel Start]");
+  //printTaskState( "default Task",osThreadGetState(defaultTaskHandle),"[Before Kernel Start]");
   /* creation of myTask02 */
-  myTask02Handle = osThreadNew(MPU_Task, &data, &myTask02_attributes);
-  printTaskState( "MPU Task",osThreadGetState(myTask02Handle),"[Before Kernel Start]");
 
   /* creation of myTask03 */
   myTask03Handle = osThreadNew(Ras_TX_Task, NULL, &myTask03_attributes);
-  printTaskState( "Ras Task",osThreadGetState(myTask03Handle),"[Before Kernel Start]");
+  //printTaskState( "Ras Task",osThreadGetState(myTask03Handle),"[Before Kernel Start]");
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* creation of myTask04 */
   myTask04Handle = osThreadNew(MOV_Task, &mov_Data, &myTask04_attributes);
-  printTaskState( "Mov Task",osThreadGetState(myTask04Handle),"[Before Kernel Start]");
+  //printTaskState( "Mov Task",osThreadGetState(myTask04Handle),"[Before Kernel Start]");
   /* creation of myTask05 */
   myTask05Handle = osThreadNew(Lidar_Task, NULL, &myTask05_attributes);
-  printTaskState( "Lidar Task",osThreadGetState(myTask05Handle),"[Before Kernel Start]");
+  //printTaskState( "Lidar Task",osThreadGetState(myTask05Handle),"[Before Kernel Start]");
   //myTask05Handle = osThreadNew(Task_Test, NULL, &myTask05_attributes);
+
+  myTask02Handle = osThreadNew(MPU_Task, &data, &myTask02_attributes);
+  //printTaskState( "MPU Task",osThreadGetState(myTask02Handle),"[Before Kernel Start]");
 
   //printing states before starting the kernel
 
@@ -826,12 +827,12 @@ void StartDefaultTask(void *argument)
   /* Infinite loop */
   for(;;)
   {
-	  printTaskState( "default Task",osThreadGetState(defaultTaskHandle),"[From Default Task]");
-	  printTaskState( "MPU Task",osThreadGetState(myTask02Handle),"[From Default Task]");
-	  printTaskState( "Ras Task",osThreadGetState(myTask03Handle),"[From Default Task]");
-	  printTaskState( "Mov Task",osThreadGetState(myTask04Handle),"[From Default Task]");
-	  printTaskState( "Lidar Task",osThreadGetState(myTask05Handle),"[From Default Task]");
-    osDelay(1);
+//	  printTaskState( "default Task",osThreadGetState(defaultTaskHandle),"[From Default Task]");
+//	  printTaskState( "MPU Task",osThreadGetState(myTask02Handle),"[From Default Task]");
+//	  printTaskState( "Ras Task",osThreadGetState(myTask03Handle),"[From Default Task]");
+//	  printTaskState( "Mov Task",osThreadGetState(myTask04Handle),"[From Default Task]");
+//	  printTaskState( "Lidar Task",osThreadGetState(myTask05Handle),"[From Default Task]");
+      osDelay(1);
   }
   /* USER CODE END 5 */
 }
