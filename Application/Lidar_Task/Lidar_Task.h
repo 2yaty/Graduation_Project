@@ -10,7 +10,7 @@
 
 /*------------------------------- Macro Declarations Start ---------------------------------*/
 
-#define Lidar_TASK_1_PERIODICITY_ms			100
+#define Lidar_TASK_1_PERIODICITY_ms			71
 
 /*-------------------------- Macro• Functions Declarations Start ---------------------------*/
 

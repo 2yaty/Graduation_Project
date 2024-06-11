@@ -44,6 +44,9 @@ void Ras_TX_Task(void *argument){
 	for(;;)
 	  {
 
+//		static uint32_t count =0;
+//		logs_debg("ras","{'times':'%d'}",count++);
+
 	    osSemaphoreAcquire(*ras_Semaphore,osWaitForever);
 
 		if(osOK == osMessageQueueGet(*ras_tx_MsgQueue, &packet, NULL, osWaitForever )){

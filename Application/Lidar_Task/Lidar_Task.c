@@ -43,6 +43,10 @@ void Lidar_Task(void *argument)
 		/* Get the data ready (calculations)*/
 		Lidar_voidGetDistance(pLidar);
 
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+		static uint32_t count =0;
+		//logs_debg("ras","{'times':'%d'}",count++);
+
 		//TODO: send the data 
 		logs_debg("Lidar","{'distance':'%d','i':'%d'}",pLidar->Distance, count++);
 		
@@ -58,6 +62,7 @@ void Lidar_Task(void *argument)
 
 
 }
+
 
 
 void Lidar_RxFrameCallBack(void)

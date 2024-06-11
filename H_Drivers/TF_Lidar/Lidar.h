@@ -147,7 +147,7 @@ void Lidar_voidReceiveData(Lidar_Handle *Copy_hLidar);
  * @Return:
  *         void: Returns nothing.
  **/
-__attribute__((weak)) void Lidar_RxFrameCallBack(void);
+//__attribute__((weak)) void Lidar_RxFrameCallBack(void);
 
 /**
  * @Function Name: Lidar_voidGetDistance

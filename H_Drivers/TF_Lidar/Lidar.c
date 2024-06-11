@@ -222,7 +222,7 @@ tenuErrorStatus Lidar_tenuSetFrameRate(Lidar_Handle *Copy_hLidar)
  **/
 void Lidar_voidReceiveData(Lidar_Handle *Copy_hLidar)
 {
-	HAL_UART_Receive_DMA(Copy_hLidar->huartX, Copy_hLidar->LidarFrame, 9);
+	HAL_UART_Receive_DMA(Copy_hLidar->huartX, Copy_hLidar->LidarFrame, 5);
 	/*
 	 * Suppose now that the data is received and the interrupt is fired.
 	 * Now we need a function that service this interrupt.
@@ -242,11 +242,11 @@ void Lidar_voidReceiveData(Lidar_Handle *Copy_hLidar)
  * @Return:
  *         void: Returns nothing.
  **/
-__attribute__((weak)) void Lidar_RxFrameCallBack(void)
-{
-
-    // HAL_UART_Receive_DMA(Copy_hLidar->huartX, Copy_hLidar->LidarFrame, sizeof(Copy_hLidar->LidarFrame));
-}
+//__attribute__((weak)) void Lidar_RxFrameCallBack(void)
+//{
+//
+//    // HAL_UART_Receive_DMA(Copy_hLidar->huartX, Copy_hLidar->LidarFrame, sizeof(Copy_hLidar->LidarFrame));
+//}
 
 
 /**

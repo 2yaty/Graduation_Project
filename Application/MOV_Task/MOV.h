@@ -17,7 +17,7 @@
 
 /*------------------------------- Macro Declarations Start ---------------------------------*/
 
-#define MPU_TASK_PERIODICITY_ms			100
+#define MOV_TASK_PERIODICITY_ms			51
 
 /*-------------------------- Macro• Functions Declarations Start ---------------------------*/
 
