@@ -148,14 +148,14 @@ const osThreadAttr_t defaultTask_attributes = {
 osThreadId_t myTask02Handle;
 const osThreadAttr_t myTask02_attributes = {
   .name = "MPU",
-  .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityLow1,
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for myTask03 */
 osThreadId_t myTask03Handle;
 const osThreadAttr_t myTask03_attributes = {
   .name = "Ras_Tx",
-  .stack_size = 512 * 4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for Ras_Tx_Queue01 */
@@ -196,8 +196,8 @@ const osThreadAttr_t myTask04_attributes = {
 osThreadId_t myTask05Handle;
 const osThreadAttr_t myTask05_attributes = {
   .name = "Lidar",
-  .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .stack_size = 700 * 4,
+  .priority = (osPriority_t) osPriorityLow1,
 };
 Bluetooth_Handler hbluetooth1;
 
@@ -239,6 +239,7 @@ void StartTask03(void *argument);
 void Task1(void *argument);
 void Task2(void *argument);
 void Objects_init(void);
+void Task_Test(void *argument);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -331,10 +332,10 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_QUEUES */
 //  testing_logs_init(&Ras_Tx_Queue01Handle);
-  Ras_TX_task_init(&Ras_Tx_Queue01Handle,&Ras_Tx_SemaphoreHandle,&huart6);
+  Ras_TX_task_init(&Ras_Tx_Queue01Handle,&Ras_Tx_SemaphoreHandle,&huart2);
   MPU_Init_Task(&Ras_Tx_Queue01Handle,&MPU_SemaphoreHandle);
   MOV_Init_Task(&hbluetooth1,&MOV_SemaphoreHandle);
-  Lidar_Init_Task(&Lidar_SemaphoreHandle,&hluna, &huart1);
+  Lidar_Init_Task(&Lidar_SemaphoreHandle,&hluna, &huart6);
 //  Test1_init(&Ras_Tx_Queue01Handle);
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -344,7 +345,7 @@ int main(void)
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* creation of myTask02 */
-  myTask02Handle = osThreadNew(MPU_Task, &data, &myTask02_attributes);
+  //myTask02Handle = osThreadNew(MPU_Task, &data, &myTask02_attributes);
 
   /* creation of myTask03 */
   myTask03Handle = osThreadNew(Ras_TX_Task, NULL, &myTask03_attributes);
@@ -356,6 +357,7 @@ int main(void)
   
   /* creation of myTask05 */
   myTask05Handle = osThreadNew(Lidar_Task, NULL, &myTask05_attributes);
+  //myTask05Handle = osThreadNew(Task_Test, NULL, &myTask05_attributes);
   /* USER CODE END RTOS_THREADS */
 
   /* USER CODE BEGIN RTOS_EVENTS */
@@ -534,7 +536,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 9600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
@@ -567,7 +569,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 9600;
+  huart2.Init.BaudRate = 19200;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
@@ -600,7 +602,7 @@ static void MX_USART6_UART_Init(void)
 
   /* USER CODE END USART6_Init 1 */
   huart6.Instance = USART6;
-  huart6.Init.BaudRate = 9600;
+  huart6.Init.BaudRate = 115200;
   huart6.Init.WordLength = UART_WORDLENGTH_8B;
   huart6.Init.StopBits = UART_STOPBITS_1;
   huart6.Init.Parity = UART_PARITY_NONE;
@@ -641,7 +643,7 @@ static void MX_DMA_Init(void)
   HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream1_IRQn);
   /* DMA2_Stream2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 5, 0);
+  HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 5, 1);
   HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
   /* DMA2_Stream6_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream6_IRQn, 5, 0);
@@ -663,6 +665,7 @@ static void MX_GPIO_Init(void)
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
+  __HAL_RCC_GPIOC_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1|GPIO_PIN_2, GPIO_PIN_RESET);
@@ -674,6 +677,11 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
@@ -689,7 +697,7 @@ static void MX_GPIO_Init(void)
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart){
 
-	if(huart->Instance == USART6)
+	if(huart->Instance == USART2)
 		{
 			Ras_UART_Callback();
 
@@ -702,7 +710,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	if(huart->Instance == USART1)
 	{
 		/* RSPB_RxCpltProcess(huart); */
-		Lidar_RxFrameCallBack();
+		//Lidar_RxFrameCallBack();
+//		logs_debg("Ldr RXCP", "in the cp");
+		BLUTH_RxCpltProcess(&hbluetooth1);
 	}
 	else if(huart->Instance == USART2)
 	{
@@ -712,7 +722,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	}
 	else if(huart->Instance == USART6)
 	{
-		BLUTH_RxCpltProcess(&hbluetooth1);
+		//BLUTH_RxCpltProcess(&hbluetooth1);
+		Lidar_RxFrameCallBack();
 	}
 }
 
@@ -738,13 +749,27 @@ void HAL_I2C_MemRxCpltCallback(I2C_HandleTypeDef *hi2c)
 
 void Objects_init(void)
 {
-	  hbluetooth1.huartX = &huart6;
+	  hbluetooth1.huartX = &huart1;
 //	  hmove.SourceBuffer = hbluetooth1.ReceivingQueue;
 //	  hmove.hmotor_1 = &MOTOR_1_cfg;
 //	  hmove.hmotor_2 = &MOTOR_2_cfg;
 }
 
 
+
+void Task_Test(void *argument)
+{
+
+	char *msg = "Mostafa Ali Known as 3eed";
+	uint8_t i = 0;
+	for(;;)
+	{
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+		static uint32_t count =0;
+		logs_debg("ras","{'times':'%d'}",count++);
+		vTaskDelay(400);
+	}
+}
 
 
 void Task1(void *argument)
