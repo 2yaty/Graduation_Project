@@ -96,6 +96,7 @@ void Thread_MsgQueue2 (void *argument) {
 #include "testing/test.h"
 #include "MOV_Task/MOV.h"
 #include "Lidar_Task/Lidar_Task.h"
+#include "FCW_Application/FCW_App.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -155,7 +156,7 @@ const osThreadAttr_t myTask02_attributes = {
 osThreadId_t myTask03Handle;
 const osThreadAttr_t myTask03_attributes = {
   .name = "Ras_Tx",
-  .stack_size = 1024 * 4,
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for Ras_Tx_Queue01 */
@@ -189,14 +190,14 @@ const osSemaphoreAttr_t Lidar_Semaphore_attributes = {
 osThreadId_t myTask04Handle;
 const osThreadAttr_t myTask04_attributes = {
   .name = "Mov",
-  .stack_size = 512 * 4,
+  .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 
 osThreadId_t myTask05Handle;
 const osThreadAttr_t myTask05_attributes = {
   .name = "Lidar",
-  .stack_size = 256 * 4,
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 Bluetooth_Handler hbluetooth1;
@@ -216,6 +217,8 @@ Task_MOV_Data mov_Data=
 SYS_State_t state = STS_DO_NOTHING;
 
 Lidar_Handle hluna;
+
+FCW_Handle fcwHandle ;
 
 
 //MOV_Handler hmove ;
@@ -333,9 +336,9 @@ int main(void)
   /* USER CODE BEGIN RTOS_QUEUES */
 //  testing_logs_init(&Ras_Tx_Queue01Handle);
   Ras_TX_task_init(&Ras_Tx_Queue01Handle,&Ras_Tx_SemaphoreHandle,&huart2);
-  MPU_Init_Task(&Ras_Tx_Queue01Handle,&MPU_SemaphoreHandle);
-  MOV_Init_Task(&hbluetooth1,&MOV_SemaphoreHandle);
-  Lidar_Init_Task(&Lidar_SemaphoreHandle,&hluna, &huart6);
+  MPU_Init_Task(&Ras_Tx_Queue01Handle,&MPU_SemaphoreHandle,&fcwHandle);
+  MOV_Init_Task(&hbluetooth1,&MOV_SemaphoreHandle,&fcwHandle);
+  Lidar_Init_Task(&Lidar_SemaphoreHandle,&hluna, &huart6,&fcwHandle);
 //  Test1_init(&Ras_Tx_Queue01Handle);
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */

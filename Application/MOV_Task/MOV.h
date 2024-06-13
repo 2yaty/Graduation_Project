@@ -12,6 +12,7 @@
 #include <Bluetooth/Bluetooth.h>
 #include "MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.h"
 #include "cmsis_os.h"
+#include "FCW_Application/FCW_App.h"
 //#include "stm32f4xx_hal.h"
 /*------------------------------------ Includes End ----------------------------------------*/
 
@@ -39,7 +40,7 @@ typedef struct
 /*------------------------- Software Interfaces Declarations Start --------------------------*/
 
 
-void MOV_Init_Task(Bluetooth_Handler *hbluetooth ,osSemaphoreId_t* MOV_Semaphore);
+void MOV_Init_Task(Bluetooth_Handler *hbluetooth ,osSemaphoreId_t* MOV_Semaphore,FCW_Handle* fcw);
 void MOV_Task(void *argument);
 
 

@@ -30,9 +30,9 @@ typedef struct
 typedef enum 
 {
 	No_Warning     ,
-	High_Warning   ,
+	Low_Warning   ,
 	Middle_Warning ,
-	Low_Warning     
+	High_Warning
 }enum_FC_Warnings_t ;
 
 

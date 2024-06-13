@@ -3,13 +3,15 @@
 
 osSemaphoreId_t* Lidar_Semaphore;
 Lidar_Handle *pLidar;
+static FCW_Handle* fcwHandle ;
 
+void sendFCW(void);
 
-
-void Lidar_Init_Task(osSemaphoreId_t* lidar_sem,Lidar_Handle *Copy_hLidar,UART_HandleTypeDef *huartX)
+void Lidar_Init_Task(osSemaphoreId_t* lidar_sem,Lidar_Handle *Copy_hLidar,UART_HandleTypeDef *huartX , FCW_Handle* fcw)
 {
 	Lidar_Semaphore = lidar_sem;
 	pLidar = Copy_hLidar;
+	fcwHandle = fcw;
 	Lidar_voidInit(Copy_hLidar,huartX);
 
 }
@@ -18,7 +20,10 @@ void Lidar_Init_Task(osSemaphoreId_t* lidar_sem,Lidar_Handle *Copy_hLidar,UART_H
 void Lidar_Task(void *argument)
 {
 
-	uint16_t count = 0;
+	FCW_Handle *pFWC = (FCW_Handle *)argument;
+
+	float32_t CalculatedTime;
+
 	/* Get system tick frequency */
 	uint32_t tickFrequency = osKernelGetTickFreq();
 
@@ -45,10 +50,11 @@ void Lidar_Task(void *argument)
 
 		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 		static uint32_t count =0;
-		//logs_debg("ras","{'times':'%d'}",count++);
 
 		//TODO: send the data 
-		logs_debg("Lidar","{'distance':'%d','i':'%d'}",pLidar->Distance, count++);
+//		logs_debg("Lidar","{'distance':'%d','i':'%d'}",pLidar->Distance, count++);
+		fcwHandle->Distance = pLidar->Distance/100.0f;
+		sendFCW();
 		
 		/* Give the semaphore */
 		osSemaphoreRelease(*Lidar_Semaphore);
@@ -58,6 +64,19 @@ void Lidar_Task(void *argument)
 
 		/* Increment the tick count for the next period */
 		PeriodicityTick += delayTicks;
+	}
+
+
+}
+
+void sendFCW(void){
+
+	float time = FCW_u8TimeToCollision(fcwHandle->Speed , fcwHandle->Distance , fcwHandle->AccX);
+
+	enum_FC_Warnings_t warning = FCW_enuIsWarning(time);
+
+	if(warning != No_Warning){
+		logs_debg("FCW","{'warning_level':%d,'speed':%d, 'distance':%f,'accx':%f}",warning, fcwHandle->Speed , fcwHandle->Distance , fcwHandle->AccX);
 	}
 
 

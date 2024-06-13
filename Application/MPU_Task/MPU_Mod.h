@@ -12,6 +12,8 @@
 #include "MPU6050/MPU_Lcfg.h"
 #include "cmsis_os.h"
 #include "cJSON/cJSON.h"
+#include "Lidar_Task/Lidar_Task.h"
+#include "FCW_Application/FCW_App.h"
 /*------------------------------------ Includes End ----------------------------------------*/
 
 /*------------------------------- Macro Declarations Start ---------------------------------*/
@@ -38,7 +40,7 @@ typedef struct
 /*------------------------- Software Interfaces Declarations Start --------------------------*/
 
 
-void MPU_Init_Task(osMessageQueueId_t* MPU_Tx_MsgQueue ,osSemaphoreId_t* MPU_Semaphore);
+void MPU_Init_Task(osMessageQueueId_t* MPU_Tx_MsgQueue ,osSemaphoreId_t* MPU_Semaphore ,FCW_Handle* fcw);
 void MPU_Task(void *argument);
 void dataBuffering(float *data);
 

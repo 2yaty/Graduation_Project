@@ -22,7 +22,7 @@ float FCW_u8TimeToCollision(uint8_t Copy_u8Speed, float Copy_u8Distance, float C
 	 * The second motion equation :
 	 * 0.5at^2 + vt - s = 0 --> AccX(a) , calculated time (t) , speed(v), distance(s)
 	 * */
-    if(Copy_u8AccX == 0.0f)
+    if(Copy_u8AccX < 0.01f)
     {
         // If acceleration is zero, use the simple time formula: distance / speed
         if(Copy_u8Speed == 0)
@@ -35,6 +35,12 @@ float FCW_u8TimeToCollision(uint8_t Copy_u8Speed, float Copy_u8Distance, float C
         }
     }
 
+    /*
+     * 0.5at^2 + vt - s = 0
+     * a = 0.5a
+     * b = v
+     * c = -s
+     */
     // Use the quadratic formula to get the time to collision
     float discriminant = (Copy_u8Speed * Copy_u8Speed) + (2 * Copy_u8AccX * Copy_u8Distance);
 

@@ -11,11 +11,12 @@
 
 osMessageQueueId_t* mpu_Tx_MsgQueue;
 osSemaphoreId_t* mpu_Semaphore;
+static FCW_Handle* fcwHandle ;
 
 //void dataBuffering(float *data);
 
 
-void MPU_Init_Task(osMessageQueueId_t* MPU_Tx_MsgQueue ,osSemaphoreId_t* MPU_Semaphore)
+void MPU_Init_Task(osMessageQueueId_t* MPU_Tx_MsgQueue ,osSemaphoreId_t* MPU_Semaphore ,FCW_Handle* fcw)
 {
 	//MPU_Semaphore = osSemaphoreNew(1U, 1U, NULL);
 	if (MPU_Semaphore == NULL)
@@ -26,6 +27,7 @@ void MPU_Init_Task(osMessageQueueId_t* MPU_Tx_MsgQueue ,osSemaphoreId_t* MPU_Sem
 	}
 	mpu_Tx_MsgQueue = MPU_Tx_MsgQueue;
 	mpu_Semaphore = MPU_Semaphore;
+	fcwHandle = fcw;
 
 }
 
@@ -57,6 +59,9 @@ void MPU_Task(void *argument)
 
 		/* Get the data ready (calculations)*/
 		MPU_GetReadings(pMPU->h_MPU);
+
+		/* Assign The AccelX to FWC */
+		fcwHandle->AccX = pMPU->AccelGyroDataBuffer[3];
 
 		/* Queue the data into Tx buffer */
 		dataBuffering(pMPU->AccelGyroDataBuffer);

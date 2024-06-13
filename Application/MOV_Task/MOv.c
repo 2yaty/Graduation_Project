@@ -12,13 +12,15 @@
 
 
 osSemaphoreId_t* mov_Semaphore;
+static FCW_Handle* fcwHandle ;
 
 void ControlMotion(Task_MOV_Data *Copy_HBluQueue, Stored_Data_t *Copy_PstrStoredData);
 
 
 
-void MOV_Init_Task(Bluetooth_Handler *hbluetooth ,osSemaphoreId_t* MOV_Semaphore)
+void MOV_Init_Task(Bluetooth_Handler *hbluetooth ,osSemaphoreId_t* MOV_Semaphore,FCW_Handle* fcw)
 {
+	fcwHandle = fcw;
 	/* Init HW */
 	MOTOR_voidInitMotor();
 //	BLUTH_voidSetComm(hbluetooth);
@@ -52,11 +54,12 @@ void MOV_Task(void *argument)
 		/* Buffer the data in the required format after receiving completes */
 		Loc_PstrStoredData = BLUTH_enuFrameBuffering(pMOV->h_bluetooth);
 
-		logs_debg("Mov", "Speed: %d , Angle: %d",Loc_PstrStoredData.SpeedVal , Loc_PstrStoredData.AngleVal);
+//		logs_debg("Mov", "Speed: %d , Angle: %d",Loc_PstrStoredData.SpeedVal , Loc_PstrStoredData.AngleVal);
+		fcwHandle->Speed =Loc_PstrStoredData.SpeedVal;
 		/* Use the deceived data to control the car movement */
 		ControlMotion(pMOV, &Loc_PstrStoredData);
 
-		//osDelay(51);
+		osDelay(51);
 	}
 
 
@@ -111,7 +114,7 @@ void ControlMotion(Task_MOV_Data *Copy_HBluQueue, Stored_Data_t *Copy_PstrStored
 			MOTOR_voidTurnLeft(Copy_PstrStoredData->SpeedVal, Loc_u8Angle, Copy_HBluQueue->hmotor_1, Copy_HBluQueue->hmotor_2);
 		}
 	}
-	logs_debg("Mov", "Speed_1: %d , Angle_1: %d",Copy_PstrStoredData->SpeedVal , Loc_u8Angle);
+	//logs_debg("Mov", "Speed_1: %d , Angle_1: %d",Copy_PstrStoredData->SpeedVal , Loc_u8Angle);
 }
 
 
