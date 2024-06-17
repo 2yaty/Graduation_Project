@@ -1,40 +1,43 @@
-import queue
+import cv2
+import multiprocessing as mp
 import time
-import picamera
 
-# Initialize the queues
-traffic_process_queue = queue.Queue()
-lane_process_queue = queue.Queue()
 
-# Setup Pi Camera
-camera = picamera.PiCamera()
 
-# Function to capture and distribute images
-def camera_service_process():
-    try:
-        camera.resolution = (1024, 768)
-        while True:
-            # Capture image
-            stream = io.BytesIO()
-            camera.capture(stream, format='jpeg')
-            
-            # Move to the beginning of the stream
-            stream.seek(0)
-            
-            # Read image data
-            image_data = stream.read()
-            
-            # Put the image data in both queues
-            traffic_process_queue.put(image_data)
-            lane_process_queue.put(image_data)
-            
-            # Sleep for a specified interval before capturing next image
-            time.sleep(1)
-            
-    except Exception as e:
-        print(f"Error in camera service process: {e}")
-    finally:
-        camera.close()
+def camera_process(traffic_queue, lane_queue, ip_address):
+    cap = cv2.VideoCapture(ip_address)
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            continue
+
+        # Resize frame if needed
+        frame = cv2.resize(frame, (640, 480))
+
+        # Put the frame in both queues
+        if not traffic_queue.full():
+            traffic_queue.put(frame)
+        if not lane_queue.full():
+            lane_queue.put(frame)
+
+        # Sleep for a specified interval before capturing next image
+        time.sleep(0.1)
+
+        # Display the frame for debugging
+        #cv2.imshow('Camera Frame', frame)
+
+        # Exit on 'q' key press
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     break
+
+    # cap.release()
+    # cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    camera_service_process()
+    ip_address = "tcp://127.0.0.1:8888"  # Replace with your IP camera address
+    traffic_queue = mp.Queue(maxsize=10)
+    lane_queue = mp.Queue(maxsize=10)
+    p = mp.Process(target=camera_process, args=(traffic_queue, lane_queue, ip_address))
+    p.start()
+    p.join()

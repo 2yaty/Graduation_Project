@@ -20,19 +20,63 @@ def process_func(queue1, queue2):
     sender.join()
     receiver.join()
 
-if __name__ == "__main__":
+
+
+# from multiprocessing import Process, Manager
+
+# class Student:
+#     def __init__(self, name):
+#         self.name = name
+
+# def update_student(shared_student):
+#     (shared_student.student).name = 'Updated Name'
+
+# if __name__ == '__main__':
+#     with Manager() as manager:
+#         shared_student = manager.Namespace()
+#         shared_student.student = Student('Original Name')
+        
+#         process = Process(target=update_student, args=(shared_student,))
+#         process.start()
+#         process.join()
+
+#         print(shared_student.student.name)  # Will print 'Updated Name'
+
+from multiprocessing import Process, Manager
+
+class Student:
+    def __init__(self, name):
+        self.name = name
+
+def update_student(shared_student):
+    shared_student.name = 'Updated Name'
+
+if __name__ == '__main__':
+    with Manager() as manager:
+        # Create a proxy for the Student object
+        student_proxy = manager.Namespace()
+        student_proxy.name = 'Original Name'
+        
+        process = Process(target=update_student, args=(student_proxy,))
+        process.start()
+        process.join()
+
+        print(student_proxy.name)  # Should print 'Updated Name'
+
+
+# if __name__ == "__main__":
     # Create queues
-    queue1 = multiprocessing.Queue()
-    queue2 = multiprocessing.Queue()
+    # queue1 = multiprocessing.Queue()
+    # queue2 = multiprocessing.Queue()
 
-    # Create processes
-    process1 = multiprocessing.Process(target=process_func, args=(queue1, queue2))
-    process2 = multiprocessing.Process(target=process_func, args=(queue2, queue1))
+    # # Create processes
+    # process1 = multiprocessing.Process(target=process_func, args=(queue1, queue2))
+    # process2 = multiprocessing.Process(target=process_func, args=(queue2, queue1))
 
-    # Start processes
-    process1.start()
-    process2.start()
+    # # Start processes
+    # process1.start()
+    # process2.start()
 
-    # Join processes
-    process1.join()
-    process2.join()
+    # # Join processes
+    # process1.join()
+    # process2.join()
