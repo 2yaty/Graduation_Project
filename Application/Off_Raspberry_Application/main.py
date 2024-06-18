@@ -1,5 +1,7 @@
 import multiprocessing as mp
 import signal
+
+import requests
 from Camera_Process import camera_process
 from TSR_Model_Process import traffic_sign_process
 from LDW_Model_Process import lane_departure_process
@@ -13,6 +15,47 @@ import time
 from datetime import datetime
 
 show = True
+
+
+def send_shared_trip_to_theWeb(shared_trip,display_output_queue):
+    # API endpoint URL
+    #TODO: replace the URL with the actual URL
+    url = "http://127.0.0.1:8080/api/v1/trips"
+
+    serial_number = "12345678910"
+
+    # API key for authentication
+    api_key = "e9H3pMSRS7Bxd1XXCUVPVCIT0ntESkjEB0h0JNqyW2tDu6rLW0i48EJxQFQZkRMfDrTuy9lBivLJmQ54Bjo6sDEeAsWIGafszZE1MEID1OIXkMXHyJOH6m7CHuYFCq3o"
+
+
+    # Prepare the headers with the API key
+    headers = {
+        "CAR-API-KEY": api_key
+    }
+
+    shared_trip["serialNumber"] = serial_number
+
+    try:
+        # Send the POST request to the API endpoint with headers
+        response = requests.post(url, json=shared_trip, headers=headers)
+
+        # Check the response status code
+        if response.status_code == 200:
+            print("Shared trip data sent successfully!")
+            display_output_queue.put("trip data sent successfully!")
+        else:
+            print("Failed to send shared trip data. Status code:", response.status_code)
+            display_output_queue.put("Failed to send trip data. Status code:", response.status_code)
+
+    except requests.exceptions.RequestException as e:
+        print("An error occurred while sending shared trip data:", str(e))
+        display_output_queue.put("An error occurred while sending trip data to the web, could be no internet connection")
+
+
+
+def calculate_overall_score(trip_statistics):
+    #TODO: calculate the overall score
+    pass
 
 if __name__ == "__main__":
     
@@ -28,76 +71,81 @@ if __name__ == "__main__":
         timeout=1
     )
 
-    with mp.Manager() as manager:
-        shared_trip = manager.Namespace()
-        shared_trip.trip = None
+    manager = mp.Manager()
+    shared_trip = manager.dict({
+            "start_time": None,
+            "end_time": None,
+            "suddenBraking": 0,
+            "suddenAcceleration": 0,
+            "aggTL": 0,
+            "aggTR": 0,
+            "speedLimitViolation": 0,
+            "normalDriving": 0,
+            "totalScore": 0
+        }
+)
 
-    speed = mp.Value('d', 0.0)
+
+    speed = manager.Value('d', 0.0)
 
     # Create input queues
     traffic_queue = mp.Queue(maxsize=10)
     lane_queue = mp.Queue(maxsize=10)
     dmrs_queue = mp.Queue(maxsize=10)
-
-    # Create output queues
-    traffic_output_queue = mp.Queue(maxsize=10)
-    lane_output_queue = mp.Queue(maxsize=10)
-    dmrs_output_queue = mp.Queue(maxsize=10)
     display_output_queue = mp.Queue(maxsize=10)
+
+    StartEvent = mp.Event()
+    StopEvent = mp.Event()
+
+    
 
 
     camera_proc = mp.Process(target=camera_process,
                             args=(traffic_queue, lane_queue,ip_address))
     traffic_proc = mp.Process(
-        target=traffic_sign_process, args=(traffic_queue,traffic_output_queue))
-    lane_proc = mp.Process(target=lane_departure_process, args=(lane_queue,lane_output_queue))
-    stm_proc = threading.Thread(target=stm_process, args=(ser, dmrs_queue,speed))
-    dmrs_proc = threading.Thread(target=dmrs_process, args=(dmrs_queue,dmrs_output_queue))
-    warning_proc = mp.Process(target=warning_process, args=(dmrs_output_queue,traffic_output_queue,lane_output_queue,display_output_queue,speed , shared_trip))
-
-    def start_models_processes():
-        shared_trip.trip  = TripStatistics.TripStatistics()
-        shared_trip.setStart_time(datetime.now())
-        dmrs_proc.start()
-        camera_proc.start()
-        traffic_proc.start()
-        lane_proc.start()
-
-    # TODO: Test these signals to see if they work as expected
-    signal.signal(signal.SIGINT, start_models_processes) # TODO: make a custom signals for the start and stop of the models
-
-    def stop_models_processes():
-        trip.setEnd_time(datetime.now())
-        trip.calculateOverAllScore()
-        #TODO: send the trip statistics to the server
-        dmrs_proc.terminate()
-        camera_proc.terminate()
-        traffic_proc.terminate()
-        lane_proc.terminate()
-        # empty the queues
-        while not traffic_queue.empty():
-            traffic_queue.get()
-
-        while not lane_queue.empty():
-            lane_queue.get()
-        
-        while not dmrs_queue.empty():
-            dmrs_queue.get()
-        
-        while not traffic_output_queue.empty():
-            traffic_output_queue.get()
-        
-        while not lane_output_queue.empty():
-            lane_output_queue.get()
-        
-        while not dmrs_output_queue.empty():
-            dmrs_output_queue.get()
-        
-        trip = None
-        
-    signal.signal(signal.SIGTERM, stop_models_processes)
+        target=traffic_sign_process, args=(traffic_queue,display_output_queue,shared_trip))
+    lane_proc = mp.Process(target=lane_departure_process, args=(lane_queue,display_output_queue))
+    stm_proc = threading.Thread(target=stm_process, args=(ser, dmrs_queue, display_output_queue,speed, StartEvent, StopEvent))
+    dmrs_proc = threading.Thread(target=dmrs_process, args=(dmrs_queue,shared_trip))
+    
 
     stm_proc.start()
+    
+    StartEvent.wait()
+
+
+    shared_trip["start_time"] = datetime.now()
+    dmrs_proc.start()
+    camera_proc.start()
+    traffic_proc.start()
+    lane_proc.start()
+    StartEvent.clear()
+
+
+    StopEvent.wait()
+    shared_trip['end_time'] = datetime.now()
+    calculate_overall_score(shared_trip)
+    send_shared_trip_to_theWeb(shared_trip)
+    dmrs_proc.terminate()
+    camera_proc.terminate()
+    traffic_proc.terminate()
+    lane_proc.terminate()
+    # empty the queues
+    while not traffic_queue.empty():
+        traffic_queue.get()
+
+    while not lane_queue.empty():
+        lane_queue.get()
+    
+    while not dmrs_queue.empty():
+        dmrs_queue.get()
+    
+
+    StopEvent.clear()
+        
+    manager.shutdown()
+
+    
 
     
         

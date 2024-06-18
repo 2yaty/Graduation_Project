@@ -3,7 +3,21 @@ import multiprocessing as mp
 import  traffic_model  # Importing the traffic model
 from main import show
 
-def traffic_sign_process(queue ,traffic_output_queue):
+def traffic_sign_process(queue ,display_output_queue,trip_statistics,speed):
+
+    def handle_traffic_warnings(data):
+            # Get data from the traffic output queue
+            
+            # TODO: compare the speed with the speed limit and increment the speed limit violation
+            if data == 'speed_limit_violation':
+                trip_statistics['speed_limit_violation'] += 1
+
+
+            display_output_queue.put(data)
+            # Example: Print the data
+            # print("Traffic Output:", data)
+
+
     while True:
         if not queue.empty():
             frame = queue.get()
@@ -11,7 +25,7 @@ def traffic_sign_process(queue ,traffic_output_queue):
             # Run the traffic sign model
             traffic_sign = traffic_model.predict_traffic_sign(frame)
             print("Traffic Sign:", traffic_sign) # TODO: test the output and see what it looks like and comment this line
-            traffic_output_queue.put(traffic_sign)
+            handle_traffic_warnings(traffic_sign)
             if show:
                 cv2.imshow('Traffic Sign Frame', frame)
 

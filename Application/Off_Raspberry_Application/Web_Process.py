@@ -2,25 +2,25 @@ import requests
 
 def send_shared_trip_data(shared_trip):
     # API endpoint URL
-    url = "https://api.example.com/send_shared_trip_data"
+    url = "http://127.0.0.1:8080/api/v1/trips"
 
-    serial_number = "your_serial_number_here"
+    serial_number = "12345678910"
 
     # API key for authentication
-    api_key = "your_api_key_here"
+    api_key = "e9H3pMSRS7Bxd1XXCUVPVCIT0ntESkjEB0h0JNqyW2tDu6rLW0i48EJxQFQZkRMfDrTuy9lBivLJmQ54Bjo6sDEeAsWIGafszZE1MEID1OIXkMXHyJOH6m7CHuYFCq3o"
 
 
     # Prepare the headers with the API key
     headers = {
-        "Authorization": f"Bearer {api_key}",
-        "serial_number": serial_number  
+        "CAR-API-KEY": api_key
     }
+
+    shared_trip["serialNumber"] = serial_number
 
     try:
         # Send the POST request to the API endpoint with headers
-        response = requests.post(url, json=shared_trip.get_trip_statistics(), headers=headers)
+        response = requests.post(url, json=shared_trip, headers=headers)
 
-        # TODO: send the response state to the STM
         # Check the response status code
         if response.status_code == 200:
             print("Shared trip data sent successfully!")
@@ -32,10 +32,15 @@ def send_shared_trip_data(shared_trip):
 
 # Example usage
 shared_trip_data = {
-    "trip_id": 12345,
-    "start_location": "New York",
-    "end_location": "San Francisco",
-    # Add more shared trip data fields as needed
+    "start_time": "2023-12-24T05:22:55",
+            "end_time": "2023-12-24T06:00:55",
+            "suddenBraking": 100,
+            "suddenAcceleration": 8,
+            "aggTL": 11,
+            "aggTR": 14,
+            "speedLimitViolation": 17,
+            "normalDriving": 20,
+            "totalScore": 70
 }
 
 send_shared_trip_data(shared_trip_data)

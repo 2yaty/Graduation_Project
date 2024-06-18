@@ -4,7 +4,13 @@ import lane_model  # Importing the lane departure model
 import matplotlib.image as mpimg
 from main import show
 
-def lane_departure_process(queue,lane_output_queue):
+def lane_departure_process(queue,display_output_queue):
+
+    def handle_lane_output(data):
+            if data == False:
+                display_output_queue.put("You are out of lane")
+
+
     while True:
         if not queue.empty():
             frame = queue.get()
@@ -13,12 +19,16 @@ def lane_departure_process(queue,lane_output_queue):
             annotatedFrame, isInLane = lane_model.predict_lane_departure(frame)
             # print("Lane Departure:", lane_departure)
 
+
+            handle_lane_output(isInLane)
+
+
             # # For debugging
             # cv2.imshow('Lane Departure Frame', frame)
             if show:
                 cv2.imshow('Lane Departure Annotated Frame', annotatedFrame)
             
-            lane_output_queue.put(isInLane)
+            
                 
         # if cv2.waitKey(1) & 0xFF == ord('q'):
         #         break    

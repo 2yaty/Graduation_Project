@@ -8,19 +8,20 @@ import multiprocessing
 import threading
 
 # the process takes the serial port, the queue that is shared with the DMRS model and the speed variable that is shared with the Warning model
-def stm_process(ser, dmrs_queue,speed):
+def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent):
 
     zero_speed_start_time  = 0
 
     def terminate_models():
-        parent_pid = os.getppid()
-        os.kill(parent_pid, signal.SIGTERM)
+        # parent_pid = os.getppid()
+        # os.kill(parent_pid, signal.SIGTERM)
+        StopEvent.set()
 
     def check_speed( new_speed):
                 zero_speed_start_time = 0
 
                 # Terminate the running processes if the speed is zero for more than 60 seconds
-                if speed == 0 and new_speed == 0:
+                if speed.value == 0 and new_speed == 0:
                     if zero_speed_start_time == 0:
                         zero_speed_start_time = time.time()
                     else:
@@ -29,7 +30,7 @@ def stm_process(ser, dmrs_queue,speed):
                             os.kill(parent_pid, signal.SIGTERM)
                 else:
                     zero_speed_start_time = 0
-                    speed = new_speed
+                    speed.value = new_speed
 
 
     def process_data(data):
@@ -41,8 +42,9 @@ def stm_process(ser, dmrs_queue,speed):
 
         # Start the models if STM sends a start signal
         if source == 'start':
-            parent_pid = os.getppid()  # Get the parent process ID
-            os.kill(parent_pid, signal.SIGINT)
+            # parent_pid = os.getppid()  # Get the parent process ID
+            # os.kill(parent_pid, signal.SIGINT)
+            StartEvent.set()
 
         # Stop the models if STM sends a stop signal
         if source == 'stop':
@@ -70,6 +72,16 @@ def stm_process(ser, dmrs_queue,speed):
             dmrs_queue.put(values)
 
 
+    def send_data_to_STM():
+        while True:
+            # Get the data from the display output queue
+            data = display_output_queue.get()
+            # Send the data to the STM
+            ser.write(data)
+    
+    # Create a thread to send the data to the STM
+    send_data_thread = threading.Thread(target=send_data_to_STM)
+    send_data_thread.start()
 
     while True:
         # TODO: if there any problem with the serial port, terminate all the models

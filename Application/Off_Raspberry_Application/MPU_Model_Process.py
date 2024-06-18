@@ -4,7 +4,40 @@ import pickle
 import multiprocessing as mp
 
 
-def dmrs_process(data_queue,dmrs_output_queue):
+def dmrs_process(data_queue,trip_statistics):
+
+
+    def handle_dmrs_warnings(data):
+
+            # Assuming your predictions are numerical labels (1, 2, 3, 4, 5)
+                # You can map them to the corresponding actions
+                # predicted_actions = {
+                #     1: 'sudden_acceleration',
+                #     2: 'sudden_right_turn',
+                #     3: 'sudden_left_turn',
+                #     4: 'sudden_break',
+                #     5: 'Normal'
+                # }
+            
+            if data == 1:
+                trip_statistics['sudden_acceleration'] += 1
+
+            if data == 2:
+                trip_statistics['sudden_right_turn'] += 1
+            
+            if data == 3:
+                trip_statistics['sudden_left_turn'] += 1
+
+            if data == 4:
+                trip_statistics['sudden_break'] += 1
+
+            if data == 5:
+                trip_statistics['Normal'] += 1
+            
+            # # Example: Print the data
+            # print("DMRS Output:", data)
+
+
     # Load your exported model
     window_size = 6
     with open(r'\mobile_2_model_2_with.pkl', 'rb') as file:
@@ -132,7 +165,7 @@ def dmrs_process(data_queue,dmrs_output_queue):
                 # print(f'Predicted action: {predicted_action}')
 
                 # Send the predicted action to the output queue
-                dmrs_output_queue.put(prediction)
+                handle_dmrs_warnings(prediction)
 
                 # Clear the first reading from the data list for the next iteration
                 data_list = data_list[1:]
