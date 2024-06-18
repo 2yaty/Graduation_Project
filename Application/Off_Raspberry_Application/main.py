@@ -19,8 +19,7 @@ show = True
 
 def send_shared_trip_to_theWeb(shared_trip,display_output_queue):
     # API endpoint URL
-    #TODO: replace the URL with the actual URL
-    url = "http://127.0.0.1:8080/api/v1/trips"
+    url = "https://dmrs-c487bb5f6150.herokuapp.com/api/v1/trips"
 
     serial_number = "12345678910"
 
