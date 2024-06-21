@@ -8,4 +8,4 @@ def predict_traffic_sign(image):
 
     model = YOLO(
         r"/traffic_best.pt")
-    model.predict(source=image, show=False, conf=0.5)
+    return model.predict(source=image, show=False, conf=0.5)
