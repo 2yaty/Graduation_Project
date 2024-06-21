@@ -134,7 +134,6 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart6;
 DMA_HandleTypeDef hdma_usart1_rx;
 DMA_HandleTypeDef hdma_usart2_tx;
-DMA_HandleTypeDef hdma_usart2_rx;
 DMA_HandleTypeDef hdma_usart6_tx;
 DMA_HandleTypeDef hdma_usart6_rx;
 
@@ -145,19 +144,33 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for myTask02 */
-osThreadId_t myTask02Handle;
-const osThreadAttr_t myTask02_attributes = {
-  .name = "MPU",
+/* Definitions for MPUTask02 */
+osThreadId_t MPUTask02Handle;
+const osThreadAttr_t MPUTask02_attributes = {
+  .name = "MPUTask02",
   .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityHigh,
+};
+/* Definitions for RasTask03 */
+osThreadId_t RasTask03Handle;
+const osThreadAttr_t RasTask03_attributes = {
+  .name = "RasTask03",
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityHigh,
+};
+/* Definitions for MovTask04 */
+osThreadId_t MovTask04Handle;
+const osThreadAttr_t MovTask04_attributes = {
+  .name = "MovTask04",
+  .stack_size = 256 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
-/* Definitions for myTask03 */
-osThreadId_t myTask03Handle;
-const osThreadAttr_t myTask03_attributes = {
-  .name = "Ras_Tx",
+/* Definitions for LidarTask05 */
+osThreadId_t LidarTask05Handle;
+const osThreadAttr_t LidarTask05_attributes = {
+  .name = "LidarTask05",
   .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .priority = (osPriority_t) osPriorityAboveNormal7,
 };
 /* Definitions for Ras_Tx_Queue01 */
 osMessageQueueId_t Ras_Tx_Queue01Handle;
@@ -174,32 +187,42 @@ osSemaphoreId_t Ras_Tx_SemaphoreHandle;
 const osSemaphoreAttr_t Ras_Tx_Semaphore_attributes = {
   .name = "Ras_Tx_Semaphore"
 };
-/* USER CODE BEGIN PV */
-/* Definitions for Mov_Semaphore */
+/* Definitions for MOV_Semaphore */
 osSemaphoreId_t MOV_SemaphoreHandle;
 const osSemaphoreAttr_t MOV_Semaphore_attributes = {
   .name = "MOV_Semaphore"
 };
-
 /* Definitions for Lidar_Semaphore */
 osSemaphoreId_t Lidar_SemaphoreHandle;
 const osSemaphoreAttr_t Lidar_Semaphore_attributes = {
   .name = "Lidar_Semaphore"
 };
-/* Definitions for myTask03 */
-osThreadId_t myTask04Handle;
-const osThreadAttr_t myTask04_attributes = {
-  .name = "Mov",
-  .stack_size = 256 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
+/* USER CODE BEGIN PV */
+/* Definitions for Mov_Semaphore */
+//osSemaphoreId_t MOV_SemaphoreHandle;
+//const osSemaphoreAttr_t MOV_Semaphore_attributes = {
+//  .name = "MOV_Semaphore"
+//};
 
-osThreadId_t myTask05Handle;
-const osThreadAttr_t myTask05_attributes = {
-  .name = "Lidar",
-  .stack_size = 512 * 4,
-  .priority = (osPriority_t) osPriorityLow,
-};
+/* Definitions for Lidar_Semaphore */
+//osSemaphoreId_t Lidar_SemaphoreHandle;
+//const osSemaphoreAttr_t Lidar_Semaphore_attributes = {
+//  .name = "Lidar_Semaphore"
+//};
+/* Definitions for myTask03 */
+//osThreadId_t myTask04Handle;
+//const osThreadAttr_t myTask04_attributes = {
+//  .name = "Mov",
+//  .stack_size = 256 * 4,
+//  .priority = (osPriority_t) osPriorityLow,
+//};
+
+//osThreadId_t myTask05Handle;
+//const osThreadAttr_t myTask05_attributes = {
+//  .name = "Lidar",
+//  .stack_size = 512 * 4,
+//  .priority = (osPriority_t) osPriorityLow,
+//};
 Bluetooth_Handler hbluetooth1;
 
 Task_MPU_Data data =
@@ -235,8 +258,7 @@ static void MX_I2C1_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 void StartDefaultTask(void *argument);
-void StartTask02(void *argument);
-void StartTask03(void *argument);
+
 
 /* USER CODE BEGIN PFP */
 void Task1(void *argument);
@@ -311,16 +333,24 @@ int main(void)
 
   /* Create the semaphores(s) */
   /* creation of MPU_Semaphore */
-  MPU_SemaphoreHandle = osSemaphoreNew(1, 1, &MPU_Semaphore_attributes);
+  MPU_SemaphoreHandle = osSemaphoreNew(1, 0, &MPU_Semaphore_attributes);
 
   /* creation of Ras_Tx_Semaphore */
-  Ras_Tx_SemaphoreHandle = osSemaphoreNew(1, 1, &Ras_Tx_Semaphore_attributes);
+  Ras_Tx_SemaphoreHandle = osSemaphoreNew(1, 0, &Ras_Tx_Semaphore_attributes);
+
+  /* creation of MOV_Semaphore */
+  MOV_SemaphoreHandle = osSemaphoreNew(1, 0, &MOV_Semaphore_attributes);
+
+  /* creation of Lidar_Semaphore */
+  Lidar_SemaphoreHandle = osSemaphoreNew(1, 0, &Lidar_Semaphore_attributes);
 
   /* USER CODE BEGIN RTOS_SEMAPHORES */
-  MOV_SemaphoreHandle = osSemaphoreNew(1U, 0U, &MOV_Semaphore_attributes);
-
-  /* USER CODE BEGIN RTOS_SEMAPHORES */
-  Lidar_SemaphoreHandle = osSemaphoreNew(1U, 1U, &Lidar_Semaphore_attributes);
+//  MOV_SemaphoreHandle = osSemaphoreNew(1U, 0U, &MOV_Semaphore_attributes);
+  osSemaphoreRelease(MPU_SemaphoreHandle); //start the semaphore with 1
+  osSemaphoreRelease(Ras_Tx_SemaphoreHandle); //start the semaphore with 1
+  osSemaphoreRelease(Lidar_SemaphoreHandle); //start the semaphore with 1
+//  /* USER CODE BEGIN RTOS_SEMAPHORES */
+//  Lidar_SemaphoreHandle = osSemaphoreNew(1U, 1U, &Lidar_Semaphore_attributes);
 
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -346,23 +376,30 @@ int main(void)
   /* Create the thread(s) */
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
-  //printTaskState( "default Task",osThreadGetState(defaultTaskHandle),"[Before Kernel Start]");
-  /* creation of myTask02 */
 
-  /* creation of myTask03 */
-  myTask03Handle = osThreadNew(Ras_TX_Task, NULL, &myTask03_attributes);
-  //printTaskState( "Ras Task",osThreadGetState(myTask03Handle),"[Before Kernel Start]");
+  /* creation of MPUTask02 */
+  MPUTask02Handle = osThreadNew(MPU_Task, (void*) &data, &MPUTask02_attributes);
+
+  /* creation of RasTask03 */
+  RasTask03Handle = osThreadNew(Ras_TX_Task, NULL, &RasTask03_attributes);
+
+  /* creation of MovTask04 */
+  MovTask04Handle = osThreadNew(MOV_Task, (void*) &mov_Data, &MovTask04_attributes);
+
+  /* creation of LidarTask05 */
+  LidarTask05Handle = osThreadNew(Lidar_Task, NULL, &LidarTask05_attributes);
+
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
   /* creation of myTask04 */
-  myTask04Handle = osThreadNew(MOV_Task, &mov_Data, &myTask04_attributes);
+  ////myTask04Handle = osThreadNew(MOV_Task, &mov_Data, &myTask04_attributes);
   //printTaskState( "Mov Task",osThreadGetState(myTask04Handle),"[Before Kernel Start]");
   /* creation of myTask05 */
-  myTask05Handle = osThreadNew(Lidar_Task, NULL, &myTask05_attributes);
+  ////myTask05Handle = osThreadNew(Lidar_Task, NULL, &myTask05_attributes);
   //printTaskState( "Lidar Task",osThreadGetState(myTask05Handle),"[Before Kernel Start]");
   //myTask05Handle = osThreadNew(Task_Test, NULL, &myTask05_attributes);
 
-  myTask02Handle = osThreadNew(MPU_Task, &data, &myTask02_attributes);
+  ////myTask02Handle = osThreadNew(MPU_Task, &data, &myTask02_attributes);
   //printTaskState( "MPU Task",osThreadGetState(myTask02Handle),"[Before Kernel Start]");
 
   //printing states before starting the kernel
@@ -376,7 +413,6 @@ int main(void)
 
   /* Start scheduler */
   osKernelStart();
-
 
   /* We should never get here as control is now taken by the scheduler */
   /* Infinite loop */
@@ -411,7 +447,12 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_NONE;
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
+  RCC_OscInitStruct.PLL.PLLM = 8;
+  RCC_OscInitStruct.PLL.PLLN = 84;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
     Error_Handler();
@@ -421,12 +462,12 @@ void SystemClock_Config(void)
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
-  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
+  RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
@@ -579,7 +620,7 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
-  huart2.Init.BaudRate = 19200;
+  huart2.Init.BaudRate = 57600 ;
   huart2.Init.WordLength = UART_WORDLENGTH_8B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
@@ -640,9 +681,6 @@ static void MX_DMA_Init(void)
   __HAL_RCC_DMA1_CLK_ENABLE();
 
   /* DMA interrupt init */
-  /* DMA1_Stream0_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA1_Stream0_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(DMA1_Stream0_IRQn);
   /* DMA1_Stream5_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA1_Stream5_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA1_Stream5_IRQn);
@@ -652,9 +690,9 @@ static void MX_DMA_Init(void)
   /* DMA2_Stream1_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream1_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream1_IRQn);
-  /* DMA2_Stream2_IRQn interrupt configuration */
-  HAL_NVIC_SetPriority(DMA2_Stream2_IRQn, 5, 1);
-  HAL_NVIC_EnableIRQ(DMA2_Stream2_IRQn);
+  /* DMA2_Stream5_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream5_IRQn, 5, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream5_IRQn);
   /* DMA2_Stream6_IRQn interrupt configuration */
   HAL_NVIC_SetPriority(DMA2_Stream6_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(DMA2_Stream6_IRQn);
@@ -673,12 +711,22 @@ static void MX_GPIO_Init(void)
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
-  __HAL_RCC_GPIOC_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_1|GPIO_PIN_2, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PC13 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PB1 PB2 */
   GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2;
@@ -687,11 +735,6 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
-  GPIO_InitStruct.Pin = GPIO_PIN_13;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
@@ -840,84 +883,7 @@ void StartDefaultTask(void *argument)
   /* USER CODE END 5 */
 }
 
-/* USER CODE BEGIN Header_StartTask02 */
-/**
-* @brief Function implementing the myTask02 thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartTask02 */
-void StartTask02(void *argument)
-{
-  /* USER CODE BEGIN StartTask02 */
-  float32_t data[6] = {1, -1, 1.5, 2, 3, 4};
 
-  /* Infinite loop */
-  for(;;)
-  {
-	  cJSON *root = cJSON_CreateObject();
-	  if(!root){return;} // Handle memory failure
-	  n++;
-	  cJSON *AccelBranch = NULL;
-	  cJSON *GyroBranch = NULL;
-	  cJSON_AddStringToObject(root, "S", "MPU");
-	  cJSON_AddItemToObject(root, "G", AccelBranch = cJSON_CreateObject());
-	  cJSON_AddNumberToObject(AccelBranch, "X", data[0] +1);
-	  cJSON_AddNumberToObject(AccelBranch, "Y", data[1] +1);
-	  cJSON_AddNumberToObject(AccelBranch, "Z", data[2] +1);
-	  cJSON_AddItemToObject(root, "A", GyroBranch = cJSON_CreateObject());
-	  cJSON_AddNumberToObject(GyroBranch, "X", data[3] +1);
-	  cJSON_AddNumberToObject(GyroBranch, "Y", data[4] +1);
-	  cJSON_AddNumberToObject(GyroBranch, "Z", data[5] +1);
-
-	  uint8_t* msg = cJSON_PrintUnformatted(root);
-	  cJSON_Delete(root);
-	  uint8_t size = strlen(msg);
-
-	  if (msg)
-	  {
-		  osMessageQueuePut(Ras_Tx_Queue01Handle, msg, NULL, osWaitForever);
-		  free(msg);
-	  }
-
-    osDelay(5);
-  }
-  /* USER CODE END StartTask02 */
-}
-
-/* USER CODE BEGIN Header_StartTask03 */
-/**
-* @brief Function implementing the myTask03 thread.
-* @param argument: Not used
-* @retval None
-*/
-/* USER CODE END Header_StartTask03 */
-void StartTask03(void *argument)
-{
-  /* USER CODE BEGIN StartTask03 */
-	char msg[100];
-  /* Infinite loop */
-  for(;;)
-  {
-
-	uint32_t num = osMessageQueueGetCount (Ras_Tx_Queue01Handle);
-	i++;
-	if(osOK == osMessageQueueGet(Ras_Tx_Queue01Handle, &msg, NULL, osWaitForever )){
-
-//		osSemaphoreAcquire(Ras_Tx_SemaphoreHandle,osWaitForever);
-//		HAL_UART_Transmit_IT(&huart2, (uint8_t*)"Salem", strlen("Salem"));
-		j++;
-	}
-	else if(osErrorResource == osMessageQueueGet(Ras_Tx_Queue01Handle, msg, NULL, osWaitForever )){;}
-	else if(osErrorParameter == osMessageQueueGet(Ras_Tx_Queue01Handle, msg, NULL, osWaitForever )){;}
-	else if(osErrorTimeout == osMessageQueueGet(Ras_Tx_Queue01Handle, msg, NULL, osWaitForever )){;}
-
-
-	osDelay(7);
-    //osDelay(7);
-  }
-  /* USER CODE END StartTask03 */
-}
 
 /**
   * @brief  Period elapsed callback in non blocking mode

@@ -48,7 +48,7 @@ void Lidar_Task(void *argument)
 		/* Get the data ready (calculations)*/
 		Lidar_voidGetDistance(pLidar);
 
-		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+//		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 		static uint32_t count =0;
 
 		//TODO: send the data 
@@ -71,7 +71,8 @@ void Lidar_Task(void *argument)
 
 void sendFCW(void){
 
-	float time = FCW_u8TimeToCollision(fcwHandle->Speed , fcwHandle->Distance , fcwHandle->AccX);
+	//float time = FCW_u8TimeToCollision(fcwHandle->Speed , fcwHandle->Distance , fcwHandle->AccX);
+	float time = FCW_u8TimeToCollision(50 , fcwHandle->Distance , 3);
 
 	enum_FC_Warnings_t warning = FCW_enuIsWarning(time);
 

@@ -54,12 +54,12 @@ void MOV_Task(void *argument)
 		/* Buffer the data in the required format after receiving completes */
 		Loc_PstrStoredData = BLUTH_enuFrameBuffering(pMOV->h_bluetooth);
 
-//		logs_debg("Mov", "Speed: %d , Angle: %d",Loc_PstrStoredData.SpeedVal , Loc_PstrStoredData.AngleVal);
+		//logs_debg("Mov", "Speed: %d , Angle: %d",Loc_PstrStoredData.SpeedVal , Loc_PstrStoredData.AngleVal);
 		fcwHandle->Speed =Loc_PstrStoredData.SpeedVal;
 		/* Use the deceived data to control the car movement */
 		ControlMotion(pMOV, &Loc_PstrStoredData);
 
-		osDelay(51);
+		osDelay(200);
 	}
 
 

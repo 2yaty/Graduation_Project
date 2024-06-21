@@ -41,7 +41,16 @@ Application/testing/test.o: ../Application/testing/test.c \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
+ ../Application/testing/../Raspberry_TX_Task/Ras_TX_task.h \
+ ../Application/testing/../MPU_Task/MPU_Mod.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU_Lcfg.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/Common/STD_Types.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/cJSON/cJSON.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Lidar_Task/Lidar_Task.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/TF_Lidar/Lidar.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/FCW_Application/FCW_App.h
 ../Application/testing/test.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
@@ -85,3 +94,12 @@ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/Log_Module/log.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
+../Application/testing/../Raspberry_TX_Task/Ras_TX_task.h:
+../Application/testing/../MPU_Task/MPU_Mod.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU_Lcfg.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/MPU6050/MPU.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/Common/STD_Types.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/INITs_Uitilities/cJSON/cJSON.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Lidar_Task/Lidar_Task.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/TF_Lidar/Lidar.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/H_Drivers/FCW_Application/FCW_App.h:

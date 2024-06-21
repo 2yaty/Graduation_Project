@@ -1,3 +1,5 @@
+"./Application/FCW_Task/FCW_Task.o"
+"./Application/Lidar_Task/Lidar_Task.o"
 "./Application/MOV_Task/MOv.o"
 "./Application/MPU_Task/MPU_Mod.o"
 "./Application/Raspberry_TX_Task/Ras_TX_Task.o"
@@ -37,6 +39,7 @@
 "./H_Drivers/MOTOR_MDD10A/MOTOR_MDD10A_Lcfg.o"
 "./H_Drivers/MPU6050/MPU.o"
 "./H_Drivers/MPU6050/MPU_Lcfg.o"
+"./H_Drivers/TF_Lidar/Lidar.o"
 "./INITs_Uitilities/Queue/queue.o"
 "./INITs_Uitilities/cJSON/cJSON.o"
 "./Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.o"

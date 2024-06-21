@@ -23,6 +23,8 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Application/FCW_Task \
+Application/Lidar_Task \
 Application/MOV_Task \
 Application/MPU_Task \
 Application/Raspberry_TX_Task \
@@ -35,6 +37,7 @@ H_Drivers/FCW_Application \
 H_Drivers/Led \
 H_Drivers/MOTOR_MDD10A \
 H_Drivers/MPU6050 \
+H_Drivers/TF_Lidar \
 INITs_Uitilities/Queue \
 INITs_Uitilities/cJSON \
 Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 \

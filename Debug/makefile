@@ -16,6 +16,7 @@ RM := rm -rf
 -include Middlewares/Third_Party/FreeRTOS/Source/subdir.mk
 -include INITs_Uitilities/cJSON/subdir.mk
 -include INITs_Uitilities/Queue/subdir.mk
+-include H_Drivers/TF_Lidar/subdir.mk
 -include H_Drivers/MPU6050/subdir.mk
 -include H_Drivers/MOTOR_MDD10A/subdir.mk
 -include H_Drivers/Led/subdir.mk
@@ -28,6 +29,8 @@ RM := rm -rf
 -include Application/Raspberry_TX_Task/subdir.mk
 -include Application/MPU_Task/subdir.mk
 -include Application/MOV_Task/subdir.mk
+-include Application/Lidar_Task/subdir.mk
+-include Application/FCW_Task/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)

@@ -65,6 +65,7 @@ void MPU_Task(void *argument)
 
 		/* Queue the data into Tx buffer */
 		dataBuffering(pMPU->AccelGyroDataBuffer);
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 
 		/* Give the semaphore */
 		osSemaphoreRelease(*mpu_Semaphore);

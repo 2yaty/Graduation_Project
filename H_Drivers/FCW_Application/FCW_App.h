@@ -11,9 +11,9 @@
 /*------------------------------- Macro Declarations Start ---------------------------------*/
 #define MAX_TIME_IN_SEC   100.0f
 
-#define LOW_WARNING_TH_TIME      3.0f
-#define MID_WARNING_TH_TIME      2.0f
-#define HIGH_WARNING_TH_TIME     1.0f
+#define LOW_WARNING_TH_TIME      1.0f
+#define MID_WARNING_TH_TIME      0.5f
+#define HIGH_WARNING_TH_TIME     0.25f
 /*------------------------------- Macro Declarations End------------------------------------*/
 
 
