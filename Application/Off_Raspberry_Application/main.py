@@ -102,7 +102,7 @@ if __name__ == "__main__":
     camera_proc = mp.Process(target=camera_process,
                             args=(traffic_queue, lane_queue,ip_address))
     traffic_proc = mp.Process(
-        target=traffic_sign_process, args=(traffic_queue,display_output_queue,shared_trip))
+        target=traffic_sign_process, args=(traffic_queue,display_output_queue,shared_trip,speed))
     lane_proc = mp.Process(target=lane_departure_process, args=(lane_queue,display_output_queue))
     stm_proc = threading.Thread(target=stm_process, args=(ser, dmrs_queue, display_output_queue,speed, StartEvent, StopEvent))
     dmrs_proc = threading.Thread(target=dmrs_process, args=(dmrs_queue,shared_trip))

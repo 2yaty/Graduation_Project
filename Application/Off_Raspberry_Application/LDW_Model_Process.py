@@ -2,7 +2,7 @@ import cv2
 import multiprocessing as mp
 import lane_model  # Importing the lane departure model
 import matplotlib.image as mpimg
-from main import show
+from show_var import show
 
 def lane_departure_process(queue,display_output_queue):
 
