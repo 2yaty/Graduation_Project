@@ -55,7 +55,9 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Raspberry_TX_Task/Ras_TX_task.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/testing/test.h \
  D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/Log_Module/log.h \
- D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/MOV_Task/MOV.h
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/MOV_Task/MOV.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Engine_RX_Task/Engine_RX_Task.h \
+ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Engine_RX_Task/../../Modules/Log_Module/log.h
 ../Core/Inc/main.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h:
 ../Core/Inc/stm32f4xx_hal_conf.h:
@@ -114,3 +116,5 @@ D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Raspberry_TX_Task/Ras_TX_
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/testing/test.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Modules/Log_Module/log.h:
 D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/MOV_Task/MOV.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Engine_RX_Task/Engine_RX_Task.h:
+D:/Abd\ Elghafar/STM_v14_WORKSPACE/STM_APP/Application/Engine_RX_Task/../../Modules/Log_Module/log.h:

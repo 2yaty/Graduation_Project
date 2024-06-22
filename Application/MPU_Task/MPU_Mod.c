@@ -34,7 +34,7 @@ void MPU_Init_Task(osMessageQueueId_t* MPU_Tx_MsgQueue ,osSemaphoreId_t* MPU_Sem
 
 void MPU_Task(void *argument)
 {
-	Task_MPU_Data *pMPU = (Task_MPU_Data *)argument;
+	MPU_HandleTypeDef *pMPU = (MPU_HandleTypeDef *)argument;
 
 	/* Get system tick frequency */
 	uint32_t tickFrequency = osKernelGetTickFreq();
@@ -52,19 +52,19 @@ void MPU_Task(void *argument)
 		osSemaphoreAcquire(*mpu_Semaphore, osWaitForever);
 
 		/* Request accelerometer and gyroscope data */
-		MPU_enuGetGyroAccelReadings_DMA(pMPU->h_MPU, pMPU->AccelGyroDataBuffer);
+		MPU_enuGetGyroAccelReadings_DMA(pMPU);
 
 		/* Wait for data to be ready, assuming ISR will release semaphore */
 		osSemaphoreAcquire(*mpu_Semaphore, osWaitForever);
 
 		/* Get the data ready (calculations)*/
-		MPU_GetReadings(pMPU->h_MPU);
+		MPU_GetReadings(pMPU);
 
 		/* Assign The AccelX to FWC */
-		fcwHandle->AccX = pMPU->AccelGyroDataBuffer[3];
+		fcwHandle->AccX = pMPU->DataBuffer[3];
 
 		/* Queue the data into Tx buffer */
-		dataBuffering(pMPU->AccelGyroDataBuffer);
+		dataBuffering(pMPU->DataBuffer);
 		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 
 		/* Give the semaphore */

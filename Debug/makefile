@@ -31,6 +31,7 @@ RM := rm -rf
 -include Application/MOV_Task/subdir.mk
 -include Application/Lidar_Task/subdir.mk
 -include Application/FCW_Task/subdir.mk
+-include Application/Engine_RX_Task/subdir.mk
 -include objects.mk
 
 ifneq ($(MAKECMDGOALS),clean)

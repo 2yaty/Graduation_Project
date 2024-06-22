@@ -97,9 +97,11 @@ void Thread_MsgQueue2 (void *argument) {
 #include "MOV_Task/MOV.h"
 #include "Lidar_Task/Lidar_Task.h"
 #include "FCW_Application/FCW_App.h"
+#include "Engine_RX_Task/Engine_RX_Task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
+typedef StaticQueue_t osStaticMessageQDef_t;
 /* USER CODE BEGIN PTD */
 typedef enum
 {
@@ -148,7 +150,7 @@ const osThreadAttr_t defaultTask_attributes = {
 osThreadId_t MPUTask02Handle;
 const osThreadAttr_t MPUTask02_attributes = {
   .name = "MPUTask02",
-  .stack_size = 512 * 4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityHigh,
 };
 /* Definitions for RasTask03 */
@@ -158,11 +160,11 @@ const osThreadAttr_t RasTask03_attributes = {
   .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityHigh,
 };
-/* Definitions for MovTask04 */
-osThreadId_t MovTask04Handle;
-const osThreadAttr_t MovTask04_attributes = {
-  .name = "MovTask04",
-  .stack_size = 256 * 4,
+/* Definitions for EngineTask04 */
+osThreadId_t EngineTask04Handle;
+const osThreadAttr_t EngineTask04_attributes = {
+  .name = "EngineTask04",
+  .stack_size = 512 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
 /* Definitions for LidarTask05 */
@@ -174,8 +176,14 @@ const osThreadAttr_t LidarTask05_attributes = {
 };
 /* Definitions for Ras_Tx_Queue01 */
 osMessageQueueId_t Ras_Tx_Queue01Handle;
+uint8_t Ras_Tx_Queue01Buffer[ 15 * 270 ];
+osStaticMessageQDef_t Ras_Tx_Queue01ControlBlock;
 const osMessageQueueAttr_t Ras_Tx_Queue01_attributes = {
-  .name = "Ras_Tx_Queue01"
+  .name = "Ras_Tx_Queue01",
+  .cb_mem = &Ras_Tx_Queue01ControlBlock,
+  .cb_size = sizeof(Ras_Tx_Queue01ControlBlock),
+  .mq_mem = &Ras_Tx_Queue01Buffer,
+  .mq_size = sizeof(Ras_Tx_Queue01Buffer)
 };
 /* Definitions for MPU_Semaphore */
 osSemaphoreId_t MPU_SemaphoreHandle;
@@ -187,10 +195,10 @@ osSemaphoreId_t Ras_Tx_SemaphoreHandle;
 const osSemaphoreAttr_t Ras_Tx_Semaphore_attributes = {
   .name = "Ras_Tx_Semaphore"
 };
-/* Definitions for MOV_Semaphore */
-osSemaphoreId_t MOV_SemaphoreHandle;
-const osSemaphoreAttr_t MOV_Semaphore_attributes = {
-  .name = "MOV_Semaphore"
+/* Definitions for Engine_Semaphore */
+osSemaphoreId_t Engine_SemaphoreHandle;
+const osSemaphoreAttr_t Engine_Semaphore_attributes = {
+  .name = "Engine_Semaphore"
 };
 /* Definitions for Lidar_Semaphore */
 osSemaphoreId_t Lidar_SemaphoreHandle;
@@ -225,10 +233,6 @@ const osSemaphoreAttr_t Lidar_Semaphore_attributes = {
 //};
 Bluetooth_Handler hbluetooth1;
 
-Task_MPU_Data data =
-{
-	.h_MPU = &hMPU,
-};
 
 Task_MOV_Data mov_Data=
 {
@@ -338,8 +342,8 @@ int main(void)
   /* creation of Ras_Tx_Semaphore */
   Ras_Tx_SemaphoreHandle = osSemaphoreNew(1, 0, &Ras_Tx_Semaphore_attributes);
 
-  /* creation of MOV_Semaphore */
-  MOV_SemaphoreHandle = osSemaphoreNew(1, 0, &MOV_Semaphore_attributes);
+  /* creation of Engine_Semaphore */
+  Engine_SemaphoreHandle = osSemaphoreNew(1, 0, &Engine_Semaphore_attributes);
 
   /* creation of Lidar_Semaphore */
   Lidar_SemaphoreHandle = osSemaphoreNew(1, 0, &Lidar_Semaphore_attributes);
@@ -361,14 +365,15 @@ int main(void)
 
   /* Create the queue(s) */
   /* creation of Ras_Tx_Queue01 */
-  Ras_Tx_Queue01Handle = osMessageQueueNew (10, 270, &Ras_Tx_Queue01_attributes);
+  Ras_Tx_Queue01Handle = osMessageQueueNew (15, 270, &Ras_Tx_Queue01_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
 //  testing_logs_init(&Ras_Tx_Queue01Handle);
   Ras_TX_task_init(&Ras_Tx_Queue01Handle,&Ras_Tx_SemaphoreHandle,&huart2);
   MPU_Init_Task(&Ras_Tx_Queue01Handle,&MPU_SemaphoreHandle,&fcwHandle);
-  MOV_Init_Task(&hbluetooth1,&MOV_SemaphoreHandle,&fcwHandle);
+//  MOV_Init_Task(&hbluetooth1,&MOV_SemaphoreHandle,&fcwHandle);
   Lidar_Init_Task(&Lidar_SemaphoreHandle,&hluna, &huart6,&fcwHandle);
+  Engine_RX_Task_init(&Engine_SemaphoreHandle,&huart1,&fcwHandle);
 //  Test1_init(&Ras_Tx_Queue01Handle);
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
@@ -378,13 +383,13 @@ int main(void)
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
 
   /* creation of MPUTask02 */
-  MPUTask02Handle = osThreadNew(MPU_Task, (void*) &data, &MPUTask02_attributes);
+  MPUTask02Handle = osThreadNew(MPU_Task, (void*) &hMPU, &MPUTask02_attributes);
 
   /* creation of RasTask03 */
   RasTask03Handle = osThreadNew(Ras_TX_Task, NULL, &RasTask03_attributes);
 
-  /* creation of MovTask04 */
-  MovTask04Handle = osThreadNew(MOV_Task, (void*) &mov_Data, &MovTask04_attributes);
+  /* creation of EngineTask04 */
+  EngineTask04Handle = osThreadNew(Engine_RX_Task, NULL, &EngineTask04_attributes);
 
   /* creation of LidarTask05 */
   LidarTask05Handle = osThreadNew(Lidar_Task, NULL, &LidarTask05_attributes);
@@ -587,7 +592,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 9600;
+  huart1.Init.BaudRate = 19600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
@@ -765,7 +770,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		/* RSPB_RxCpltProcess(huart); */
 		//Lidar_RxFrameCallBack();
 //		logs_debg("Ldr RXCP", "in the cp");
-		BLUTH_RxCpltProcess(&hbluetooth1);
+		Engine_Callback();
 	}
 	else if(huart->Instance == USART2)
 	{
@@ -883,7 +888,12 @@ void StartDefaultTask(void *argument)
   /* USER CODE END 5 */
 }
 
-
+/* USER CODE BEGIN Header_MPU_Task */
+/**
+* @brief Function implementing the MPUTask02 thread.
+* @param argument: Not used
+* @retval None
+*/
 
 /**
   * @brief  Period elapsed callback in non blocking mode

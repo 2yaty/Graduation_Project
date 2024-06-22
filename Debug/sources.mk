@@ -23,6 +23,7 @@ C_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+Application/Engine_RX_Task \
 Application/FCW_Task \
 Application/Lidar_Task \
 Application/MOV_Task \

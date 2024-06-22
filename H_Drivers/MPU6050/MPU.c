@@ -135,14 +135,13 @@ MPU_Error_Status MPU_enuInit(MPU_HandleTypeDef *hMPU)
 *          MPU_Error_Status: Returns an MPU error status indicating whether the operation
 *                            executed correctly or encountered an error.
 **/
-MPU_Error_Status MPU_enuStartFreeRunning_DMA(MPU_HandleTypeDef *hMPU, float32_t *Copy_pArrAccelGyroData)
+MPU_Error_Status MPU_enuStartFreeRunning_DMA(MPU_HandleTypeDef *hMPU)
 {
 	uint8_t Local_u8Check;
 	hMPU->DataRequestState = FIRST_REQUEST;
 	hMPU->state = MPU_STATE_RESET;
 	hMPU->dataState = MPU_DATA_STATE_NOT_REQUESTED;
 	hMPU->mode = FREE_RUNNING;
-	hMPU->DataBuffer = Copy_pArrAccelGyroData;
 	//hMPU->RegistersBuffer = (uint8_t*)malloc(14 * sizeof(uint8_t));
 
 	/* Set the handler with the MPU Init configurations. */
@@ -226,9 +225,9 @@ MPU_Error_Status MPU_enuStartFreeRunning_DMA(MPU_HandleTypeDef *hMPU, float32_t 
  *          MPU_Error_Status: Returns an MPU error status indicating whether the operation
  *                            executed correctly or encountered an error.
  **/
-MPU_Error_Status MPU_enuGetGyroAccelReadings_DMA(MPU_HandleTypeDef *hMPU, float32_t *Copy_pArrAccelGyroData)
+MPU_Error_Status MPU_enuGetGyroAccelReadings_DMA(MPU_HandleTypeDef *hMPU)
 {
-	hMPU->DataBuffer = Copy_pArrAccelGyroData;
+
 	hMPU->mode = SINGLE_READ;
 	/* Disable interrupt from EXTI (mask it). */
 	EXTI->IMR &= ~(hMPU->GPIO_INT_PinNum);
@@ -306,7 +305,7 @@ MPU_Error_Status MPU_enuStopFreeRunning(MPU_HandleTypeDef *hMPU)
  **/
 static MPU_Error_Status MPU_enuGetAccelGyro(MPU_HandleTypeDef *hMPU)
 {
-	if((hMPU->hi2c != NULL) && (hMPU->DataBuffer!= NULL))
+	if((hMPU->hi2c != NULL))
 	{
 		if(hMPU->state == MPU_STATE_READY)
 		{

@@ -48,7 +48,7 @@ void Lidar_Task(void *argument)
 		/* Get the data ready (calculations)*/
 		Lidar_voidGetDistance(pLidar);
 
-//		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+		HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 		static uint32_t count =0;
 
 		//TODO: send the data 

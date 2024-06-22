@@ -160,7 +160,7 @@ typedef struct
 
     MPU_MODE mode;                         /*!< Mode of operation for the MPU6050 module */
 
-    float32_t *DataBuffer;                 /*!< Pointer to data buffer for storing MPU6050 readings */
+    float32_t DataBuffer[6];                 /*!< Pointer to data buffer for storing MPU6050 readings */
 
     uint8_t RegistersBuffer[12];           /*!< Array to register buffer for MPU6050 register readings */
 
@@ -250,7 +250,7 @@ MPU_Error_Status MPU_enuDeInit(MPU_HandleTypeDef *hMPU);
  *          MPU_Error_Status: Returns an MPU error status indicating whether the operation
  *                            executed correctly or encountered an error.
  **/
-MPU_Error_Status MPU_enuGetGyroAccelReadings_DMA(MPU_HandleTypeDef *hMPU, float32_t *Copy_pArrAccelGyroData);
+MPU_Error_Status MPU_enuGetGyroAccelReadings_DMA(MPU_HandleTypeDef *hMPU);
 //TODO: add the "Copy_pArrAccelGyroData" to hMPU struct.
 
 
@@ -278,7 +278,7 @@ MPU_Error_Status MPU_enuGetGyroAccelReadings_DMA(MPU_HandleTypeDef *hMPU, float3
  *          MPU_Error_Status: Returns an MPU error status indicating whether the operation
  *                            executed correctly or encountered an error.
  **/
-MPU_Error_Status MPU_enuStartFreeRunning_DMA(MPU_HandleTypeDef *hMPU, float32_t *Copy_pArrAccelGyroData);
+MPU_Error_Status MPU_enuStartFreeRunning_DMA(MPU_HandleTypeDef *hMPU);
 
 
 /**
