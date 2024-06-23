@@ -13,7 +13,7 @@ def camera_process(traffic_queue, lane_queue, ip_address):
             continue
 
         # Resize frame if needed
-        frame = cv2.resize(frame, (640, 480))
+        # frame = cv2.resize(frame, (640, 480))
 
         # Put the frame in both queues
         if not traffic_queue.full():
