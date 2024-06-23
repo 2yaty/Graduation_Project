@@ -16,13 +16,13 @@ import time
 from datetime import datetime
 
 show = True
-
+serial_number = "12345678910"
 
 def send_shared_trip_to_theWeb(shared_trip,display_output_queue):
     # API endpoint URL
     url = "https://dmrs-c487bb5f6150.herokuapp.com/api/v1/trips"
 
-    serial_number = "12345678910"
+    
 
     # API key for authentication
     api_key = "e9H3pMSRS7Bxd1XXCUVPVCIT0ntESkjEB0h0JNqyW2tDu6rLW0i48EJxQFQZkRMfDrTuy9lBivLJmQ54Bjo6sDEeAsWIGafszZE1MEID1OIXkMXHyJOH6m7CHuYFCq3o"
@@ -33,7 +33,7 @@ def send_shared_trip_to_theWeb(shared_trip,display_output_queue):
         "CAR-API-KEY": api_key
     }
 
-    shared_trip["serialNumber"] = serial_number
+    # shared_trip["serialNumber"] = serial_number
 
     try:
         # Send the POST request to the API endpoint with headers
@@ -125,6 +125,7 @@ if __name__ == "__main__":
     StopEvent.wait()
     shared_trip['end_time'] = datetime.now().isoformat()
     final_trip = {
+            "serialNumber": serial_number,
             "start_time": shared_trip['start_time'],
             "end_time": shared_trip['end_time'],
             "suddenBraking": shared_trip['suddenBraking'],
