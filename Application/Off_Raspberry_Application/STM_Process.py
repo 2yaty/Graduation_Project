@@ -11,11 +11,6 @@ zero_speed_start_time  = 0
 # the process takes the serial port, the queue that is shared with the DMRS model and the speed variable that is shared with the Warning model
 def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent):
 
-    def terminate_models():
-        # parent_pid = os.getppid()
-        # os.kill(parent_pid, signal.SIGTERM)
-        StopEvent.set()
-
     def check_speed( new_speed):
                 zero_speed_start_time = 0
 
@@ -40,19 +35,19 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
         source = parsed_data.get('from')
 
         # Start the models if STM sends a start signal
-        if source == 'start':
+        if source == 'engine':
             # parent_pid = os.getppid()  # Get the parent process ID
             # os.kill(parent_pid, signal.SIGINT)
-            StartEvent.set()
+            state = parsed_data.get('data')
+            if state == 'start':
+                StartEvent.set()
+            if state == 'end':
+                StopEvent.set()
 
-        # Stop the models if STM sends a stop signal
-        if source == 'stop':
-            terminate_models()
 
-
-        if source == 'MOV': #update the speed 
+        if source == 'speed': #update the speed 
             #TODO: get the speed properly
-            new_speed = parsed_data.get('data')
+            new_speed = int(parsed_data.get('data'))
             check_speed(new_speed)
             
 
