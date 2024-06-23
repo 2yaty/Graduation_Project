@@ -68,7 +68,8 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
             dmrs_queue.put(values)
 
 
-    def send_data_to_STM(display_output_queue):
+    def send_data_to_STM(ser,display_output_queue):
+        print("we are in the display thread")
         while True:
             # Get the data from the display output queue
             data = display_output_queue.get()
@@ -78,7 +79,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
             ser.write(data)
     
     # Create a thread to send the data to the STM
-    send_data_thread = threading.Thread(target=send_data_to_STM , args=(display_output_queue,))
+    send_data_thread = threading.Thread(target=send_data_to_STM , args=(ser,display_output_queue))
     send_data_thread.start()
 
     while True:

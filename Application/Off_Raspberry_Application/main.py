@@ -123,6 +123,17 @@ if __name__ == "__main__":
 
     StopEvent.wait()
     shared_trip['end_time'] = datetime.now()
+    final_trip = {
+            "start_time": shared_trip['start_time'],
+            "end_time": shared_trip['end_time'],
+            "suddenBraking": shared_trip['suddenBraking'],
+            "suddenAcceleration": shared_trip['suddenAcceleration'],
+            "aggTL": shared_trip['aggTL'],
+            "aggTR": shared_trip['aggTR'],
+            "speedLimitViolation": shared_trip['speedLimitViolation'],
+            "normalDriving": shared_trip['normalDriving'],
+            "totalScore": shared_trip['totalScore']
+        }
     calculate_overall_score(shared_trip)
     send_shared_trip_to_theWeb(shared_trip,display_output_queue)
     dmrs_proc.terminate()
