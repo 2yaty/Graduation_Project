@@ -7,8 +7,11 @@ from show_var import show
 def lane_departure_process(queue,display_output_queue):
 
     def handle_lane_output(data):
+            if data == True:
+                print("You are in lane")
             if data == False:
                 display_output_queue.put("You are out of lane")
+                print("Lane Departure Detected")
 
 
     while True:
@@ -25,8 +28,8 @@ def lane_departure_process(queue,display_output_queue):
 
             # # For debugging
             # cv2.imshow('Lane Departure Frame', frame)
-            if True:
-                cv2.imshow('Lane Departure Annotated Frame', annotatedFrame)
+            # if True:
+            cv2.imshow('Lane Departure Annotated Frame', annotatedFrame)
             
             
                 
