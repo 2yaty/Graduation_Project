@@ -36,7 +36,7 @@ def send_shared_trip_to_theWeb(shared_trip,display_output_queue):
 
     try:
         # Send the POST request to the API endpoint with headers
-        response = requests.post(url, json=shared_trip, headers=headers)
+        response = requests.post(url, json=shared_trip.items(), headers=headers)
 
         # Check the response status code
         if response.status_code == 200:

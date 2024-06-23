@@ -72,6 +72,8 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
         while True:
             # Get the data from the display output queue
             data = display_output_queue.get()
+            
+            print("the data that should be sent to the display: ",data)
             # Send the data to the STM
             ser.write(data)
     
