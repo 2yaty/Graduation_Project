@@ -7,10 +7,9 @@ import json
 import multiprocessing
 import threading
 
+zero_speed_start_time  = 0
 # the process takes the serial port, the queue that is shared with the DMRS model and the speed variable that is shared with the Warning model
 def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent):
-
-    zero_speed_start_time  = 0
 
     def terminate_models():
         # parent_pid = os.getppid()
