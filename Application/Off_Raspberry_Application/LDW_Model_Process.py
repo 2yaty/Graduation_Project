@@ -25,7 +25,7 @@ def lane_departure_process(queue,display_output_queue):
 
             # # For debugging
             # cv2.imshow('Lane Departure Frame', frame)
-            if show:
+            if True:
                 cv2.imshow('Lane Departure Annotated Frame', annotatedFrame)
             
             

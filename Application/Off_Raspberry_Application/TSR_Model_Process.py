@@ -44,7 +44,7 @@ def traffic_sign_process(queue ,display_output_queue,trip_statistics,speed):
                     class_id = int(detection.cls)
                     handle_traffic_warnings(class_id)
         
-            if show:
+            if True:
                 cv2.imshow('Traffic Sign Frame', frame)
 
             # if cv2.waitKey(1) & 0xFF == ord('q'):
