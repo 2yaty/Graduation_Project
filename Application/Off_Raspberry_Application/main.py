@@ -113,7 +113,7 @@ if __name__ == "__main__":
     StartEvent.wait()
 
 
-    shared_trip["start_time"] = datetime.now()
+    shared_trip["start_time"] = datetime.now().isoformat()
     dmrs_proc.start()
     camera_proc.start()
     traffic_proc.start()
@@ -122,7 +122,7 @@ if __name__ == "__main__":
 
 
     StopEvent.wait()
-    shared_trip['end_time'] = datetime.now()
+    shared_trip['end_time'] = datetime.now().isoformat()
     final_trip = {
             "start_time": shared_trip['start_time'],
             "end_time": shared_trip['end_time'],
