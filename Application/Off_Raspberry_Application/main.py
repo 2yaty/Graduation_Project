@@ -104,8 +104,8 @@ if __name__ == "__main__":
     traffic_proc = mp.Process(
         target=traffic_sign_process, args=(traffic_queue,display_output_queue,shared_trip,speed))
     lane_proc = mp.Process(target=lane_departure_process, args=(lane_queue,display_output_queue))
-    stm_proc = threading.Thread(target=stm_process, args=(ser, dmrs_queue, display_output_queue,speed, StartEvent, StopEvent))
-    dmrs_proc = threading.Thread(target=dmrs_process, args=(dmrs_queue,shared_trip))
+    stm_proc = mp.Process(target=stm_process, args=(ser, dmrs_queue, display_output_queue,speed, StartEvent, StopEvent))
+    dmrs_proc = mp.Process(target=dmrs_process, args=(dmrs_queue,shared_trip))
     
 
     stm_proc.start()
@@ -124,7 +124,7 @@ if __name__ == "__main__":
     StopEvent.wait()
     shared_trip['end_time'] = datetime.now()
     calculate_overall_score(shared_trip)
-    send_shared_trip_to_theWeb(shared_trip)
+    send_shared_trip_to_theWeb(shared_trip,display_output_queue)
     dmrs_proc.terminate()
     camera_proc.terminate()
     traffic_proc.terminate()
