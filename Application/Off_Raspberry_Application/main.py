@@ -135,7 +135,7 @@ if __name__ == "__main__":
             "totalScore": shared_trip['totalScore']
         }
     calculate_overall_score(shared_trip)
-    send_shared_trip_to_theWeb(shared_trip,display_output_queue)
+    send_shared_trip_to_theWeb(final_trip,display_output_queue)
     dmrs_proc.terminate()
     camera_proc.terminate()
     traffic_proc.terminate()
