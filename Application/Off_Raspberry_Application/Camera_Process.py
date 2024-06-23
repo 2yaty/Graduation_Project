@@ -22,7 +22,7 @@ def camera_process(traffic_queue, lane_queue, ip_address):
             lane_queue.put(frame)
 
         # Sleep for a specified interval before capturing next image
-        time.sleep(0.1)
+        # time.sleep(0.1)
 
         # Display the frame for debugging
         #cv2.imshow('Camera Frame', frame)
