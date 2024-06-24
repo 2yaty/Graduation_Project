@@ -335,7 +335,7 @@ def predict_lane_departure(image):
     # Dummy implementation for lane departure warning
     # Replace with actual model code
     annotated_frame,isInLane = annotate_image_array(image)
-    cv2.imshow('Annotated Frame', annotated_frame)
+    # cv2.imshow('Annotated Frame', annotated_frame)
     return annotated_frame,isInLane
     # return "Lane Departure Detected"
 
