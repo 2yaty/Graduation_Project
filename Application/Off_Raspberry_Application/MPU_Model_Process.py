@@ -3,12 +3,11 @@ import numpy as np
 import pickle
 import multiprocessing as mp
 
-last_data = 0
 
 def dmrs_process(data_queue,trip_statistics):
 
-    
-    def handle_dmrs_warnings(data):
+    last = 0
+    def handle_dmrs_warnings(last_data,data):
 
             # Assuming your predictions are numerical labels (1, 2, 3, 4, 5)
                 # You can map them to the corresponding actions
@@ -169,7 +168,7 @@ def dmrs_process(data_queue,trip_statistics):
                 # print(f'Predicted action: {predicted_action}')
 
                 # Send the predicted action to the output queue
-                handle_dmrs_warnings(prediction)
+                handle_dmrs_warnings(last,prediction)
 
                 # Clear the first reading from the data list for the next iteration
                 data_list = data_list[1:]
