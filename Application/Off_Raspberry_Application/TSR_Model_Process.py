@@ -23,6 +23,7 @@ def traffic_sign_process(queue ,display_output_queue,trip_statistics,speed):
                     if (time.time() - LAST_VIOLATION_TIME) > 10:
                         trip_statistics['speedLimitViolation'] += 1
                         display_output_queue.put("Speed Limit Violation, Speed Limit is "+str(CUR_SPEED_LIMIT)+" km/h, Your speed is "+str(speed.value)+" km/h")
+                        print("Speed Limit Violation, Speed Limit is "+str(CUR_SPEED_LIMIT)+" km/h, Your speed is "+str(speed.value)+" km/h")
                         LAST_VIOLATION_TIME = time.time()
 
 
