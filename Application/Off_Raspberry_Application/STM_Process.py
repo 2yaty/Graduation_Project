@@ -57,6 +57,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
         # get MPU data and put it in the queue
         if source == 'MPU':
             mpu_data = parsed_data.get('data')
+            print(mpu_data)
 
             # Replace single quotes with double quotes
             mpu_data_json = mpu_data.replace("'", '"')

@@ -125,7 +125,7 @@ if __name__ == "__main__":
     StopEvent.wait()
     shared_trip['end_time'] = datetime.now().isoformat()
     final_trip = {
-            "serialNumber": serial_number,
+            
             "start_time": shared_trip['start_time'],
             "end_time": shared_trip['end_time'],
             "suddenBraking": shared_trip['suddenBraking'],
@@ -134,7 +134,8 @@ if __name__ == "__main__":
             "aggTR": shared_trip['aggTR'],
             "speedLimitViolation": shared_trip['speedLimitViolation'],
             "normalDriving": shared_trip['normalDriving'],
-            "totalScore": shared_trip['totalScore']
+            "totalScore": shared_trip['totalScore'],
+            "serialNumber": serial_number
         }
     print("the shared trip data: ", final_trip)
     calculate_overall_score(shared_trip)
