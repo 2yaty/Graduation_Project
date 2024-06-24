@@ -3,180 +3,73 @@ import numpy as np
 import pickle
 import multiprocessing as mp
 
+def dmrs_process(data_queue, trip_statistics):
+    last = [0]  # Using a list to allow modification inside the inner function
 
-def dmrs_process(data_queue,trip_statistics):
-
-    global last_data 
     def handle_dmrs_warnings(data):
-
-            # Assuming your predictions are numerical labels (1, 2, 3, 4, 5)
-                # You can map them to the corresponding actions
-            predicted_actions = {
-                1: 'suddenAcceleration',
-                2: 'sudden_right_turn',
-                3: 'aggTL',
-                4: 'suddenBraking',
-                5: 'normalDriving'
-            }
-            if data != last_data:
-                last_data= data
-                print("DMRS: ", predicted_actions[data])
-                
-            else :
-                return
-            
-            if data == 1:
-                trip_statistics['suddenAcceleration'] += 1
-
-            if data == 2:
-                trip_statistics['aggTR'] += 1
-            
-            if data == 3:
-                trip_statistics['aggTL'] += 1
-
-            if data == 4:
-                trip_statistics['suddenBraking'] += 1
-
-            if data == 5:
-                trip_statistics['normalDriving'] += 1
-            
-            # # Example: Print the data
-            # print("DMRS Output:", data)
-
+        nonlocal last  # Reference the outer 'last' variable
+        predicted_actions = {
+            1: 'suddenAcceleration',
+            2: 'sudden_right_turn',
+            3: 'aggTL',
+            4: 'suddenBraking',
+            5: 'normalDriving'
+        }
+        if data != last[0]:
+            print("DMRS: ", predicted_actions[data])
+            last[0] = data  # Update the 'last' value
+        else:
+            return
+        
+        # Update trip statistics based on prediction
+        action_keys = {
+            1: 'suddenAcceleration',
+            2: 'aggTR',
+            3: 'aggTL',
+            4: 'suddenBraking',
+            5: 'normalDriving'
+        }
+        if data in action_keys:
+            trip_statistics[action_keys[data]] += 1
 
     # Load your exported model
-    window_size = 6
-    with open(r'/home/pi/Desktop/Final_application/Graduation_Project/Application/Off_Raspberry_Application/mobile_2_model_2_with.pkl', 'rb') as file:
+    with open('/home/pi/Desktop/Final_application/Graduation_Project/Application/Off_Raspberry_Application/mobile_2_model_2_with.pkl', 'rb') as file:
         model = pickle.load(file)
 
     data_list = []
-
     while True:
         if not data_queue.empty():
             data_values = data_queue.get()
             data_list.append(data_values)
 
-            if len(data_list) >= window_size:  # Check if we have at least 6 sets of data
-                # Calculate statistical measures for the last 6 readings
-                subset_df = pd.DataFrame(
-                    data_list[-window_size:], columns=['GyroX', 'GyroY', 'GyroZ', 'AccX', 'AccY', 'AccZ'])
-                subset_df['AccX'] = subset_df['AccX'] / (1.15)
-                subset_df['AccY'] = subset_df['AccY'] / (1.15)
-                subset_df['AccZ'] = subset_df['AccZ'] / (1.15)
-                subset_df['GyroX'] = subset_df['GyroX'] / (1.15)
-                subset_df['GyroY'] = subset_df['GyroY'] / (1.15)
-                subset_df['GyroZ'] = subset_df['GyroZ'] / (1.15)
+            if len(data_list) >= 6:  # Assuming window size of 6 for the model
+                subset_df = pd.DataFrame(data_list[-6:], columns=['GyroX', 'GyroY', 'GyroZ', 'AccX', 'AccY', 'AccZ'])
+                subset_df /= 1.15  # Normalize all data by 1.15
 
                 statistical_data = {
-                    'AccMeanX': subset_df['AccX'].mean(),
-                    'AccMeanY': subset_df['AccY'].mean(),
-                    'AccMeanZ': subset_df['AccZ'].mean(),
-
-                    'AccCovX': subset_df['AccX'].cov(subset_df['AccX']),
-                    'AccCovY': subset_df['AccY'].cov(subset_df['AccY']),
-                    'AccCovZ': subset_df['AccZ'].cov(subset_df['AccZ']),
-
-                    'AccSkewX': subset_df['AccX'].skew(),
-                    'AccSkewY': subset_df['AccY'].skew(),
-                    'AccSkewZ': subset_df['AccZ'].skew(),
-
-                    'AccKurtX': subset_df['AccX'].kurtosis(),
-                    'AccKurtY': subset_df['AccY'].kurtosis(),
-                    'AccKurtZ': subset_df['AccZ'].kurtosis(),
-
-                    'AccSumX': subset_df['AccX'].sum(),
-                    'AccSumY': subset_df['AccY'].sum(),
-                    'AccSumZ': subset_df['AccZ'].sum(),
-
-                    'AccMinX': subset_df['AccX'].min(),
-                    'AccMinY': subset_df['AccY'].min(),
-                    'AccMinZ': subset_df['AccZ'].min(),
-
-                    'AccMaxX': subset_df['AccX'].max(),
-                    'AccMaxY': subset_df['AccY'].max(),
-                    'AccMaxZ': subset_df['AccZ'].max(),
-
-                    'AccVarX': subset_df['AccX'].var(),
-                    'AccVarY': subset_df['AccY'].var(),
-                    'AccVarZ': subset_df['AccZ'].var(),
-
-                    'AccMedianX': subset_df['AccX'].median(),
-                    'AccMedianY': subset_df['AccY'].median(),
-                    'AccMedianZ': subset_df['AccZ'].median(),
-
-                    'AccStdX': subset_df['AccX'].std(),
-                    'AccStdY': subset_df['AccY'].std(),
-                    'AccStdZ': subset_df['AccZ'].std(),
-
-                    'GyroMeanX': subset_df['GyroX'].mean(),
-                    'GyroMeanY': subset_df['GyroY'].mean(),
-                    'GyroMeanZ': subset_df['GyroZ'].mean(),
-
-                    'GyroCovX': subset_df['GyroX'].cov(subset_df['GyroX']),
-                    'GyroCovY': subset_df['GyroY'].cov(subset_df['GyroY']),
-                    'GyroCovZ': subset_df['GyroZ'].cov(subset_df['GyroZ']),
-
-                    'GyroSkewX': subset_df['GyroX'].skew(),
-                    'GyroSkewY': subset_df['GyroY'].skew(),
-                    'GyroSkewZ': subset_df['GyroZ'].skew(),
-
-                    'GyroKurtX': subset_df['GyroX'].kurtosis(),
-                    'GyroKurtY': subset_df['GyroY'].kurtosis(),
-                    'GyroKurtZ': subset_df['GyroZ'].kurtosis(),
-
-                    'GyroSumX': subset_df['GyroX'].sum(),
-                    'GyroSumY': subset_df['GyroY'].sum(),
-                    'GyroSumZ': subset_df['GyroZ'].sum(),
-
-                    'GyroMinX': subset_df['GyroX'].min(),
-                    'GyroMinY': subset_df['GyroY'].min(),
-                    'GyroMinZ': subset_df['GyroZ'].min(),
-
-                    'GyroMaxX': subset_df['GyroX'].max(),
-                    'GyroMaxY': subset_df['GyroY'].max(),
-                    'GyroMaxZ': subset_df['GyroZ'].max(),
-
-                    'GyroVarX': subset_df['GyroX'].var(),
-                    'GyroVarY': subset_df['GyroY'].var(),
-                    'GyroVarZ': subset_df['GyroZ'].var(),
-
-                    'GyroMedianX': subset_df['GyroX'].median(),
-                    'GyroMedianY': subset_df['GyroY'].median(),
-                    'GyroMedianZ': subset_df['GyroZ'].median(),
-
-                    'GyroStdX': subset_df['GyroX'].std(),
-                    'GyroStdY': subset_df['GyroY'].std(),
-                    'GyroStdZ': subset_df['GyroZ'].std(),
+                    'mean': subset_df.mean().tolist(),
+                    'cov': subset_df.cov().values.flatten().tolist(),
+                    'skew': subset_df.skew().tolist(),
+                    'kurtosis': subset_df.kurtosis().tolist(),
+                    'sum': subset_df.sum().tolist(),
+                    'min': subset_df.min().tolist(),
+                    'max': subset_df.max().tolist(),
+                    'var': subset_df.var().tolist(),
+                    'median': subset_df.median().tolist(),
+                    'std': subset_df.std().tolist(),
                 }
-
-                # Apply the model to predict the output
-                input_data = np.array(
-                    list(statistical_data.values())).reshape(1, -1)
+                input_data = np.array(list(statistical_data.values())).reshape(1, -1)
                 prediction = model.predict(input_data)[0]
-
-                # Assuming your predictions are numerical labels (1, 2, 3, 4, 5)
-                # You can map them to the corresponding actions
-                # predicted_actions = {
-                #     1: 'sudden_acceleration',
-                #     2: 'sudden_right_turn',
-                #     3: 'sudden_left_turn',
-                #     4: 'sudden_break',
-                #     5: 'Normal'
-                # }
-
-                # Convert numerical prediction to action label
-                # predicted_action = predicted_actions[prediction]
-
-                # # Print or use the predicted action as needed
-                # print(f'Predicted action: {predicted_action}')
-
-                # Send the predicted action to the output queue
                 handle_dmrs_warnings(prediction)
-
-                # Clear the first reading from the data list for the next iteration
-                data_list = data_list[1:]
-
+                data_list.pop(0)  # Remove the oldest data entry
 
 if __name__ == "__main__":
     data_queue = mp.Queue(maxsize=10)
-    dmrs_process(data_queue)
+    trip_statistics = {
+        'suddenAcceleration': 0,
+        'aggTR': 0,
+        'aggTL': 0,
+        'suddenBraking': 0,
+        'normalDriving': 0
+    }
+    dmrs_process(data_queue, trip_statistics)
