@@ -112,8 +112,9 @@ if __name__ == "__main__":
 
     stm_proc.start()
     
+    print("stm process should be starting")
     StartEvent.wait()
-
+    print("recieved a start engine ")
 
     shared_trip["start_time"] = datetime.now().isoformat()
     dmrs_proc.start()
@@ -124,6 +125,7 @@ if __name__ == "__main__":
 
 
     StopEvent.wait()
+    print("recieved a stop engine")
     shared_trip['end_time'] = datetime.now().isoformat()
     final_trip = {
             
