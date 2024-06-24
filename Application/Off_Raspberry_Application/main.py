@@ -44,7 +44,7 @@ def send_shared_trip_to_theWeb(shared_trip,display_output_queue):
             print("Shared trip data sent successfully!")
             display_output_queue.put("trip data sent successfully!")
         else:
-            print("Failed to send shared trip data. Status code:", response.status_code)
+            print("Failed to send shared trip data. Status code:", response.status_code, "response content: ",response.content)
             display_output_queue.put("Failed to send trip data. Status code:", response.status_code)
 
     except requests.exceptions.RequestException as e:
@@ -136,6 +136,7 @@ if __name__ == "__main__":
             "normalDriving": shared_trip['normalDriving'],
             "totalScore": shared_trip['totalScore']
         }
+    print("the shared trip data: ", final_trip)
     calculate_overall_score(shared_trip)
     send_shared_trip_to_theWeb(json.dumps(final_trip),display_output_queue)
     dmrs_proc.terminate()

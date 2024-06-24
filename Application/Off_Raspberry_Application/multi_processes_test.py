@@ -1,3 +1,5 @@
+from datetime import datetime
+import json
 import multiprocessing
 import threading
 import queue
@@ -316,20 +318,36 @@ def process_4(val):
 
 
 if __name__ == '__main__':
-    # Create a Manager object
+    # Create a Manager object0
     manager = multiprocessing.Manager()
     # Create a Namespace object to share the student attributes
     student = manager.dict({'name': 'John', 'age': 20, 'grade': 'B'})
+    
+    student2 = {
+            "start_time": datetime.now().isoformat(),
+            "end_time": datetime.now().isoformat(),
+            "suddenBraking": 0,
+            "suddenAcceleration": 0,
+            "aggTL": 0,
+            "aggTR": 0,
+            "speedLimitViolation": 0,
+            "normalDriving": 0,
+            "totalScore": 0
+        }
     # student['name'] = "John"
     # student['age'] = 20
     # student['grade'] = "B"
 
     val = manager.Value('d', 0.0)
+    
+    data = "hiiii"
+    
+    print(data.encode('ascii'))
 
     # Create the initial student object for the main process
 
-    print(f'Main process initial student: {student}')
-
+    print(f'Main process initial student: {json.dumps(student2)}')
+    
     # Create and start process 1
     p1 = multiprocessing.Process(target=process_1, args=(student,))
     p1.start()
