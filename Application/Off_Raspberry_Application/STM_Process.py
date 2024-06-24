@@ -76,7 +76,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
     def send_data_to_STM(display_output_queue):
         ser = serial.Serial(
-        port='COM7',  # replace with your port name
+        port='/dev/ttyAMA3',  # replace with your port name
         baudrate=9600,
         parity=serial.PARITY_NONE,
         stopbits=serial.STOPBITS_ONE,
