@@ -139,10 +139,10 @@ if __name__ == "__main__":
     print("the shared trip data: ", final_trip)
     calculate_overall_score(shared_trip)
     send_shared_trip_to_theWeb(json.dumps(final_trip),display_output_queue)
-    dmrs_proc.terminate()
-    camera_proc.terminate()
-    traffic_proc.terminate()
-    lane_proc.terminate()
+    dmrs_proc.kill()
+    camera_proc.kill()
+    traffic_proc.kill()
+    lane_proc.kill()
     # empty the queues
     while not traffic_queue.empty():
         traffic_queue.get()
