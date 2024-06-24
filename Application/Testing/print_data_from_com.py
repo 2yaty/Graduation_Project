@@ -4,7 +4,7 @@ import serial
 import time
 # Create a Serial object
 ser = serial.Serial(
-    port='COM4',  # replace with your port name
+    port='COM7',  # replace with your port name
     baudrate=9600,
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_ONE,
@@ -16,7 +16,7 @@ while True:
     data_byte = ser.read(1)
     if data_byte != b'':
         try:
-            print(data_byte.decode("ascii"), end='')
+            print(data_byte.decode("utf-8"), end='')
         except :
             print(data_byte, end='')
 

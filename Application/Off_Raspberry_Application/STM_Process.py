@@ -40,10 +40,12 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
             # os.kill(parent_pid, signal.SIGINT)
             state = parsed_data.get('data')
             print("the state of the engine: ", state )
-            display_output_queue.put("the state of the engine from the display")
+
             if state == 'start':
                 StartEvent.set()
+                display_output_queue.put("the engine is starting ...")
             if state == 'end':
+                display_output_queue.put("the engine is stopping ...")
                 StopEvent.set()
 
 
@@ -72,18 +74,22 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
                 dmrs_queue.put(values)
 
 
-    def send_data_to_STM(ser,display_output_queue):
-        print("we are in the display thread")
+    def send_data_to_STM(display_output_queue):
+        ser = serial.Serial(
+        port='COM7',  # replace with your port name
+        baudrate=9600,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        bytesize=serial.EIGHTBITS,
+        timeout=1
+        )
         while True:
             # Get the data from the display output queue
             data = display_output_queue.get()
-            
-            print("the data that should be sent to the display: ",data)
-            # Send the data to the STM
-            ser.write(data.encode('ascii'))
+            ser.write(data.encode("utf-8"))
     
     # Create a thread to send the data to the STM
-    send_data_thread = threading.Thread(target=send_data_to_STM , args=(ser,display_output_queue))
+    send_data_thread = threading.Thread(target=send_data_to_STM , args=(display_output_queue,))
     send_data_thread.start()
 
     while True:

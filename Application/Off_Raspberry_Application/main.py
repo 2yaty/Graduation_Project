@@ -101,11 +101,11 @@ if __name__ == "__main__":
     
 
 
-    camera_proc = mp.Process(target=camera_process,
-                            args=(traffic_queue, lane_queue,ip_address))
-    traffic_proc = mp.Process(
-        target=traffic_sign_process, args=(traffic_queue,display_output_queue,shared_trip,speed))
-    lane_proc = mp.Process(target=lane_departure_process, args=(lane_queue,display_output_queue))
+    # camera_proc = mp.Process(target=camera_process,
+                            # args=(traffic_queue, lane_queue,ip_address))
+    # traffic_proc = mp.Process(
+    #     target=traffic_sign_process, args=(traffic_queue,display_output_queue,shared_trip,speed))
+    # lane_proc = mp.Process(target=lane_departure_process, args=(lane_queue,display_output_queue))
     stm_proc = mp.Process(target=stm_process, args=(ser, dmrs_queue, display_output_queue,speed, StartEvent, StopEvent))
     dmrs_proc = mp.Process(target=dmrs_process, args=(dmrs_queue,shared_trip))
     
@@ -117,9 +117,9 @@ if __name__ == "__main__":
 
     shared_trip["start_time"] = datetime.now().isoformat()
     dmrs_proc.start()
-    camera_proc.start()
-    traffic_proc.start()
-    lane_proc.start()
+    # camera_proc.start()
+    # traffic_proc.start()
+    # lane_proc.start()
     StartEvent.clear()
 
 
@@ -139,13 +139,13 @@ if __name__ == "__main__":
             "serialNumber": serial_number
         }
     calculate_overall_score(shared_trip)
-    print("the shared trip data: ", final_trip)
+    print("the trip data: ", final_trip)
     send_shared_trip_data(final_trip)
 
     dmrs_proc.kill()
-    camera_proc.kill()
-    traffic_proc.kill()
-    lane_proc.kill()
+    # camera_proc.kill()
+    # traffic_proc.kill()
+    # lane_proc.kill()
     # empty the queues
     while not traffic_queue.empty():
         traffic_queue.get()

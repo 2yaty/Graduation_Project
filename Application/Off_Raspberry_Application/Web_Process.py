@@ -23,9 +23,9 @@ def send_shared_trip_data(shared_trip):
 
         # Check the response status code
         if response.status_code == 200:
-            print("Shared trip data sent to the Web successfully!")
+            print("the trip data sent to the Web successfully!")
         else:
-            print("Failed to send shared trip data. Status code:", response.status_code , response.content)
+            print("Failed to send trip data. Status code:", response.status_code , response.content)
 
     except requests.exceptions.RequestException as e:
         print("An error occurred while sending shared trip data:", str(e))
