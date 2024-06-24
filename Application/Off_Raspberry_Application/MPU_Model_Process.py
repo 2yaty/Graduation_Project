@@ -6,8 +6,8 @@ import multiprocessing as mp
 
 def dmrs_process(data_queue,trip_statistics):
 
-    last = 0
-    def handle_dmrs_warnings(last_data,data):
+    global last_data 
+    def handle_dmrs_warnings(data):
 
             # Assuming your predictions are numerical labels (1, 2, 3, 4, 5)
                 # You can map them to the corresponding actions
@@ -171,7 +171,7 @@ def dmrs_process(data_queue,trip_statistics):
                 # print(f'Predicted action: {predicted_action}')
 
                 # Send the predicted action to the output queue
-                handle_dmrs_warnings(last,prediction)
+                handle_dmrs_warnings(prediction)
 
                 # Clear the first reading from the data list for the next iteration
                 data_list = data_list[1:]
