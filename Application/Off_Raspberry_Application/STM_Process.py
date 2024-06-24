@@ -21,7 +21,8 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
                     else:
                         if (time.time() - zero_speed_start_time) > 60:
                             parent_pid = os.getppid()
-                            os.kill(parent_pid, signal.SIGTERM)
+                            # os.kill(parent_pid, signal.SIGTERM)
+                            display_output_queue.put("do you want to end the trip?")
                 else:
                     zero_speed_start_time = 0
                     speed.value = new_speed
@@ -83,6 +84,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
         bytesize=serial.EIGHTBITS,
         timeout=1
         )
+        display_output_queue.put("Raspberry is ready")
         while True:
             # Get the data from the display output queue
             data = display_output_queue.get()
