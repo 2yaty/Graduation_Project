@@ -9,8 +9,8 @@ from show_var import show
 def lane_departure_process(queue,display_output_queue):
     last_data = True
     def handle_lane_output(last,data):
-        if last_data != data:
-            last_data = data
+        if last != data:
+            last = data
             if data == True:
                 print("You are in lane")
             if data == False:
