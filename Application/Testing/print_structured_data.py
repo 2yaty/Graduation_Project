@@ -4,8 +4,8 @@ import json
 
 # Configure serial port
 ser = serial.Serial(
-    port='COM4',  # replace with your port name
-    baudrate=9600,
+    port='COM7',  # replace with your port name
+    baudrate=19200,
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_ONE,
     bytesize=serial.EIGHTBITS,
