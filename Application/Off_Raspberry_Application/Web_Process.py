@@ -30,17 +30,18 @@ def send_shared_trip_data(shared_trip):
     except requests.exceptions.RequestException as e:
         print("An error occurred while sending shared trip data:", str(e))
 
+if __name__ == "__main__":
 # Example usage
-shared_trip_data = {
-    "start_time": "2023-12-24T05:22:55",
-            "end_time": "2023-12-24T06:00:55",
-            "suddenBraking": 100,
-            "suddenAcceleration": 8,
-            "aggTL": 11,
-            "aggTR": 14,
-            "speedLimitViolation": 17,
-            "normalDriving": 20,
-            "totalScore": 70
-}
+    shared_trip_data = {
+        "start_time": "2023-12-24T05:22:55",
+                "end_time": "2023-12-24T06:00:55",
+                "suddenBraking": 100,
+                "suddenAcceleration": 8,
+                "aggTL": 11,
+                "aggTR": 14,
+                "speedLimitViolation": 17,
+                "normalDriving": 20,
+                "totalScore": 70
+    }
 
-send_shared_trip_data(shared_trip_data)
+    send_shared_trip_data(shared_trip_data)
