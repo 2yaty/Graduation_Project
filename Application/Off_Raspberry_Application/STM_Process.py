@@ -57,7 +57,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
         # get MPU data and put it in the queue
         if source == 'MPU':
             mpu_data = parsed_data.get('data')
-            print(mpu_data)
+            # print(mpu_data)
 
             # Replace single quotes with double quotes
             mpu_data_json = mpu_data.replace("'", '"')
@@ -67,7 +67,9 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
             values = [float(mpu_data_dict['AX']), float(mpu_data_dict['AY']),
                     float(mpu_data_dict['AZ']), float(mpu_data_dict['GX']), float(mpu_data_dict['GY']), float(mpu_data_dict['GZ'])]
 
-            dmrs_queue.put(values)
+            if not dmrs_queue.full():
+                
+                dmrs_queue.put(values)
 
 
     def send_data_to_STM(ser,display_output_queue):
