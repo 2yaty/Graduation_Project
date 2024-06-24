@@ -28,7 +28,7 @@ def traffic_sign_process(queue ,display_output_queue,trip_statistics,speed):
 
             display_output_queue.put(class_names[classId][1])
             # Example: Print the data
-            # print("Traffic Output:", data)
+            print("Traffic Output:", class_names[classId][1])
 
 
     while True:

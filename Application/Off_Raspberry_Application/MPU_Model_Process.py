@@ -3,10 +3,11 @@ import numpy as np
 import pickle
 import multiprocessing as mp
 
+last_data = 0
 
 def dmrs_process(data_queue,trip_statistics):
 
-
+    
     def handle_dmrs_warnings(data):
 
             # Assuming your predictions are numerical labels (1, 2, 3, 4, 5)
@@ -18,7 +19,9 @@ def dmrs_process(data_queue,trip_statistics):
                 4: 'suddenBraking',
                 5: 'normalDriving'
             }
-            print("DMRS: ", predicted_actions[data])
+            if data != last_data:
+                last_data= data
+                print("DMRS: ", predicted_actions[data])
             
             if data == 1:
                 trip_statistics['suddenAcceleration'] += 1

@@ -4,9 +4,13 @@ import lane_model  # Importing the lane departure model
 import matplotlib.image as mpimg
 from show_var import show
 
+last_data = True
+
 def lane_departure_process(queue,display_output_queue):
 
     def handle_lane_output(data):
+        if last_data != data:
+            last_data = data
             if data == True:
                 print("You are in lane")
             if data == False:

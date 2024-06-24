@@ -39,7 +39,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
             # parent_pid = os.getppid()  # Get the parent process ID
             # os.kill(parent_pid, signal.SIGINT)
             state = parsed_data.get('data')
-            print("the state of the engine: ", state, " now all processes should start.")
+            print("the state of the engine: ", state )
             display_output_queue.put("the state of the engine from the display")
             if state == 'start':
                 StartEvent.set()

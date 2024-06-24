@@ -138,10 +138,10 @@ if __name__ == "__main__":
             "totalScore": shared_trip['totalScore'],
             "serialNumber": serial_number
         }
-    send_shared_trip_data(final_trip)
-    print("the shared trip data: ", final_trip)
     calculate_overall_score(shared_trip)
-    send_shared_trip_to_theWeb(json.dumps(final_trip),display_output_queue)
+    print("the shared trip data: ", final_trip)
+    send_shared_trip_data(final_trip)
+
     dmrs_proc.kill()
     camera_proc.kill()
     traffic_proc.kill()
