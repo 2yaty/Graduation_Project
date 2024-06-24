@@ -168,9 +168,9 @@ if __name__ == "__main__":
 
     
     # Join processes
-    camera_proc.join()
-    traffic_proc.join()
-    lane_proc.join()
-    stm_proc.join()
-    dmrs_proc.join()
+    # camera_proc.join()
+    # traffic_proc.join()
+    # lane_proc.join()
+    # stm_proc.join()
+    # dmrs_proc.join()
 
