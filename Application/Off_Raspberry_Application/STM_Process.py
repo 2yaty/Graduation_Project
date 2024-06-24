@@ -44,16 +44,16 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
             if state == 'start':
                 StartEvent.set()
-                display_output_queue.put("the engine is starting ...")
+                display_output_queue.put("the engine is starting ...\n")
             if state == 'end':
-                display_output_queue.put("the engine is stopping ...")
+                display_output_queue.put("the engine is stopping ...\n")
                 StopEvent.set()
 
 
         if source == 'speed': #update the speed 
             #TODO: get the speed properly
             new_speed = int(parsed_data.get('data'))
-            print("the recieved speed is: ", new_speed)
+            # print("the recieved speed is: ", new_speed)
             check_speed(new_speed)
             
 
@@ -84,7 +84,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
         bytesize=serial.EIGHTBITS,
         timeout=1
         )
-        display_output_queue.put("Raspberry is ready")
+        display_output_queue.put("Raspberry is ready\n")
         while True:
             # Get the data from the display output queue
             data = display_output_queue.get()

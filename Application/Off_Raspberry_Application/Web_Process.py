@@ -24,11 +24,14 @@ def send_shared_trip_data(shared_trip):
         # Check the response status code
         if response.status_code == 200:
             print("the trip data sent to the Web successfully!")
+            return True
         else:
             print("Failed to send trip data. Status code:", response.status_code , response.content)
+            return False
 
     except requests.exceptions.RequestException as e:
         print("An error occurred while sending shared trip data:", str(e))
+        return Falses
 
 if __name__ == "__main__":
 # Example usage
