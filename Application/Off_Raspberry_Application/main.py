@@ -16,7 +16,7 @@ import time
 from datetime import datetime
 
 show = True
-serial_number = "12345678910"
+serial_number = "100"
 
 def send_shared_trip_to_theWeb(shared_trip,display_output_queue):
     # API endpoint URL
@@ -25,12 +25,12 @@ def send_shared_trip_to_theWeb(shared_trip,display_output_queue):
     
 
     # API key for authentication
-    api_key = 'e9H3pMSRS7Bxd1XXCUVPVCIT0ntESkjEB0h0JNqyW2tDu6rLW0i48EJxQFQZkRMfDrTuy9lBivLJmQ54Bjo6sDEeAsWIGafszZE1MEID1OIXkMXHyJOH6m7CHuYFCq3o'
+    api_key = "e9H3pMSRS7Bxd1XXCUVPVCIT0ntESkjEB0h0JNqyW2tDu6rLW0i48EJxQFQZkRMfDrTuy9lBivLJmQ54Bjo6sDEeAsWIGafszZE1MEID1OIXkMXHyJOH6m7CHuYFCq3o"
 
 
     # Prepare the headers with the API key
     header = {
-        'CAR-API-KEY': api_key
+        "CAR-API-KEY": api_key
     }
 
     # shared_trip["serialNumber"] = serial_number

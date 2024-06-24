@@ -4,7 +4,7 @@ def send_shared_trip_data(shared_trip):
     # API endpoint URL
     url = "https://dmrs-c487bb5f6150.herokuapp.com/api/v1/trips"
 
-    serial_number = "12345678910"
+    serial_number = "100"
 
     # API key for authentication
     api_key = "e9H3pMSRS7Bxd1XXCUVPVCIT0ntESkjEB0h0JNqyW2tDu6rLW0i48EJxQFQZkRMfDrTuy9lBivLJmQ54Bjo6sDEeAsWIGafszZE1MEID1OIXkMXHyJOH6m7CHuYFCq3o"
@@ -25,7 +25,7 @@ def send_shared_trip_data(shared_trip):
         if response.status_code == 200:
             print("Shared trip data sent successfully!")
         else:
-            print("Failed to send shared trip data. Status code:", response.status_code)
+            print("Failed to send shared trip data. Status code:", response.status_code , response.content)
 
     except requests.exceptions.RequestException as e:
         print("An error occurred while sending shared trip data:", str(e))
