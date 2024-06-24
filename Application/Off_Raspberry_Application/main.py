@@ -29,7 +29,7 @@ def send_shared_trip_to_theWeb(shared_trip,display_output_queue):
 
 
     # Prepare the headers with the API key
-    headers = {
+    header = {
         "CAR-API-KEY": api_key
     }
 
@@ -37,7 +37,7 @@ def send_shared_trip_to_theWeb(shared_trip,display_output_queue):
 
     try:
         # Send the POST request to the API endpoint with headers
-        response = requests.post(url, data=shared_trip, headers=headers)
+        response = requests.post(url, data=shared_trip, headers=header)
 
         # Check the response status code
         if response.status_code == 200:
