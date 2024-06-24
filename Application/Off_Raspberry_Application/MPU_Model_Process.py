@@ -12,28 +12,28 @@ def dmrs_process(data_queue,trip_statistics):
             # Assuming your predictions are numerical labels (1, 2, 3, 4, 5)
                 # You can map them to the corresponding actions
             predicted_actions = {
-                1: 'sudden_acceleration',
+                1: 'suddenAcceleration',
                 2: 'sudden_right_turn',
-                3: 'sudden_left_turn',
-                4: 'sudden_break',
-                5: 'Normal'
+                3: 'aggTL',
+                4: 'suddenBraking',
+                5: 'normalDriving'
             }
             print("DMRS: ", predicted_actions[data])
             
             if data == 1:
-                trip_statistics['sudden_acceleration'] += 1
+                trip_statistics['suddenAcceleration'] += 1
 
             if data == 2:
-                trip_statistics['sudden_right_turn'] += 1
+                trip_statistics['aggTR'] += 1
             
             if data == 3:
-                trip_statistics['sudden_left_turn'] += 1
+                trip_statistics['aggTL'] += 1
 
             if data == 4:
-                trip_statistics['sudden_break'] += 1
+                trip_statistics['suddenBraking'] += 1
 
             if data == 5:
-                trip_statistics['Normal'] += 1
+                trip_statistics['normalDriving'] += 1
             
             # # Example: Print the data
             # print("DMRS Output:", data)
