@@ -9,6 +9,7 @@ from LDW_Model_Process import lane_departure_process
 from STM_Process import stm_process
 from MPU_Model_Process import dmrs_process
 from Warning_Process import warning_process
+from Web_Process import send_shared_trip_data
 import serial
 import threading
 import TripStatistics
@@ -137,6 +138,7 @@ if __name__ == "__main__":
             "totalScore": shared_trip['totalScore'],
             "serialNumber": serial_number
         }
+    send_shared_trip_data(final_trip)
     print("the shared trip data: ", final_trip)
     calculate_overall_score(shared_trip)
     send_shared_trip_to_theWeb(json.dumps(final_trip),display_output_queue)
