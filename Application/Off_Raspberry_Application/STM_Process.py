@@ -6,10 +6,14 @@ import struct
 import json
 import multiprocessing
 import threading
+from threading import Timer
 
 zero_speed_start_time  = 0
 # the process takes the serial port, the queue that is shared with the DMRS model and the speed variable that is shared with the Warning model
 def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent):
+    
+    def return_To_Normal_fcw():
+        display_output_queue.put("*F0*")
 
     def check_speed( new_speed):
                 zero_speed_start_time = 0
@@ -55,6 +59,15 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
             new_speed = int(parsed_data.get('data'))
             # print("the recieved speed is: ", new_speed)
             check_speed(new_speed)
+            display_output_queue.put("*S"+str(new_speed)+"*")
+            
+            
+        if source == 'FCW':
+            fcw_data = json.loads(parsed_data.get('data'))
+            display_output_queue.put("*F"+str(fcw_data['warning_level'])+"*")
+            t = Timer(2.0,return_To_Normal_fcw)
+            t.start
+            
             
 
         # get MPU data and put it in the queue
