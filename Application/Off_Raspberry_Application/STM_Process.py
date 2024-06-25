@@ -59,7 +59,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
             new_speed = int(parsed_data.get('data'))
             # print("the recieved speed is: ", new_speed)
             check_speed(new_speed)
-            display_output_queue.put("*S"+str(new_speed)+"*")
+            display_output_queue.put("*S"+str(int(new_speed*12.5))+"*")
             
             
         if source == 'FCW':
@@ -79,7 +79,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
             # Extract the 'warning_level'
             warning_level = inner_data['warning_level']
-            display_output_queue.put("*F"+str(warning_level)+"*")
+            display_output_queue.put("*F"+str(int(warning_level*33.3))+"*")
             t = Timer(2.0,return_To_Normal_fcw)
             t.start
             
