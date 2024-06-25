@@ -32,9 +32,9 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
                     speed.value = new_speed
 
 
-    def process_data(data):
+    def process_data(parsed_data):
         # Parse the JSON data
-        parsed_data = json.loads(data)
+        # parsed_data = json.loads(data)
 
         # Check the source of the data
         source = parsed_data.get('from')
@@ -130,7 +130,13 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
                     # Validate checksum (simple sum of payload bytes)
                     if checksum == sum(payload) & 0xFF:
-                        process_data(payload)
+                        
+                        try:
+                                payload_json = json.loads(struct.unpack(f'{length}s', payload)[0])
+                                process_data(payload_json)
+                        except json.JSONDecodeError:
+                                print("Error decoding payload as JSON")
+                        
                     else:
                         print("Checksum error")
             else:
