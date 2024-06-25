@@ -64,6 +64,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
             
         if source == 'FCW':
             fcw_data = json.loads(parsed_data.get('data'))
+            fcw_data = fcw_data.replace("'", '"')
             display_output_queue.put("*F"+str(fcw_data['warning_level'])+"*")
             t = Timer(2.0,return_To_Normal_fcw)
             t.start
