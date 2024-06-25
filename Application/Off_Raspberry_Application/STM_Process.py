@@ -59,7 +59,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
             new_speed = int(parsed_data.get('data'))
             # print("the recieved speed is: ", new_speed)
             check_speed(new_speed)
-            display_output_queue.put("*S"+str(new_speed)+"*")
+            display_output_queue.put("*S"+str(int(new_speed*12.5))+"*")
             
             
         if source == 'FCW':
@@ -136,6 +136,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
                                 process_data(payload_json)
                         except json.JSONDecodeError:
                                 print("Error decoding payload as JSON")
+                                print(payload)
                         
                     else:
                         print("Checksum error")
