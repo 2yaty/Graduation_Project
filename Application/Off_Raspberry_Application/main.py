@@ -53,10 +53,35 @@ def send_shared_trip_to_theWeb(shared_trip,display_output_queue):
         display_output_queue.put("An error occurred while sending trip data to the web, could be no internet connection")
 
 
-
 def calculate_overall_score(trip_statistics):
-    #TODO: calculate the overall score
-    pass
+    # Weights (can be adjusted based on the importance of each event)
+    weight_normal = 1
+    weight_sudden_braking = -2
+    weight_sudden_acceleration = -2
+    weight_agg_tl = -3  # Aggressive turn left
+    weight_agg_tr = -3  # Aggressive turn right
+    weight_speed_violation = -5
+
+    # Calculate the potential minimum and maximum scores
+    max_negative = (trip_statistics['suddenBraking'] * weight_sudden_braking +
+                    trip_statistics['suddenAcceleration'] * weight_sudden_acceleration +
+                    trip_statistics['aggTL'] * weight_agg_tl +
+                    trip_statistics['aggTR'] * weight_agg_tr +
+                    trip_statistics['speedLimitViolation'] * weight_speed_violation)
+
+    max_positive = trip_statistics['normalDriving'] * weight_normal
+
+    # Actual score based on events
+    actual_score = max_negative + max_positive
+
+    # Normalize score to a 0-100 scale
+    if max_negative != 0 or max_positive != 0:
+        normalized_score = (actual_score - max_negative) / (max_positive - max_negative) * 100
+    else:
+        normalized_score = 0  # Avoid division by zero if no events are recorded
+
+    # Ensure the score is between 0 and 100
+    trip_statistics['totalScore'] = max(0, min(100, normalized_score))
 
 if __name__ == "__main__":
     
@@ -140,7 +165,7 @@ if __name__ == "__main__":
             "totalScore": shared_trip['totalScore'],
             "serialNumber": serial_number
         }
-    calculate_overall_score(shared_trip)
+    calculate_overall_score(final_trip)
     isDataSent = send_shared_trip_data(final_trip)
     print("the trip data: ", final_trip)
     display_output_queue.put(json.dumps(final_trip))
