@@ -32,9 +32,9 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
                     speed.value = new_speed
 
 
-    def process_data(parsed_data):
+    def process_data(data):
         # Parse the JSON data
-        # parsed_data = json.loads(data)
+        parsed_data = json.loads(data)
 
         # Check the source of the data
         source = parsed_data.get('from')
@@ -59,13 +59,27 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
             new_speed = int(parsed_data.get('data'))
             # print("the recieved speed is: ", new_speed)
             check_speed(new_speed)
-            display_output_queue.put("*S"+str(int(new_speed*12.5))+"*")
+            display_output_queue.put("*S"+str(new_speed)+"*")
             
             
         if source == 'FCW':
-            fcw_data = json.loads(parsed_data.get('data'))
-            fcw_data = fcw_data.replace("'", '"')
-            display_output_queue.put("*F"+str(fcw_data['warning_level'])+"*")
+            
+            # Decode bytes to string
+            json_str = data.decode()
+
+            # Parse the JSON to get the inner 'data' string
+            outer_data = json.loads(json_str)
+            inner_data_str = outer_data['data']
+
+            # Correct the single quotes and other formatting issues in the 'data' string
+            inner_data_str = inner_data_str.replace("'", '"')
+
+            # Parse the corrected JSON string
+            inner_data = json.loads(inner_data_str)
+
+            # Extract the 'warning_level'
+            warning_level = inner_data['warning_level']
+            display_output_queue.put("*F"+str(warning_level)+"*")
             t = Timer(2.0,return_To_Normal_fcw)
             t.start
             
@@ -130,14 +144,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
                     # Validate checksum (simple sum of payload bytes)
                     if checksum == sum(payload) & 0xFF:
-                        
-                        try:
-                                payload_json = json.loads(struct.unpack(f'{length}s', payload)[0])
-                                process_data(payload_json)
-                        except json.JSONDecodeError:
-                                print("Error decoding payload as JSON")
-                                print(payload)
-                        
+                        process_data(payload)
                     else:
                         print("Checksum error")
             else:
