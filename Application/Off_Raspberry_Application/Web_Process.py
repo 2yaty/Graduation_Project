@@ -31,7 +31,7 @@ def send_shared_trip_data(shared_trip):
 
     except requests.exceptions.RequestException as e:
         print("An error occurred while sending shared trip data:", str(e))
-        return Falses
+        return False
 
 if __name__ == "__main__":
 # Example usage
