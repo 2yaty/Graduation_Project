@@ -168,11 +168,11 @@ if __name__ == "__main__":
     calculate_overall_score(final_trip)
     isDataSent = send_shared_trip_data(final_trip)
     print("the trip data: ", final_trip)
-    display_output_queue.put(json.dumps(final_trip))
+    display_output_queue.put("*C\n"+json.dumps(final_trip)+"*")
     if isDataSent:
-        display_output_queue.put("Trip Data Sent Successfully\n")
+        display_output_queue.put("*C\nTrip Data Sent Successfully\n*")
     else:
-        display_output_queue.put("Failed to Send Trip Data\n")
+        display_output_queue.put("*C\nFailed to Send Trip Data\n*")
     time.sleep(3)
 
     dmrs_proc.kill()

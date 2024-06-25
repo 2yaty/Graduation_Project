@@ -49,9 +49,9 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
             if state == 'start':
                 StartEvent.set()
-                display_output_queue.put("the engine is starting ...\n")
+                display_output_queue.put("*C\nthe engine is starting ...\n*")
             if state == 'end':
-                display_output_queue.put("the engine is stopping ...\n")
+                display_output_queue.put("*C\nthe engine is stopping ...\n*")
                 StopEvent.set()
 
 
@@ -113,7 +113,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
         bytesize=serial.EIGHTBITS,
         timeout=1
         )
-        display_output_queue.put("Raspberry is ready\n")
+        display_output_queue.put("*C\nRaspberry is ready\n*")
         while True:
             # Get the data from the display output queue
             data = display_output_queue.get()
