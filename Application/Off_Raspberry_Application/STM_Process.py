@@ -11,7 +11,7 @@ from threading import Timer
 zero_speed_start_time  = 0
 # the process takes the serial port, the queue that is shared with the DMRS model and the speed variable that is shared with the Warning model
 def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent):
-    
+    mytimer = [None]
     def return_To_Normal_fcw():
         display_output_queue.put("*F0*")
 
@@ -33,6 +33,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
 
     def process_data(data):
+        nonlocal mytimer
         # Parse the JSON data
         parsed_data = json.loads(data)
 
@@ -80,8 +81,8 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
             # Extract the 'warning_level'
             warning_level = inner_data['warning_level']
             display_output_queue.put("*F"+str(int(warning_level*33.3))+"*")
-            t = Timer(2.0,return_To_Normal_fcw)
-            t.start
+            mytimer[0] = Timer(2.0,return_To_Normal_fcw)
+            mytimer[0].start
             
             
 
