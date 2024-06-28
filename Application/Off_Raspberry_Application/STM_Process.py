@@ -99,8 +99,8 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
             # Convert the JSON string to a dictionary
             mpu_data_dict = json.loads(mpu_data_json)
-            values = [float(mpu_data_dict['AX']), float(mpu_data_dict['AY']),
-                    float(mpu_data_dict['AZ']), float(mpu_data_dict['GX']), float(mpu_data_dict['GY']), float(mpu_data_dict['GZ'])]
+            values = [float(mpu_data_dict['GX']), float(mpu_data_dict['GY']),
+                    float(mpu_data_dict['GZ']), float(mpu_data_dict['AX']), float(mpu_data_dict['AY']), float(mpu_data_dict['AZ'])]
 
             if not dmrs_queue.full():
                 
