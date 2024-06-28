@@ -46,7 +46,7 @@ def dmrs_process(data_queue,trip_statistics):
 
 
     # Load your exported model
-    window_size = 10
+    window_size = 6
     with open(r'/home/pi/Desktop/Final_application/Graduation_Project/Application/Off_Raspberry_Application/model_without.pkl', 'rb') as file:
         model = pickle.load(file)
 
