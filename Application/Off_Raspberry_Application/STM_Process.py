@@ -90,9 +90,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
         # get MPU data and put it in the queue
         if source == 'MPU':
-            if not mpu_rate:
-                mpu_rate = True
-                return
+            
             mpu_data = parsed_data.get('data')
             # print(mpu_data)
 

@@ -19,12 +19,12 @@ def dmrs_process(data_queue,trip_statistics):
                 4: 'Brake',
                 5: 'Normal'
             }
-            if data != last_data:
-                last_data= data
-                print("DMRS: ", predicted_actions[data])
+            # if data != last_data:
+            #     last_data= data
+            print("DMRS: ", predicted_actions[data])
                 
-            else :
-                return
+            # else :
+            #     return
             
             if data == 1:
                 trip_statistics['suddenAcceleration'] += 1
