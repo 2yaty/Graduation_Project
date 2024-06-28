@@ -4,7 +4,7 @@ import serial
 import time
 # Create a Serial object
 ser = serial.Serial(
-    port='COM7',  # replace with your port name
+    port='/dev/ttyS0',  # replace with your port name
     baudrate=9600,
     parity=serial.PARITY_NONE,
     stopbits=serial.STOPBITS_ONE,
