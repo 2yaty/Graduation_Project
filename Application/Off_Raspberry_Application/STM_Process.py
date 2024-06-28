@@ -12,6 +12,7 @@ zero_speed_start_time  = 0
 # the process takes the serial port, the queue that is shared with the DMRS model and the speed variable that is shared with the Warning model
 def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent):
     mytimer = [None]
+    mpu_rate = True
     def return_To_Normal_fcw():
         display_output_queue.put("*F0*")
 
@@ -34,6 +35,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
     def process_data(data):
         nonlocal mytimer
+        nonlocal mpu_rate
         # Parse the JSON data
         parsed_data = json.loads(data)
 
@@ -88,6 +90,9 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
         # get MPU data and put it in the queue
         if source == 'MPU':
+            if not mpu_rate:
+                mpu_rate = True
+                return
             mpu_data = parsed_data.get('data')
             # print(mpu_data)
 
