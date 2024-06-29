@@ -142,7 +142,7 @@ if __name__ == "__main__":
     print("recieved a start engine ")
 
     shared_trip["start_time"] = datetime.now().isoformat()
-    dmrs_proc.start()
+    #dmrs_proc.start()
     # camera_proc.start()
     # traffic_proc.start()
     # lane_proc.start()
@@ -176,7 +176,7 @@ if __name__ == "__main__":
     time.sleep(3)
 
     dmrs_proc.kill()
-    stm_proc.kill()
+    #stm_proc.kill()
     # camera_proc.kill()
     # traffic_proc.kill()
     # lane_proc.kill()
