@@ -95,16 +95,18 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
             # Extract the 'warning_level'
             warning_level = inner_data['warning_level']
-            fcw_queue.put(warning_level)
+            
 
             if warning_level == 1:
                 print(inner_data , "😟")
 
             elif warning_level == 2:
                 print(inner_data , "😨")
+                fcw_queue.put(warning_level)
 
             elif warning_level == 3:
                 print(inner_data , "😱")
+                fcw_queue.put(warning_level)
             
             
 
