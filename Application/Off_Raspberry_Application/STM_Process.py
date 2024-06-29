@@ -7,14 +7,28 @@ import json
 import multiprocessing
 import threading
 from threading import Timer
+import multiprocessing as mp
 
 zero_speed_start_time  = 0
 # the process takes the serial port, the queue that is shared with the DMRS model and the speed variable that is shared with the Warning model
 def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent):
-    mytimer = [None]
     mpu_rate = True
-    def return_To_Normal_fcw():
+
+    def delayed_function(display_output_queue):
+        time.sleep(1)  # Delay execution for 5 seconds
         display_output_queue.put("*F0*")
+
+    def FCW_thread(queue,display_output_queue):
+        while True:
+            warning_level = queue.get()
+            display_output_queue.put("*F"+str(int(warning_level*33.3))+"*")
+            for i in range(warning_level):
+                display_output_queue.put("*fV50*")
+            
+            # Create a thread that runs the delayed_function
+            delayed_thread = threading.Thread(target=delayed_function, args=(display_output_queue,))
+            # Start the thread
+            delayed_thread.start()
 
     def check_speed( new_speed):
                 zero_speed_start_time = 0
@@ -33,8 +47,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
                     speed.value = new_speed
 
 
-    def process_data(data):
-        nonlocal mytimer
+    def process_data(data,fcw_queue):
         nonlocal mpu_rate
         # Parse the JSON data
         parsed_data = json.loads(data)
@@ -82,9 +95,8 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
             # Extract the 'warning_level'
             warning_level = inner_data['warning_level']
-            display_output_queue.put("*F"+str(int(warning_level*33.3))+"*")
-            mytimer[0] = Timer(2.0,return_To_Normal_fcw)
-            mytimer[0].start
+            fcw_queue.put(warning_level)
+
             
             
 
@@ -126,6 +138,11 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
     send_data_thread = threading.Thread(target=send_data_to_STM , args=(display_output_queue,))
     send_data_thread.start()
 
+    fcw_queue = mp.Queue(maxsize=10)
+
+    fcw_thread = threading.Thread(target=FCW_thread , args=(fcw_queue,display_output_queue))
+    fcw_thread.start()
+
     while True:
         # TODO: if there any problem with the serial port, terminate all the models
         # Read header
@@ -148,7 +165,7 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
 
                     # Validate checksum (simple sum of payload bytes)
                     if checksum == sum(payload) & 0xFF:
-                        process_data(payload)
+                        process_data(payload,fcw_queue)
                     else:
                         print("Checksum error")
             else:
@@ -164,6 +181,7 @@ def receiver_process(queue):
     while True:
         message = queue.get()
         # print(f"Receiver thread received: {message}")
+
 
 
 if __name__ == "__main__":
