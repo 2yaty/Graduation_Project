@@ -175,8 +175,8 @@ if __name__ == "__main__":
         display_output_queue.put("*C\nFailed to Send Trip Data\n*")
     time.sleep(3)
 
-    dmrs_proc.kill()
-    #stm_proc.kill()
+    # dmrs_proc.kill()
+    stm_proc.kill()
     # camera_proc.kill()
     # traffic_proc.kill()
     # lane_proc.kill()
