@@ -175,7 +175,8 @@ def stm_process(ser, dmrs_queue,display_output_queue,speed,StartEvent, StopEvent
                     if checksum == sum(payload) & 0xFF:
                         process_data(payload,fcw_queue)
                     else:
-                        print("Checksum error")
+                        # print("Checksum error")
+                        pass
             else:
                 print("Error reading length")
         else:
