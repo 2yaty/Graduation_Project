@@ -177,8 +177,8 @@ if __name__ == "__main__":
 
     dmrs_proc.kill()
     stm_proc.kill()
-    camera_proc.kill()
-    traffic_proc.kill()
+    # camera_proc.kill()
+    # traffic_proc.kill()
     # lane_proc.kill()
     # empty the queues
     while not traffic_queue.empty():
