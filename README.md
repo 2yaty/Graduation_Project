@@ -62,15 +62,16 @@ Click on "CHOOSE OS" and select "Raspberry Pi OS (other)".
 
 ##### Step 2: Select Raspberry Pi OS 64-bit
 Select "Raspberry Pi OS (64-bit)" from the list.
-![Select OS](https://www.raspberrypi.org/app/uploads/2021/03/imager-step2.png)
+![Select OS](![3](https://github.com/2yaty/Graduation_Project/assets/113372225/1df6e2ce-05ea-4fc1-8dc9-f9c40511910a)
+)
 
 ##### Step 3: Choose SD Card
 Click on "CHOOSE SD CARD" and select your SD card from the list.
-![Choose SD Card](https://www.raspberrypi.org/app/uploads/2021/03/imager-step3.png)
+![Choose SD Card](![4](https://github.com/2yaty/Graduation_Project/assets/113372225/3a0cdc5d-87d6-477e-92cf-bf1b4cb211f4)
+)
 
 ##### Step 4: Write the OS
 Click on "WRITE" to start downloading and burning the OS onto your SD card.
-![Write OS](https://www.raspberrypi.org/app/uploads/2021/03/imager-step4.png)
 
 4. Once the process is complete, insert the SD card into your Raspberry Pi and power it on.
 
