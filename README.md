@@ -57,7 +57,8 @@ This guide will walk you through the steps required to run an AI model on a Rasp
 
 ##### Step 1: Choose OS
 Click on "CHOOSE OS" and select "Raspberry Pi OS (other)".
-![Choose OS](https://www.raspberrypi.org/app/uploads/2021/03/imager-step1.png)
+[choose os](https://github.com/2yaty/Graduation_Project/assets/113372225/84063a47-b2b6-4719-8453-64f40c0d0a30)
+
 
 ##### Step 2: Select Raspberry Pi OS 64-bit
 Select "Raspberry Pi OS (64-bit)" from the list.
@@ -77,6 +78,8 @@ Click on "WRITE" to start downloading and burning the OS onto your SD card.
 
 Use the `scp` tool to transfer your AI models to the Raspberry Pi. Replace `username`, `hostname`, and `/path/to/model` with your specific details.
 
-```bash
+```bash![Uploading combined_image_no_rectangles.png…]()
+
 scp /path/to/model username@hostname:/path/to/destination
 
+![Uploading combined_image_no_rectangles.png…]()
