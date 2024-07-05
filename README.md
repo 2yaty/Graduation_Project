@@ -83,9 +83,9 @@ Use the `scp` tool to transfer your AI models to the Raspberry Pi. Replace `user
 SSH into your Raspberry Pi and update the system. Install the necessary dependencies:
 
     ```bash
-    sudo apt-get update
-    sudo apt-get upgrade
-    sudo apt-get install python3-pip
+        sudo apt-get update
+        sudo apt-get upgrade
+        sudo apt-get install python3-pip
     
 #### 4. Set Up Camera for Image Capture
 
