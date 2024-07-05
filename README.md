@@ -40,4 +40,43 @@ for the hardware you need:
 for the software:
 - you can test the application on your labtop by connecting to the stm and TTL by running this file >>> 
 
-- you can test the application on the raspberry by running this file >>> 
+- you can test the application on the raspberry by running this file >>>
+  ## Running AI Model on Raspberry Pi
+
+This guide will walk you through the steps required to run an AI model on a Raspberry Pi.
+
+### Steps
+
+#### 1. Download and Install Raspberry Pi OS
+
+1. Download and install [Raspberry Pi Imager](https://www.raspberrypi.org/software/) on your computer.
+
+2. Insert your SD card into your computer.
+
+3. Open Raspberry Pi Imager and follow these steps:
+
+##### Step 1: Choose OS
+Click on "CHOOSE OS" and select "Raspberry Pi OS (other)".
+![Choose OS](https://www.raspberrypi.org/app/uploads/2021/03/imager-step1.png)
+
+##### Step 2: Select Raspberry Pi OS 64-bit
+Select "Raspberry Pi OS (64-bit)" from the list.
+![Select OS](https://www.raspberrypi.org/app/uploads/2021/03/imager-step2.png)
+
+##### Step 3: Choose SD Card
+Click on "CHOOSE SD CARD" and select your SD card from the list.
+![Choose SD Card](https://www.raspberrypi.org/app/uploads/2021/03/imager-step3.png)
+
+##### Step 4: Write the OS
+Click on "WRITE" to start downloading and burning the OS onto your SD card.
+![Write OS](https://www.raspberrypi.org/app/uploads/2021/03/imager-step4.png)
+
+4. Once the process is complete, insert the SD card into your Raspberry Pi and power it on.
+
+#### 2. Move AI Models to Raspberry Pi
+
+Use the `scp` tool to transfer your AI models to the Raspberry Pi. Replace `username`, `hostname`, and `/path/to/model` with your specific details.
+
+```bash
+scp /path/to/model username@hostname:/path/to/destination
+
