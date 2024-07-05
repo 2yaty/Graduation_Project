@@ -74,7 +74,6 @@ Click on "WRITE" to start downloading and burning the OS onto your SD card.
 
 Use the `scp` tool to transfer your AI models to the Raspberry Pi. Replace `username`, `hostname`, and `/path/to/model` with your specific details.
 
-    ```bash
     scp /path/to/model username@hostname:/path/to/destination
 
 
