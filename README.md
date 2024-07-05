@@ -41,7 +41,8 @@ for the software:
 - you can test the application on your labtop by connecting to the stm and TTL by running this file >>> 
 
 - you can test the application on the raspberry by running this file >>>
-  ## Running AI Model on Raspberry Pi
+
+## Running AI Model on Raspberry Pi
 
 This guide will walk you through the steps required to run an AI model on a Raspberry Pi.
 
@@ -73,5 +74,29 @@ Click on "WRITE" to start downloading and burning the OS onto your SD card.
 
 Use the `scp` tool to transfer your AI models to the Raspberry Pi. Replace `username`, `hostname`, and `/path/to/model` with your specific details.
 
-scp /path/to/model username@hostname:/path/to/destination
+    ```bash
+    scp /path/to/model username@hostname:/path/to/destination
 
+
+#### 3. Download and Install Dependencies
+
+SSH into your Raspberry Pi and update the system. Install the necessary dependencies:
+
+    ```bash
+    sudo apt-get update
+    sudo apt-get upgrade
+    sudo apt-get install python3-pip
+    
+#### 4. Set Up Camera for Image Capture
+
+Configure the camera to capture images and stream them via TCP. Use the following command to set the image resolution and frame rate:
+
+    ```bash
+    libcamera-vid -n -t 0 --width 1280 --height 960 --framerate 1 --inline --listen -o tcp://127.0.0.1:8888
+
+#### 4. Run the AI Model
+
+Execute your AI model script on the Raspberry Pi. Ensure your script is configured to receive images from the TCP stream set up in the previous step:
+
+    ```bash
+    python3 your_model_script.py
