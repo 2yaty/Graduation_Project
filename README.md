@@ -62,7 +62,8 @@ Click on "CHOOSE OS" and select "Raspberry Pi OS (other)".
 
 ##### Step 2: Select Raspberry Pi OS 64-bit
 Select "Raspberry Pi OS (64-bit)" from the list.
-![Select OS]((https://github.com/2yaty/Graduation_Project/assets/113372225/cb67092b-2bd3-4c37-8da5-d0ed460dc57e)
+[Select OS](![4](https://github.com/2yaty/Graduation_Project/assets/113372225/31cede74-6ac2-4a19-87a5-2c7217a4965c)
+)
 
 ##### Step 3: Choose SD Card
 Click on "CHOOSE SD CARD" and select your SD card from the list.
