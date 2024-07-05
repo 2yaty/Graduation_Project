@@ -62,8 +62,7 @@ Click on "CHOOSE OS" and select "Raspberry Pi OS (other)".
 
 ##### Step 2: Select Raspberry Pi OS 64-bit
 Select "Raspberry Pi OS (64-bit)" from the list.
-![Select OS](![3](https://github.com/2yaty/Graduation_Project/assets/113372225/1df6e2ce-05ea-4fc1-8dc9-f9c40511910a)
-)
+![Select OS]((https://github.com/2yaty/Graduation_Project/assets/113372225/cb67092b-2bd3-4c37-8da5-d0ed460dc57e)
 
 ##### Step 3: Choose SD Card
 Click on "CHOOSE SD CARD" and select your SD card from the list.
@@ -83,4 +82,3 @@ Use the `scp` tool to transfer your AI models to the Raspberry Pi. Replace `user
 
 scp /path/to/model username@hostname:/path/to/destination
 
-![Uploading combined_image_no_rectangles.png…]()
